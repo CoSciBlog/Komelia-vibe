@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-group = "io.github.snd-r.komelia"
+group = "io.github.cosciblog.komelia.vibe"
 version = libs.versions.app.version.get()
 
 kotlin {
@@ -52,10 +52,10 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "Komelia"
+            packageName = "Komelia-Vibe"
             packageVersion = libs.versions.app.version.get()
             description = "Komga media client"
-            vendor = "Snd-R"
+            vendor = "CoSciBlog"
             appResourcesRootDir.set(
                 project.projectDir.resolve("desktopUnpackedResources")
             )
@@ -63,7 +63,7 @@ compose.desktop {
 
             windows {
                 menu = true
-                upgradeUuid = "40E86376-4E7C-41BF-8E3B-754065032B22"
+                upgradeUuid = "ED3F8A54-02CD-47E5-8E1F-E65DC1057E43"
                 iconFile.set(project.file("src/main/resources/ic_launcher.ico"))
             }
 

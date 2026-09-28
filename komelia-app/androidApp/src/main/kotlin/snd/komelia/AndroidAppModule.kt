@@ -135,7 +135,7 @@ class AndroidAppModule(
 
     override suspend fun createAppRepositories(): AppRepositories {
         val sharedPreferences = context.getSharedPreferences(
-            "io.github.snd-r.komelia.preferences",
+            "io.github.cosciblog.komelia.vibe.preferences",
             Context.MODE_PRIVATE
         )
 

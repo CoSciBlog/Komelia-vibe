@@ -1,4 +1,6 @@
-Komelia is a client application for Komga, a media server for your comics, manga, BDs, magazines and eBooks.
+Komelia-Vibe is an independently installable fork of Komelia and a client application for Komga, a media server for your comics, manga, BDs, magazines and eBooks.
+
+Komelia-Vibe uses its own application identity and data storage, so it can be installed alongside the original Komelia app. Changes to this fork may be developed with the assistance of AI and OpenAI Codex and remain subject to the normal build and test workflow.
 
 Organize your CBZ, CBR, PDF and EPUB files in different libraries, collections or reading lists.
 Manage edit metadata for your series and books.

@@ -86,7 +86,7 @@ private val keyEvents = MutableSharedFlow<KeyEvent>(extraBufferCapacity = Int.MA
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     configureLogging()
-    FileKit.init(appId = "komelia")
+    FileKit.init(appId = "komelia-vibe")
 
     if (DesktopPlatform.Current == Linux) {
         // try to load system glib2 and gtk libraries by loading webkit2gtk first
@@ -169,7 +169,7 @@ private fun ApplicationScope.MainAppContent(
     val undecorated = remember { canIntegrateWithSystemBar() && DesktopPlatform.Current == Linux }
 
     Window(
-        title = "Komelia",
+        title = "Komelia-Vibe",
         onCloseRequest = {
             onCloseRequest()
             exitApplication()
@@ -248,7 +248,7 @@ private fun ApplicationScope.MainAppContent(
         }
 
         Window(
-            title = "Komelia Logs",
+            title = "Komelia-Vibe Logs",
             onCloseRequest = { showLogWindow = false },
             state = logWindowState,
             icon = BitmapPainter(useResource("ic_launcher.png", ::loadImageBitmap)),
@@ -274,7 +274,7 @@ private fun errorApp(
         )
 
         Window(
-            title = "Komelia Error",
+            title = "Komelia-Vibe Error",
             onCloseRequest = {
                 onExit()
                 exitApplication()

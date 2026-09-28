@@ -22,7 +22,7 @@ object AppDirectories {
         "4x_IllustrationJaNai_V1_ESRGAN_135k.onnx",
     )
 
-    val projectDirectories = ProjectDirectories.from("io.github.snd-r.komelia", "", "Komelia")
+    val projectDirectories = ProjectDirectories.from("io.github.cosciblog.komelia.vibe", "", "Komelia-Vibe")
     val onnxRuntimeInstallPath: Path = Path(projectDirectories.dataDir).resolve("onnxruntime")
     val onnxRuntimeWorkingDir: Path = onnxRuntimeInstallPath.resolve("data")
     private val onnxModelsPath = Path(projectDirectories.dataDir).resolve("onnx")
@@ -42,7 +42,7 @@ object AppDirectories {
                 entries.any { mangaJaNaiIllustrationModelFiles.contains(it) }
     }
 
-    private val cachePath: Path = Path(System.getProperty("java.io.tmpdir")).resolve("komelia")
+    private val cachePath: Path = Path(System.getProperty("java.io.tmpdir")).resolve("komelia-vibe")
     val okHttpCachePath: Path = cachePath.resolve("okHttp")
     val coilCachePath: Path = cachePath.resolve("coil")
     val readerCachePath: Path = cachePath.resolve("reader")
