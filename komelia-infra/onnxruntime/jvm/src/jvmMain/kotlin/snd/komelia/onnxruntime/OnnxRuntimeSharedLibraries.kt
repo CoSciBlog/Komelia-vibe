@@ -24,7 +24,7 @@ import kotlin.io.path.notExists
 object OnnxRuntimeSharedLibraries {
     private val logger = KotlinLogging.logger { }
 
-    private val dataDir = Path(ProjectDirectories.from("io.github.snd-r.komelia", "", "Komelia").dataDir)
+    private val dataDir = Path(ProjectDirectories.from("io.github.cosciblog.komelia.vibe", "", "Komelia-Vibe").dataDir)
         .resolve("onnxruntime").createDirectories()
     private val ortSearchPath = System.getProperty("ort.search.path") ?: dataDir.toString()
     private val initialized = AtomicBoolean(false)

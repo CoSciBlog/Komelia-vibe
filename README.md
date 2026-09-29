@@ -1,11 +1,15 @@
-# Komelia - Komga media client
+# Komelia-Vibe - Komga media client
+
+Komelia-Vibe is an independently installable fork of [Komelia](https://github.com/Snd-R/Komelia). It remains compatible with Komga while using its own Android application ID, desktop package identity, application data directories, and fork-specific update channel. It can therefore be installed alongside the original Komelia app without overwriting or updating it.
+
+Fork releases and development take place only in [CoSciBlog/Komelia-vibe](https://github.com/CoSciBlog/Komelia-vibe). Upstream changes can still be integrated because the internal source packages are intentionally kept compatible.
+
+Development and maintenance changes in this fork may be made with the assistance of AI and OpenAI Codex. Such changes are still subject to the project's build and test workflow.
 
 ### Downloads:
 
-- Latest prebuilt release is available at https://github.com/Snd-R/Komelia/releases
-- Google Play Store https://play.google.com/store/apps/details?id=io.github.snd_r.komelia
-- F-Droid https://f-droid.org/packages/io.github.snd_r.komelia/
-- AUR package https://aur.archlinux.org/packages/komelia
+- Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
+- Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots
 
@@ -45,7 +49,7 @@ You can help translate this project to your language by using service provided b
 
 ## Build instructions
 Make sure you download all git submodules\
-`git clone --recurse-submodules https://github.com/Snd-R/Komelia` \
+`git clone --recurse-submodules https://github.com/CoSciBlog/Komelia-vibe` \
 if you already cloned repository without recurse command run\
 `git submodule update --init --recursive`
 

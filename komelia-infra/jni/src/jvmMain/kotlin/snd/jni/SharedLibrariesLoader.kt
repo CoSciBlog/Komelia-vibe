@@ -17,7 +17,7 @@ object SharedLibrariesLoader {
     private val logger = LoggerFactory.getLogger(SharedLibrariesLoader::class.java)
     private val composeResourcesDir = System.getProperty("compose.application.resources.dir")?.let { Path(it) }
     val tempDir: Path = Path(System.getProperty("java.io.tmpdir"))
-        .resolve("komelia")
+        .resolve("komelia-vibe")
         .resolve("libs")
         .createDirectories()
 

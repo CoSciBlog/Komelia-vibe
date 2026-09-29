@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
-group = "io.github.snd-r.komelia"
+group = "io.github.cosciblog.komelia.vibe"
 version = libs.versions.app.version.get()
 
 
@@ -69,7 +69,8 @@ android {
         buildConfig = true
     }
     defaultConfig {
-        applicationId = "io.github.snd_r.komelia"
+        // Fork-specific ID: allows Komelia-Vibe and upstream Komelia to coexist.
+        applicationId = "io.github.cosciblog.komelia.vibe"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = libs.versions.android.versionCode.get().toInt()
