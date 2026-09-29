@@ -44,9 +44,12 @@ fun KomgaUser.toOfflineUser(serverId: OfflineMediaServerId) = OfflineUser(
     serverId = serverId,
     email = this.email,
     roles = this.roles,
-    sharedAllLibraries = this.sharedAllLibraries,
-    sharedLibrariesIds = this.sharedLibrariesIds,
-    labelsAllow = this.labelsAllow,
-    labelsExclude = this.labelsExclude,
-    ageRestriction = this.ageRestriction
+    // Offline data only contains explicitly downloaded books. Copying remote access
+    // restrictions can reference libraries that are intentionally absent locally,
+    // causing USER_LIBRARY_SHARING foreign-key failures during a download.
+    sharedAllLibraries = true,
+    sharedLibrariesIds = emptySet(),
+    labelsAllow = emptySet(),
+    labelsExclude = emptySet(),
+    ageRestriction = null
 )

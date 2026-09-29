@@ -2,8 +2,9 @@
 
 All notable changes to the Komelia-Vibe fork are documented here.
 
-## Unreleased
+## 0.20.2 - 2026-09-30
 
+- Fix offline book downloads for Komga users with access to only selected libraries. Offline users are now unrestricted because the offline database contains only explicitly downloaded data.
 - Fix Android Docker builds from Windows checkouts by enforcing LF shell-script line endings and trusting Git repositories only within the container's `/build` mount.
 - Correct the Android JNI-copy task names and document Windows SDK setup and release APK signing/verification.
 - Provide an isolated Android native build that keeps dependency cleanup inside disposable container checkouts.
@@ -12,6 +13,7 @@ All notable changes to the Komelia-Vibe fork are documented here.
 - Default APKs to ARM64 and allow selecting complete ABI sets with `komelia.android.abis`, avoiding incomplete ABIs pulled in by AndroidX dependencies.
 - Order Android JNI copying and SQLite extraction before native-library merging when preparing and packaging in one Gradle invocation.
 - Android build fixes developed with assistance from OpenAI Codex.
+- The offline-download fix and release work were developed with assistance from OpenAI Codex.
 
 ## 0.20.1 - 2026-09-28
 
