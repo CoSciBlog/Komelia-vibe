@@ -8,6 +8,14 @@ plugins {
 group = "io.github.snd_r.komelia.infra.jni"
 version = "unspecified"
 
+// Copying an ABI and packaging it in one Gradle invocation must be ordered.
+tasks.matching { it.name == "mergeAndroidMainJniLibFolders" }.configureEach {
+    mustRunAfter(
+        ":android-aarch64_copyJniLibs", ":android-arm64_copyJniLibs",
+        ":android-armv7a_copyJniLibs", ":android-x86_64_copyJniLibs", ":android-x86_copyJniLibs"
+    )
+}
+
 kotlin {
     android {
         namespace = "io.github.snd_r.komelia.infra.jni"

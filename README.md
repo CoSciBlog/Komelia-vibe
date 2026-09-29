@@ -80,13 +80,52 @@ Available architectures include:  `aarch64`, `armv7a`, `x86_64`, `x86`
 
 - `docker build -t komelia-build-android . -f ./cmake/android.Dockerfile `
 - `docker run -v .:/build komelia-build-android <arch>`
-- `./gradlew <arch>_copyJniLibs`
+- `./gradlew android-<arch>_copyJniLibs`
 - `./gradlew buildEpubReaders`
 
 Then choose app build option:
 
 - `./gradlew :androidDebug` output in `./komelia-app/androidApp/build/outputs/apk/debug`
 - `./gradlew :androidRelease` output in `./komelia-app/androidApp/build/outputs/apk/release`
+
+On Windows, use `./gradlew.bat` and set `JAVA_HOME` to JDK 17 or newer and
+`ANDROID_HOME` to your Android SDK directory. Docker Desktop must be running
+with Linux containers (`docker version` must show a Server section).
+Shell scripts must use LF line endings; `.gitattributes` enforces this for new
+checkouts. For an existing checkout, convert `cmake/android-build.sh` to LF if
+Docker reports `exec ./cmake/android-build.sh: no such file or directory`.
+
+For ARM64 devices, use `aarch64` for the Docker argument and
+`android-aarch64_copyJniLibs` for the Gradle task. APKs default to ARM64.
+For other devices, pass `"-Pkomelia.android.abis=armeabi-v7a"` (or use `x86_64` or `x86` as the value)
+to the APK build. For multiple ABIs, use a comma-separated list (for example
+`"-Pkomelia.android.abis=arm64-v8a,armeabi-v7a"`) after building/copying each ABI.
+Keep the whole `-P...` argument quoted in PowerShell.
+Packaging checks the native libraries and reader assets before building the APK.
+Release APKs are unsigned by default: align them with Android SDK `zipalign`,
+then sign them with `apksigner` using your private release key before installing.
+Verify the exported APK with `apksigner verify --verbose --print-certs` and
+`aapt dump badging`. Keep signing keys and passwords private and reuse the same
+key for future updates.
+
+For Windows checkouts, or whenever submodules contain local work, use an isolated
+native build. The existing CMake dependency steps reset/clean their source trees;
+this wrapper runs those steps on fresh container-local clones. Run from the
+repository root in PowerShell (replace `aarch64` consistently for another ABI):
+
+```powershell
+docker build -t komelia-build-android . -f ./cmake/android.Dockerfile
+New-Item -ItemType Directory -Force ./cmake/build-android-aarch64/sysroot | Out-Null
+docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-android-aarch64/sysroot,target=/export" --entrypoint bash komelia-build-android /source/cmake/android-isolated-build.sh aarch64
+./gradlew.bat android-aarch64_copyJniLibs
+./gradlew.bat buildEpubReaders
+./gradlew.bat :androidRelease
+```
+
+The wrapper uses the currently checked-out submodule commits and includes local
+tracked CMake build-system edits. Commit any native dependency source changes you
+want to build before running it. Its source mount is read-only, so dependency
+cleanup cannot remove files from the host checkout.
 
 
 ## Komf Wasm WebUI

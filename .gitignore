@@ -16,3 +16,9 @@ build/
 /output
 /.kotlin
 /cmake/build*
+
+# Local exports may include private signing keys and passwords.
+/release-artifacts/
+/komelia-infra/jni/src/androidMain/jniLibs/
+/komelia-infra/database/sqlite/src/androidMain/jniLibs/
+/komelia-ui/src/commonMain/composeResources/files/

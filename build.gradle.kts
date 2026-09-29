@@ -68,6 +68,8 @@ val linuxCommonLibs = setOf(
     "libkomelia_onnxruntime.so",
 )
 val androidLibs = linuxCommonLibs + setOf(
+    // libvips links against libpng's SONAME, not its libpng.so build alias.
+    "libpng16.so",
     "libkomelia_android_bitmap.so",
     "libiconv.so",
     "libomp.so",
@@ -393,6 +395,37 @@ tasks.register("desktopMsi") {
     description = "create windows msi installer"
     group = "komelia-package"
     dependsOn(projects.komeliaApp.desktopApp.path + ":packageReleaseMsi")
+}
+
+tasks.register("verifyAndroidPackagingInputs") {
+    group = "komelia-build"
+    description = "Fail before exporting an APK with missing native libraries or EPUB readers"
+    mustRunAfter(
+        "android-aarch64_copyJniLibs", "android-arm64_copyJniLibs",
+        "android-armv7a_copyJniLibs", "android-x86_64_copyJniLibs", "android-x86_copyJniLibs",
+        "buildEpubReaders"
+    )
+    val nativeRoot = file(androidJniLibsDir)
+    val sqliteRoot = file("$rootDir/komelia-infra/database/sqlite/src/androidMain/jniLibs")
+    val readerRoot = file(composeCommonResources)
+    val packagedAbis = providers.gradleProperty("komelia.android.abis")
+        .orElse("arm64-v8a").get().split(",").map { it.trim() }.toSet()
+    val requiredLibraries = listOf(
+        "libkomelia_android_bitmap.so", "libkomelia_vips.so",
+        "libkomelia_onnxruntime.so", "libvips.so", "libpng16.so", "libonnxruntime.so"
+    )
+    inputs.files(fileTree(nativeRoot), fileTree(sqliteRoot), fileTree(readerRoot))
+    doLast {
+        val abis = packagedAbis.map { nativeRoot.resolve(it) }
+        val missing = abis.flatMap { abi ->
+            requiredLibraries.map { abi.resolve(it) } + sqliteRoot.resolve("${abi.name}/libsqlitejdbc.so")
+        }.plus(listOf(readerRoot.resolve("komga.html"), readerRoot.resolve("ttsu.html")))
+            .filter { !it.isFile || it.length() == 0L }
+        check(missing.isEmpty()) {
+            "Android packaging inputs are missing: ${missing.joinToString()}. " +
+                "Run android-<arch>_copyJniLibs and buildEpubReaders before exporting the APK."
+        }
+    }
 }
 
 tasks.register("androidDebug") {

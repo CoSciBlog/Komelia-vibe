@@ -49,6 +49,10 @@ RUN curl -Lo node.tar.gz https://nodejs.org/dist/v24.8.0/node-v24.8.0-linux-x64.
 
 RUN mkdir /.npm && chown -R 1000:1000 /.npm
 
+# Docker Desktop bind mounts may be owned by a different UID than the builder.
+# Trust only repositories inside the explicitly mounted build directory.
+RUN git config --system --add safe.directory '/build/*'
+
 USER 1000:1000
 WORKDIR /build
 ENTRYPOINT ["./cmake/android-build.sh"]

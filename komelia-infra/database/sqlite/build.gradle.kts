@@ -11,6 +11,10 @@ plugins {
 group = "io.github.snd_r.komelia.db.sqlite"
 version = "unspecified"
 
+tasks.matching { it.name == "mergeAndroidMainJniLibFolders" }.configureEach {
+    mustRunAfter(tasks.matching { it.name.endsWith("-ExtractSqliteLib") })
+}
+
 kotlin {
     jvm {
         compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
