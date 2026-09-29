@@ -2,6 +2,12 @@
 
 All notable changes to the Komelia-Vibe fork are documented here.
 
+## 0.20.3 - 2026-09-30
+
+- Fix Android startup failures where `System.loadLibrary("sqlitejdbc")` could not find the packaged `libsqlitejdbc.so`.
+- Extract packaged JNI libraries into Android's native library directory during installation for reliable runtime loading.
+- This fix and its Android package verification were developed with assistance from OpenAI Codex.
+
 ## 0.20.2 - 2026-09-30
 
 - Fix offline book downloads for Komga users with access to only selected libraries. Offline users are now unrestricted because the offline database contains only explicitly downloaded data.

@@ -108,6 +108,9 @@ to the APK build. For multiple ABIs, use a comma-separated list (for example
 `"-Pkomelia.android.abis=arm64-v8a,armeabi-v7a"`) after building/copying each ABI.
 Keep the whole `-P...` argument quoted in PowerShell.
 Packaging checks the native libraries and reader assets before building the APK.
+Android JNI libraries are extracted during installation so libraries loaded through
+`System.loadLibrary`, including `libsqlitejdbc.so`, are available from the app's
+native library directory on all supported devices.
 Release APKs are unsigned by default: align them with Android SDK `zipalign`,
 then sign them with `apksigner` using your private release key before installing.
 Verify the exported APK with `apksigner verify --verbose --print-certs` and
