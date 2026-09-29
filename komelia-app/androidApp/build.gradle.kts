@@ -96,6 +96,12 @@ android {
         buildConfigField("boolean", "ENABLE_SELF_UPDATES", enableSelfUpdates)
     }
     packaging {
+        // sqlite-jdbc loads libsqlitejdbc.so through System.loadLibrary on Android.
+        // Extract JNI libraries on install so the linker can always resolve it from
+        // the app's nativeLibraryDir, including devices that cannot load it in-place.
+        jniLibs {
+            useLegacyPackaging = true
+        }
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1,README.txt}"
             pickFirsts += "/META-INF/versions/9/OSGI-INF/MANIFEST.MF"
