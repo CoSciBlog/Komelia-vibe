@@ -31,6 +31,7 @@ RUN echo 'deb https://deb.debian.org/debian bookworm-backports main' >> /etc/apt
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     cmake \
+    fakeroot \
     ninja-build \
     nasm \
     autoconf \
