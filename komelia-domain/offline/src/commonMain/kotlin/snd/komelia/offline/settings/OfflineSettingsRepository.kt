@@ -20,4 +20,10 @@ interface OfflineSettingsRepository {
 
     fun getDownloadDirectory(): Flow<PlatformFile>
     suspend fun putDownloadDirectory(path: PlatformFile)
+
+    fun getDownloadOnlyUnreadSeriesBooks(): Flow<Boolean>
+    suspend fun putDownloadOnlyUnreadSeriesBooks(enabled: Boolean)
+
+    fun getDeleteReadBooks(): Flow<Boolean>
+    suspend fun putDeleteReadBooks(enabled: Boolean)
 }

@@ -34,6 +34,10 @@ class OfflineDownloadsState(
 
     val storageLocation = settingsRepository.getDownloadDirectory()
         .stateIn(coroutineScope, SharingStarted.Eagerly,null)
+    val downloadOnlyUnreadSeriesBooks = settingsRepository.getDownloadOnlyUnreadSeriesBooks()
+        .stateIn(coroutineScope, SharingStarted.Eagerly, false)
+    val deleteReadBooks = settingsRepository.getDeleteReadBooks()
+        .stateIn(coroutineScope, SharingStarted.Eagerly, false)
 
     init {
         downloadEvents.onEach { event ->
@@ -62,6 +66,14 @@ class OfflineDownloadsState(
 
     fun onStorageLocationReset() {
         coroutineScope.launch { settingsRepository.putDownloadDirectory(internalDownloadDir.platformFile) }
+    }
+
+    fun onDownloadOnlyUnreadSeriesBooksChange(enabled: Boolean) {
+        coroutineScope.launch { settingsRepository.putDownloadOnlyUnreadSeriesBooks(enabled) }
+    }
+
+    fun onDeleteReadBooksChange(enabled: Boolean) {
+        coroutineScope.launch { settingsRepository.putDeleteReadBooks(enabled) }
     }
 
     private fun updateDownloads(event: DownloadEvent) {

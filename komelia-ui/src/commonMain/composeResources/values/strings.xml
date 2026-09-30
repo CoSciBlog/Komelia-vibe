@@ -617,6 +617,10 @@
     <string name="settings_offline_mode_storage_location">Storage locations</string>
     <string name="settings_offline_mode_storage_location_change">Change location</string>
     <string name="settings_offline_mode_storage_location_reset">Reset to internal</string>
+    <string name="settings_offline_mode_download_only_unread_series">Download only unread series books</string>
+    <string name="settings_offline_mode_download_only_unread_series_desc">Skip books already marked as read when downloading a complete series. Books in progress are kept.</string>
+    <string name="settings_offline_mode_delete_read_books">Delete downloaded books after reading</string>
+    <string name="settings_offline_mode_delete_read_books_desc">Free local storage after completion. Offline progress is synchronized before its download is removed; books read on another device are cleaned up when their series is opened online.</string>
     <string name="settings_offline_mode_download_complete">Download complete</string>
     <string name="settings_offline_mode_download_canceled">Cancelled</string>
     <string name="settings_offline_mode_logs_nothing_to_show">Nothing to show</string>

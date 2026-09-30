@@ -108,6 +108,12 @@ sealed interface TaskData {
     }
 
     @Serializable
+    @SerialName("CleanupReadSeriesDownloads")
+    data class CleanupReadSeriesDownloads(val seriesId: KomgaSeriesId) : TaskData {
+        override val uniqueName = "CleanupReadSeriesDownloads_${seriesId}"
+    }
+
+    @Serializable
     @SerialName("DownloadBookCancel")
     data class DownloadBookCancel(val bookId: KomgaBookId) : TaskData {
         override val uniqueName = "DownloadBookCancel_${bookId}"

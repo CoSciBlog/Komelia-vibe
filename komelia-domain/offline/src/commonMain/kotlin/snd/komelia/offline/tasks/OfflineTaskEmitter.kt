@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import snd.komelia.offline.book.model.OfflineBook
 import snd.komelia.offline.model.BookMetadataPatchCapability
 import snd.komelia.offline.tasks.model.DEFAULT_PRIORITY
+import snd.komelia.offline.tasks.model.LOW_PRIORITY
 import snd.komelia.offline.tasks.model.TaskAddedEvent
 import snd.komelia.offline.tasks.model.TaskData
 import snd.komelia.offline.tasks.model.TaskData.AggregateSeriesMetadata
+import snd.komelia.offline.tasks.model.TaskData.CleanupReadSeriesDownloads
 import snd.komelia.offline.tasks.model.TaskData.DeleteBook
 import snd.komelia.offline.tasks.model.TaskData.DeleteSeries
 import snd.komelia.offline.tasks.model.TaskData.DownloadBook
@@ -168,6 +170,18 @@ class OfflineTaskEmitter(
             TaskEntry(
                 priority = priority,
                 task = DownloadSeries(seriesId),
+            )
+        )
+    }
+
+    suspend fun cleanupReadSeriesDownloads(
+        seriesId: KomgaSeriesId,
+        priority: Int = LOW_PRIORITY,
+    ) {
+        submitTask(
+            TaskEntry(
+                priority = priority,
+                task = CleanupReadSeriesDownloads(seriesId),
             )
         )
     }

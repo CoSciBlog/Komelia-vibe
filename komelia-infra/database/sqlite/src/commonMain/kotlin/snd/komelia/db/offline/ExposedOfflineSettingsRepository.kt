@@ -33,6 +33,8 @@ class ExposedOfflineSettingsRepository(database: Database) : ExposedRepository(d
                 it[OfflineSettingsTable.downloadDirectory] = settings.downloadDirectory.toString()
                 it[OfflineSettingsTable.readProgressSyncDate] = settings.readProgressSyncDate?.epochSeconds
                 it[OfflineSettingsTable.dataSyncDate] = settings.dataSyncDate?.epochSeconds
+                it[OfflineSettingsTable.downloadOnlyUnreadSeriesBooks] = settings.downloadOnlyUnreadSeriesBooks
+                it[OfflineSettingsTable.deleteReadBooks] = settings.deleteReadBooks
             }
         }
     }
@@ -45,6 +47,8 @@ class ExposedOfflineSettingsRepository(database: Database) : ExposedRepository(d
             downloadDirectory = PlatformFile(this[OfflineSettingsTable.downloadDirectory]),
             readProgressSyncDate = this[OfflineSettingsTable.readProgressSyncDate]?.let { Instant.fromEpochSeconds(it) },
             dataSyncDate = this[OfflineSettingsTable.dataSyncDate]?.let { Instant.fromEpochSeconds(it) },
+            downloadOnlyUnreadSeriesBooks = this[OfflineSettingsTable.downloadOnlyUnreadSeriesBooks],
+            deleteReadBooks = this[OfflineSettingsTable.deleteReadBooks],
         )
     }
 }

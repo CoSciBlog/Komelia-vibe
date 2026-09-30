@@ -10,13 +10,27 @@ were explicitly downloaded, so it does not copy remote library or label restrict
 This follows the behavior planned for upstream Komelia and keeps the implementation
 easy to replace when the upstream fix is integrated.
 
+The offline download settings also provide two opt-in storage controls:
+
+- **Download only unread series books** skips completed books when a complete series
+  is queued, while retaining unread and in-progress books.
+- **Delete downloaded books after reading** removes local book data only after the
+  completed progress is confirmed by Komga. When a series is opened online, books
+  completed on another device are cleaned up as well. Progress created offline is
+  retained until synchronization succeeds, so cleanup never discards unsent progress.
+
+Both controls are disabled by default. They use the existing Komga models and the
+fork's offline task layer without changing protocol payloads or internal Kotlin package
+names, keeping future upstream integration straightforward.
+
 Development and maintenance changes in this fork may be made with the assistance of AI and OpenAI Codex. Such changes are still subject to the project's build and test workflow.
 
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets include a Windows x64 installer, a Linux x64 Debian package, and
-  an Android ARM64 APK. Each platform keeps the independent Komelia-Vibe identity.
+- Release assets vary by version. Version 0.20.6 is an Android-only feature release;
+  earlier releases also provide Windows x64 and Linux x64 packages. Every platform
+  keeps the independent Komelia-Vibe identity.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots

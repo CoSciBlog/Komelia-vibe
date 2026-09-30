@@ -1,6 +1,8 @@
 package snd.komelia.offline.tasks
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import snd.komelia.offline.action.OfflineActions
 import snd.komelia.offline.book.actions.BookDeleteAction
 import snd.komelia.offline.book.actions.BookDeleteFilesAction
@@ -11,9 +13,13 @@ import snd.komelia.offline.library.actions.LibraryEmptyTrashAction
 import snd.komelia.offline.series.actions.SeriesAggregateBookMetadataAction
 import snd.komelia.offline.series.actions.SeriesDeleteAction
 import snd.komelia.offline.series.actions.SeriesRefreshMetadataAction
+import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.sync.PlatformDownloadManager
+import snd.komelia.offline.sync.shouldDeleteReadDownload
+import snd.komelia.offline.sync.shouldDownloadSeriesBook
 import snd.komelia.offline.tasks.model.TaskData
 import snd.komelia.offline.tasks.model.TaskData.AggregateSeriesMetadata
+import snd.komelia.offline.tasks.model.TaskData.CleanupReadSeriesDownloads
 import snd.komelia.offline.tasks.model.TaskData.DeleteBook
 import snd.komelia.offline.tasks.model.TaskData.DeleteLibrary
 import snd.komelia.offline.tasks.model.TaskData.DeleteSeries
@@ -36,6 +42,8 @@ class TaskHandler(
     private val taskEmitter: OfflineTaskEmitter,
     private val downloadManager: PlatformDownloadManager,
     private val komgaBookClient: KomgaBookClient,
+    private val settingsRepository: OfflineSettingsRepository,
+    private val isOffline: StateFlow<Boolean>,
 ) {
     suspend fun handleTask(entry: TaskEntry) {
         logger.info { "handling task ${entry.task}" }
@@ -79,12 +87,29 @@ class TaskHandler(
             }
 
             is DownloadSeries -> {
+                val downloadOnlyUnread = settingsRepository.getDownloadOnlyUnreadSeriesBooks().first()
                 val books = komgaBookClient.getBookList(
                     conditionBuilder = anyOfBooks { seriesId { isEqualTo(task.seriesId) } },
                     pageRequest = KomgaPageRequest(unpaged = true)
                 ).content
 
-                books.forEach { taskEmitter.downloadBook(it.id) }
+                books.filter {
+                    shouldDownloadSeriesBook(downloadOnlyUnread, it.readProgress?.completed == true)
+                }.forEach { taskEmitter.downloadBook(it.id) }
+            }
+
+            is CleanupReadSeriesDownloads -> {
+                val deleteReadBooks = settingsRepository.getDeleteReadBooks().first()
+                if (deleteReadBooks && !isOffline.value) {
+                    val remoteBooks = komgaBookClient.getBookList(
+                        conditionBuilder = anyOfBooks { seriesId { isEqualTo(task.seriesId) } },
+                        pageRequest = KomgaPageRequest(unpaged = true)
+                    ).content
+                    val completedIds = remoteBooks.filter {
+                        shouldDeleteReadDownload(deleteReadBooks, it.readProgress?.completed == true)
+                    }.map { it.id }
+                    bookRepository.findIn(completedIds).forEach { taskEmitter.deleteBook(it.id) }
+                }
             }
 
             is TaskData.DownloadBookCancel -> downloadManager.cancelBookDownload(task.bookId)

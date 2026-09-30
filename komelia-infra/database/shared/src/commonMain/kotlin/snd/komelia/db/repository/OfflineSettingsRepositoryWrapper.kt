@@ -51,4 +51,20 @@ class OfflineSettingsRepositoryWrapper(
     override suspend fun putDownloadDirectory(path: PlatformFile) {
         wrapper.transform { it.copy(downloadDirectory = path) }
     }
+
+    override fun getDownloadOnlyUnreadSeriesBooks(): Flow<Boolean> {
+        return wrapper.mapState { it.downloadOnlyUnreadSeriesBooks }
+    }
+
+    override suspend fun putDownloadOnlyUnreadSeriesBooks(enabled: Boolean) {
+        wrapper.transform { it.copy(downloadOnlyUnreadSeriesBooks = enabled) }
+    }
+
+    override fun getDeleteReadBooks(): Flow<Boolean> {
+        return wrapper.mapState { it.deleteReadBooks }
+    }
+
+    override suspend fun putDeleteReadBooks(enabled: Boolean) {
+        wrapper.transform { it.copy(deleteReadBooks = enabled) }
+    }
 }

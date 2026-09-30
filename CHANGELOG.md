@@ -2,6 +2,15 @@
 
 All notable changes to the Komelia-Vibe fork are documented here.
 
+## 0.20.6 - 2026-09-30
+
+- Add an opt-in series-download filter that skips books already marked as read while retaining unread and in-progress books.
+- Add an opt-in storage policy that removes downloaded books after their completed reading progress has been confirmed by Komga.
+- Clean up older downloaded books that were completed online or on another device when their series is opened online.
+- Preserve offline reading progress until it has synchronized successfully, preventing automatic cleanup from losing unsent progress.
+- Keep both policies disabled by default and implement them entirely in the fork's offline layer for Komga and future upstream Komelia compatibility.
+- This feature, its tests, Android build, and release verification were prepared with assistance from OpenAI Codex.
+
 ## 0.20.5 - 2026-09-30
 
 - Ship the restricted-library offline-download correction across the Windows, Linux, and Android distributions.

@@ -29,6 +29,10 @@ import androidx.compose.ui.unit.dp
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_canceled
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_complete
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_delete_read_books
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_delete_read_books_desc
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_only_unread_series
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_only_unread_series_desc
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_storage_location
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_storage_location_change
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_storage_location_reset
@@ -36,6 +40,7 @@ import io.github.vinceglb.filekit.PlatformFile
 import org.jetbrains.compose.resources.stringResource
 import snd.komelia.formatDecimal
 import snd.komelia.offline.sync.model.DownloadEvent
+import snd.komelia.ui.common.components.SwitchWithLabel
 import snd.komelia.ui.dialogs.permissions.StoragePermissionRequestDialog
 import snd.komga.client.book.KomgaBookId
 import kotlin.coroutines.cancellation.CancellationException
@@ -43,13 +48,32 @@ import kotlin.coroutines.cancellation.CancellationException
 @Composable
 fun OfflineDownloadsContent(
     storageLocation: PlatformFile?,
+    downloadOnlyUnreadSeriesBooks: Boolean,
+    deleteReadBooks: Boolean,
 
+    onDownloadOnlyUnreadSeriesBooksChange: (Boolean) -> Unit,
+    onDeleteReadBooksChange: (Boolean) -> Unit,
     onStorageLocationChange: (PlatformFile) -> Unit,
     onStorageLocationReset: () -> Unit,
     downloads: Collection<DownloadEvent>,
     onDownloadCancel: (KomgaBookId) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        SwitchWithLabel(
+            checked = downloadOnlyUnreadSeriesBooks,
+            onCheckedChange = onDownloadOnlyUnreadSeriesBooksChange,
+            label = { Text(stringResource(Res.string.settings_offline_mode_download_only_unread_series)) },
+            supportingText = { Text(stringResource(Res.string.settings_offline_mode_download_only_unread_series_desc)) },
+        )
+        SwitchWithLabel(
+            checked = deleteReadBooks,
+            onCheckedChange = onDeleteReadBooksChange,
+            label = { Text(stringResource(Res.string.settings_offline_mode_delete_read_books)) },
+            supportingText = { Text(stringResource(Res.string.settings_offline_mode_delete_read_books_desc)) },
+        )
+
+        HorizontalDivider()
+
         if (storageLocation != null) {
             Column {
                 Text(stringResource(Res.string.settings_offline_mode_storage_location))
