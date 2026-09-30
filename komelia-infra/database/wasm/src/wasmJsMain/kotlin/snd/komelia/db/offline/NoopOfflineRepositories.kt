@@ -857,4 +857,24 @@ class NoopOfflineSettingsRepository : OfflineSettingsRepository {
 
     override suspend fun putDownloadDirectory(path: PlatformFile) {
     }
+
+    override fun getDownloadOnlyUnreadSeriesBooks(): Flow<Boolean> = flowOf(false)
+
+    override suspend fun putDownloadOnlyUnreadSeriesBooks(enabled: Boolean) {
+    }
+
+    override fun getDeleteReadBooks(): Flow<Boolean> = flowOf(false)
+
+    override suspend fun putDeleteReadBooks(enabled: Boolean) {
+    }
+
+    override fun getPreloadNextBookPages(): Flow<Int> = flowOf(0)
+
+    override suspend fun putPreloadNextBookPages(pages: Int) {
+    }
+
+    override fun getShowPreloadNotification(): Flow<Boolean> = flowOf(false)
+
+    override suspend fun putShowPreloadNotification(enabled: Boolean) {
+    }
 }

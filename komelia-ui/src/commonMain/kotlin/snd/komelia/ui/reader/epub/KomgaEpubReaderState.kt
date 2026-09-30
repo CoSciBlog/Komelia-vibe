@@ -45,6 +45,7 @@ class KomgaEpubReaderState(
     book: KomeliaBook?,
     private val bookApi: KomgaBookApi,
     private val seriesApi: KomgaSeriesApi,
+    private val offlineSeriesApi: KomgaSeriesApi?,
     private val readListApi: KomgaReadListApi,
     private val settingsRepository: CommonSettingsRepository,
     private val epubSettingsRepository: EpubReaderSettingsRepository,
@@ -134,7 +135,11 @@ class KomgaEpubReaderState(
         }
 
         webview.bind("getOneSeries") { seriesId: KomgaSeriesId ->
-            seriesApi.getOneSeries(seriesId)
+            if (book.value?.downloaded == true && offlineSeriesApi != null) {
+                offlineSeriesApi.getOneSeries(seriesId)
+            } else {
+                seriesApi.getOneSeries(seriesId)
+            }
         }
 
         webview.bind("readListGetOne") { readListId: KomgaReadListId ->

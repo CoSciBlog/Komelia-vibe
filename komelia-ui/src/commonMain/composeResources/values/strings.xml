@@ -621,6 +621,11 @@
     <string name="settings_offline_mode_download_only_unread_series_desc">Skip books already marked as read when downloading a complete series. Books in progress are kept.</string>
     <string name="settings_offline_mode_delete_read_books">Delete downloaded books after reading</string>
     <string name="settings_offline_mode_delete_read_books_desc">Free local storage after completion. Offline progress is synchronized before its download is removed; books read on another device are cleaned up when their series is opened online.</string>
+    <string name="settings_offline_mode_preload_next_book_pages">Preload next book this many pages before the end</string>
+    <string name="settings_offline_mode_preload_next_book_pages_desc">Choose 0–10 pages. Set to 0 to disable preloading. Downloads start only while online and are skipped when the same book is already stored locally.</string>
+    <string name="settings_offline_mode_preload_notification">Show a notification when preloading starts</string>
+    <string name="settings_offline_mode_preload_notification_desc">Display a message when the next book is queued for background download.</string>
+    <string name="reader_preloading_next_book">Downloading next book: %1$s</string>
     <string name="settings_offline_mode_download_complete">Download complete</string>
     <string name="settings_offline_mode_download_canceled">Cancelled</string>
     <string name="settings_offline_mode_logs_nothing_to_show">Nothing to show</string>

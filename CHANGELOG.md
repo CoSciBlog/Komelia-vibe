@@ -2,6 +2,20 @@
 
 All notable changes to the Komelia-Vibe fork are documented here.
 
+## Unreleased
+
+- Prefer downloaded image and EPUB book content automatically, regardless of the
+  current online/offline mode, to reduce mobile-data use and reader latency.
+- Add a configurable next-book preload threshold from 0 to 10 remaining pages;
+  `0` disables preloading and an optional notification announces the download.
+- Require a validated network connection before preloading and skip books that are
+  already downloaded or already queued.
+- Mark the current image book complete when advancing so the existing opt-in
+  post-reading cleanup can safely remove it after Komga confirms the progress.
+- Document and enforce that branches, issues, pull requests, releases, and other
+  project work belong only to the `CoSciBlog/Komelia-vibe` fork.
+- These changes and their tests were prepared with assistance from OpenAI Codex.
+
 ## 0.20.6 - 2026-09-30
 
 - Add an opt-in series-download filter that skips books already marked as read while retaining unread and in-progress books.

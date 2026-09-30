@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
@@ -25,7 +26,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.text.KeyboardOptions
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_canceled
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_complete
@@ -33,6 +36,10 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offlin
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_delete_read_books_desc
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_only_unread_series
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_only_unread_series_desc
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_next_book_pages
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_next_book_pages_desc
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_notification
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_notification_desc
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_storage_location
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_storage_location_change
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_storage_location_reset
@@ -41,6 +48,8 @@ import org.jetbrains.compose.resources.stringResource
 import snd.komelia.formatDecimal
 import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.ui.common.components.SwitchWithLabel
+import snd.komelia.ui.common.components.CheckboxWithLabel
+import snd.komelia.ui.common.components.NumberField
 import snd.komelia.ui.dialogs.permissions.StoragePermissionRequestDialog
 import snd.komga.client.book.KomgaBookId
 import kotlin.coroutines.cancellation.CancellationException
@@ -50,9 +59,13 @@ fun OfflineDownloadsContent(
     storageLocation: PlatformFile?,
     downloadOnlyUnreadSeriesBooks: Boolean,
     deleteReadBooks: Boolean,
+    preloadNextBookPages: Int,
+    showPreloadNotification: Boolean,
 
     onDownloadOnlyUnreadSeriesBooksChange: (Boolean) -> Unit,
     onDeleteReadBooksChange: (Boolean) -> Unit,
+    onPreloadNextBookPagesChange: (Int) -> Unit,
+    onShowPreloadNotificationChange: (Boolean) -> Unit,
     onStorageLocationChange: (PlatformFile) -> Unit,
     onStorageLocationReset: () -> Unit,
     downloads: Collection<DownloadEvent>,
@@ -70,6 +83,31 @@ fun OfflineDownloadsContent(
             onCheckedChange = onDeleteReadBooksChange,
             label = { Text(stringResource(Res.string.settings_offline_mode_delete_read_books)) },
             supportingText = { Text(stringResource(Res.string.settings_offline_mode_delete_read_books_desc)) },
+        )
+        NumberField(
+            value = preloadNextBookPages,
+            onValueChange = { pages ->
+                if (pages != null && pages in 0..10) onPreloadNextBookPagesChange(pages)
+            },
+            modifier = Modifier.widthIn(max = 520.dp),
+            label = { Text(stringResource(Res.string.settings_offline_mode_preload_next_book_pages)) },
+            supportingText = { Text(stringResource(Res.string.settings_offline_mode_preload_next_book_pages_desc)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
+        )
+        CheckboxWithLabel(
+            checked = showPreloadNotification,
+            onCheckedChange = onShowPreloadNotificationChange,
+            enabled = preloadNextBookPages > 0,
+            label = {
+                Column {
+                    Text(stringResource(Res.string.settings_offline_mode_preload_notification))
+                    Text(
+                        stringResource(Res.string.settings_offline_mode_preload_notification_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            },
         )
 
         HorizontalDivider()

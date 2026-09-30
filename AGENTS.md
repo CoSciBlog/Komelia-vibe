@@ -5,11 +5,13 @@
 - This repository is the `CoSciBlog/Komelia-vibe` fork. Never push fork-specific work to `Snd-R/Komelia` or any upstream branch.
 - `origin` must point to the fork; `upstream` is fetch-only for integrating original Komelia changes.
 - Keep fork branding and distribution identifiers out of upstream-bound commits.
+- Create and manage all branches, issues, pull requests, releases, and other project work only in `CoSciBlog/Komelia-vibe`, never in `Snd-R/Komelia`.
+- When upstream context must be linked from fork issues, pull requests, or comments, use a `redirect.github.com/Snd-R/Komelia/...` URL instead of a normal GitHub issue/PR URL or `Snd-R/Komelia#...` reference so GitHub does not create an upstream backlink.
 
 ## Change workflow
 
 - Start every change on a new `codex/<topic>` branch from an up-to-date local `main`.
-- Create a feature request in the fork for each new feature and link it from the pull request.
+- Create a feature request in `CoSciBlog/Komelia-vibe` for each new feature and link it from the pull request.
 - Test the change before opening a pull request. Open pull requests only against `CoSciBlog/Komelia-vibe:main`.
 - Merge a tested pull request into the fork's `main`; never target the upstream repository.
 - Update `CHANGELOG.md`, `README.md`, and version metadata for releases as appropriate.

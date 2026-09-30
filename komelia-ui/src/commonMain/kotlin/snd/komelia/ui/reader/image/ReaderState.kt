@@ -9,6 +9,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.first
@@ -36,6 +38,7 @@ import snd.komelia.ui.oneshot.OneshotScreen
 import snd.komelia.ui.platform.CommonParcelable
 import snd.komelia.ui.platform.CommonParcelize
 import snd.komelia.ui.platform.CommonParcelizeRawValue
+import snd.komelia.ui.reader.ReaderDownloadState
 import snd.komelia.ui.series.SeriesScreen
 import snd.komga.client.book.KomgaBookId
 import snd.komga.client.book.KomgaBookReadProgressUpdateRequest
@@ -45,7 +48,9 @@ typealias SpreadIndex = Int
 
 class ReaderState(
     private val bookApi: KomgaBookApi,
+    private val offlineBookApi: KomgaBookApi?,
     private val seriesApi: KomgaSeriesApi,
+    private val offlineSeriesApi: KomgaSeriesApi?,
     private val readListApi: KomgaReadListApi,
     private val navigator: Navigator,
     private val appNotifications: AppNotifications,
@@ -56,6 +61,7 @@ class ReaderState(
     private val bookSiblingsContext: BookSiblingsContext,
     private val colorCorrectionRepository: BookColorCorrectionRepository,
     val pageChangeFlow: SharedFlow<Unit>,
+    private val readerDownloadState: ReaderDownloadState?,
 ) {
     private val previewLoadScope = CoroutineScope(Dispatchers.Default.limitedParallelism(1) + SupervisorJob())
     val state = MutableStateFlow<LoadState<Unit>>(LoadState.Uninitialized)
@@ -125,7 +131,11 @@ class ReaderState(
             }
             currentBookId.value = bookId
 
-            val currentSeries = seriesApi.getOneSeries(newBook.seriesId)
+            val currentSeries = if (newBook.downloaded && offlineSeriesApi != null) {
+                offlineSeriesApi.getOneSeries(newBook.seriesId)
+            } else {
+                seriesApi.getOneSeries(newBook.seriesId)
+            }
             series.value = currentSeries
             readerType.value = when (currentSeries.metadata.readingDirection) {
                 KomgaReadingDirection.LEFT_TO_RIGHT -> ReaderType.PAGED
@@ -164,6 +174,9 @@ class ReaderState(
         } catch (e: ClientRequestException) {
             if (e.response.status != NotFound) throw e
             else null
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            offlineBookApi?.getBookSiblingNext(currentBookId) ?: throw e
         }
 
     }
@@ -179,12 +192,16 @@ class ReaderState(
         } catch (e: ClientRequestException) {
             if (e.response.status != NotFound) throw e
             else null
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            offlineBookApi?.getBookSiblingPrevious(currentBookId) ?: throw e
         }
 
     }
 
     suspend fun loadNextBook() {
         val booksState = requireNotNull(booksState.value)
+        val completedBookId = booksState.currentBook.id
         if (booksState.nextBook != null) {
             val nextBook = getNextBook(booksState.nextBook.id)
             val nextBookPages = if (nextBook != null) loadBookPages(nextBook.id) else emptyList()
@@ -198,8 +215,10 @@ class ReaderState(
                 nextBook = nextBook,
                 nextBookPages = nextBookPages
             )
+            markBookCompleted(completedBookId)
             onProgressChange(1)
         } else {
+            markBookCompleted(completedBookId)
             navigator replace MainScreen(
                 if (booksState.currentBook.oneshot) OneshotScreen(booksState.currentBook, bookSiblingsContext)
                 else SeriesScreen(booksState.currentBook.seriesId)
@@ -240,6 +259,24 @@ class ReaderState(
                     KomgaBookReadProgressUpdateRequest(page)
                 )
             }
+        }
+        val currentBooks = booksState.value
+        if (currentBooks != null) {
+            readerDownloadState?.preloadNextBookIfNeeded(
+                currentPage = page,
+                totalPages = currentBooks.currentBookPages.size,
+                nextBook = currentBooks.nextBook,
+            )
+        }
+    }
+
+    private suspend fun markBookCompleted(bookId: KomgaBookId) {
+        if (!markReadProgress) return
+        appNotifications.runCatchingToNotifications {
+            bookApi.markReadProgress(
+                bookId,
+                KomgaBookReadProgressUpdateRequest(completed = true),
+            )
         }
     }
 

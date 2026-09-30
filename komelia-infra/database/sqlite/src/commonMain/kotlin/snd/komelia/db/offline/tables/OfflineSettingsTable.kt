@@ -12,6 +12,8 @@ object OfflineSettingsTable : Table("SETTINGS") {
     val dataSyncDate = long("data_sync_date").nullable()
     val downloadOnlyUnreadSeriesBooks = bool("download_only_unread_series_books")
     val deleteReadBooks = bool("delete_read_books")
+    val preloadNextBookPages = integer("preload_next_book_pages")
+    val showPreloadNotification = bool("show_preload_notification")
 
     override val primaryKey = PrimaryKey(version)
 }

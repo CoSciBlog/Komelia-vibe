@@ -10,7 +10,7 @@ were explicitly downloaded, so it does not copy remote library or label restrict
 This follows the behavior planned for upstream Komelia and keeps the implementation
 easy to replace when the upstream fix is integrated.
 
-The offline download settings also provide two opt-in storage controls:
+The offline download settings also provide opt-in storage and reader controls:
 
 - **Download only unread series books** skips completed books when a complete series
   is queued, while retaining unread and in-progress books.
@@ -18,8 +18,17 @@ The offline download settings also provide two opt-in storage controls:
   completed progress is confirmed by Komga. When a series is opened online, books
   completed on another device are cleaned up as well. Progress created offline is
   retained until synchronization succeeds, so cleanup never discards unsent progress.
+- **Preload next book** accepts a threshold from 0 to 10 pages. A value of 0 disables
+  preloading; otherwise, the next book is downloaded in the background when the
+  configured number of pages remains. An optional notification reports when this
+  starts.
 
-Both controls are disabled by default. They use the existing Komga models and the
+Downloaded books are preferred automatically in the image and EPUB readers even
+while Wi-Fi or mobile data is available. Preloading checks for a validated network
+connection, does not queue a book that is already local or already requested, and
+leaves the current reader usable when the device is offline.
+
+All controls are disabled by default. They use the existing Komga models and the
 fork's offline task layer without changing protocol payloads or internal Kotlin package
 names, keeping future upstream integration straightforward.
 

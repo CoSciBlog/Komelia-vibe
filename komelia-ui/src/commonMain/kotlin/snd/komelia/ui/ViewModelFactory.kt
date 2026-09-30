@@ -46,6 +46,7 @@ import snd.komelia.ui.login.LoginViewModel
 import snd.komelia.ui.login.offline.OfflineLoginViewModel
 import snd.komelia.ui.oneshot.OneshotViewModel
 import snd.komelia.ui.platform.PlatformType
+import snd.komelia.ui.reader.ReaderDownloadState
 import snd.komelia.ui.reader.epub.EpubReaderViewModel
 import snd.komelia.ui.reader.image.ReaderViewModel
 import snd.komelia.ui.readlist.ReadListViewModel
@@ -246,7 +247,9 @@ class ViewModelFactory(
     ): ReaderViewModel {
         return ReaderViewModel(
             bookApi = komgaApi.bookApi,
+            offlineBookApi = dependencies.offlineDependencies?.komgaApi?.bookApi,
             seriesApi = komgaApi.seriesApi,
+            offlineSeriesApi = dependencies.offlineDependencies?.komgaApi?.seriesApi,
             readListApi = komgaApi.readListApi,
             navigator = navigator,
             appNotifications = dependencies.appNotifications,
@@ -261,6 +264,16 @@ class ViewModelFactory(
             upscaler = dependencies.upscaler,
             bookSiblingsContext = bookSiblingsContext,
             markReadProgress = markReadProgress,
+            readerDownloadState = dependencies.offlineDependencies?.let { offline ->
+                ReaderDownloadState(
+                    settingsRepository = offline.repositories.offlineSettingsRepository,
+                    bookRepository = offline.repositories.bookRepository,
+                    taskEmitter = offline.taskEmitter,
+                    downloadManager = offline.downloadManager,
+                    isOffline = dependencies.isOffline,
+                    notifications = dependencies.appNotifications,
+                )
+            },
         )
     }
 
@@ -645,6 +658,7 @@ class ViewModelFactory(
             markReadProgress = markReadProgress,
             bookApi = komgaApi.bookApi,
             seriesApi = komgaApi.seriesApi,
+            offlineSeriesApi = dependencies.offlineDependencies?.komgaApi?.seriesApi,
             readListApi = komgaApi.readListApi,
             settingsRepository = appRepositories.settingsRepository,
             epubSettingsRepository = appRepositories.epubReaderSettingsRepository,

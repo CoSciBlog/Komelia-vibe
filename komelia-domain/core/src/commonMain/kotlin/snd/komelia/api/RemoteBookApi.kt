@@ -1,5 +1,7 @@
 package snd.komelia.api
 
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import snd.komelia.komga.api.KomgaBookApi
 import snd.komelia.komga.api.model.KomeliaBook
@@ -28,10 +30,12 @@ import snd.komga.client.search.BookConditionBuilder
 class RemoteBookApi(
     private val bookClient: KomgaBookClient,
     private val offlineBookRepository: OfflineBookRepository?,
+    private val offlineBookApi: KomgaBookApi?,
     private val offlineSettingsRepository: OfflineSettingsRepository?,
     private val offlineTaskEmitter: OfflineTaskEmitter?,
 ) : KomgaBookApi {
     override suspend fun getOne(bookId: KomgaBookId): KomeliaBook {
+        localApiFor(bookId)?.let { return it.getOne(bookId) }
         val book = bookClient.getOne(bookId)
         return getKomeliaBook(book)
     }
@@ -72,14 +76,24 @@ class RemoteBookApi(
     }
 
     override suspend fun getBookSiblingPrevious(bookId: KomgaBookId): KomeliaBook? {
-        val book = bookClient.getBookSiblingPrevious(bookId)
-        return book?.let { getKomeliaBook(it) }
+        return try {
+            val book = bookClient.getBookSiblingPrevious(bookId)
+            book?.let { getKomeliaBook(it) }
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            localApiFor(bookId)?.getBookSiblingPrevious(bookId) ?: throw e
+        }
 
     }
 
     override suspend fun getBookSiblingNext(bookId: KomgaBookId): KomeliaBook? {
-        val book = bookClient.getBookSiblingNext(bookId)
-        return book?.let { getKomeliaBook(it) }
+        return try {
+            val book = bookClient.getBookSiblingNext(bookId)
+            book?.let { getKomeliaBook(it) }
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            localApiFor(bookId)?.getBookSiblingNext(bookId) ?: throw e
+        }
     }
 
     override suspend fun updateMetadata(
@@ -90,6 +104,7 @@ class RemoteBookApi(
     }
 
     override suspend fun getBookPages(bookId: KomgaBookId): List<KomgaBookPage> {
+        localApiFor(bookId)?.let { return it.getBookPages(bookId) }
         return bookClient.getBookPages(bookId)
     }
 
@@ -105,12 +120,22 @@ class RemoteBookApi(
         bookId: KomgaBookId,
         request: KomgaBookReadProgressUpdateRequest
     ) {
-        bookClient.markReadProgress(bookId, request)
-        cleanupReadDownload(bookId, request.completed == true)
+        try {
+            bookClient.markReadProgress(bookId, request)
+            cleanupReadDownload(bookId, request.completed == true)
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            localApiFor(bookId)?.markReadProgress(bookId, request) ?: throw e
+        }
     }
 
     override suspend fun deleteReadProgress(bookId: KomgaBookId) {
-        bookClient.deleteReadProgress(bookId)
+        try {
+            bookClient.deleteReadProgress(bookId)
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            localApiFor(bookId)?.deleteReadProgress(bookId) ?: throw e
+        }
     }
 
     override suspend fun deleteBook(bookId: KomgaBookId) {
@@ -165,6 +190,7 @@ class RemoteBookApi(
     }
 
     override suspend fun getPage(bookId: KomgaBookId, page: Int): ByteArray {
+        localApiFor(bookId)?.let { return it.getPage(bookId, page) }
         return bookClient.getPage(bookId, page)
     }
 
@@ -172,10 +198,12 @@ class RemoteBookApi(
         bookId: KomgaBookId,
         page: Int
     ): ByteArray {
+        localApiFor(bookId)?.let { return it.getPageThumbnail(bookId, page) }
         return bookClient.getPageThumbnail(bookId, page)
     }
 
     override suspend fun getReadiumProgression(bookId: KomgaBookId): R2Progression? {
+        localApiFor(bookId)?.let { return it.getReadiumProgression(bookId) }
         return bookClient.getReadiumProgression(bookId)
     }
 
@@ -183,19 +211,26 @@ class RemoteBookApi(
         bookId: KomgaBookId,
         progression: R2Progression
     ) {
-        bookClient.updateReadiumProgression(bookId, progression)
-        val deleteReadBooks = offlineSettingsRepository?.getDeleteReadBooks()?.first() == true
-        if (deleteReadBooks) {
-            val completed = bookClient.getOne(bookId).readProgress?.completed == true
-            cleanupReadDownload(bookId, completed)
+        try {
+            bookClient.updateReadiumProgression(bookId, progression)
+            val deleteReadBooks = offlineSettingsRepository?.getDeleteReadBooks()?.first() == true
+            if (deleteReadBooks) {
+                val completed = bookClient.getOne(bookId).readProgress?.completed == true
+                cleanupReadDownload(bookId, completed)
+            }
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            localApiFor(bookId)?.updateReadiumProgression(bookId, progression) ?: throw e
         }
     }
 
     override suspend fun getReadiumPositions(bookId: KomgaBookId): R2Positions {
+        localApiFor(bookId)?.let { return it.getReadiumPositions(bookId) }
         return bookClient.getReadiumPositions(bookId)
     }
 
     override suspend fun getWebPubManifest(bookId: KomgaBookId): WPPublication {
+        localApiFor(bookId)?.let { return it.getWebPubManifest(bookId) }
         return bookClient.getWebPubManifest(bookId)
     }
 
@@ -203,7 +238,14 @@ class RemoteBookApi(
         bookId: KomgaBookId,
         resourceName: String
     ): ByteArray {
+        localApiFor(bookId)?.let { return it.getBookEpubResource(bookId, resourceName) }
         return bookClient.getBookEpubResource(bookId, resourceName)
+    }
+
+    private suspend fun localApiFor(bookId: KomgaBookId): KomgaBookApi? {
+        val repository = offlineBookRepository ?: return null
+        val localApi = offlineBookApi ?: return null
+        return localApi.takeIf { repository.exists(bookId) }
     }
 
     private suspend fun getKomeliaBook(book: KomgaBook): KomeliaBook {

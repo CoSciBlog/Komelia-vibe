@@ -269,6 +269,7 @@ abstract class AppModule {
         bookApi = RemoteBookApi(
             bookClient = komgaClientFactory.bookClient(),
             offlineBookRepository = offlineDependencies?.repositories?.bookRepository,
+            offlineBookApi = offlineDependencies?.komgaApi?.bookApi,
             offlineSettingsRepository = offlineDependencies?.repositories?.offlineSettingsRepository,
             offlineTaskEmitter = offlineDependencies?.taskEmitter,
         ),

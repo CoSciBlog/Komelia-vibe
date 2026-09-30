@@ -17,4 +17,6 @@ data class OfflineSettings(
     val dataSyncDate: Instant? = null,
     val downloadOnlyUnreadSeriesBooks: Boolean = false,
     val deleteReadBooks: Boolean = false,
+    val preloadNextBookPages: Int = 0,
+    val showPreloadNotification: Boolean = false,
 )

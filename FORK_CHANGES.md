@@ -140,7 +140,7 @@ Primary areas:
 - platform Dockerfiles and platform build scripts under `cmake/`
 - desktop build instructions in `README.md`
 
-### 5. Read-aware series downloads and automatic cleanup
+### 5. Read-aware downloads, local-first reading, preloading, and cleanup
 
 Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false`.
 
@@ -157,6 +157,17 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
   it must not introduce incompatible Komga protocol payloads.
 - Offline settings migration `V2__download_cleanup_settings.sql` and its persisted
   columns are part of the upgrade contract.
+- Image and EPUB readers prefer an already downloaded book automatically, even when
+  the application remains online. A failed connection must not require the user to
+  switch manually into offline mode before opening local content.
+- The opt-in next-book preload threshold accepts `0` through `10` remaining pages;
+  `0` disables the behavior. Preloading requires a validated Wi-Fi or mobile-data
+  connection and skips a book already downloaded or already requested.
+- A separate opt-in notification reports when a next-book preload starts.
+- Advancing from an image book records completed progress, allowing the existing
+  delete-after-reading policy to remove it only after Komga confirms that progress.
+- Offline settings migration `V3__reader_preload_settings.sql` and its persisted
+  preload threshold and notification columns are part of the upgrade contract.
 
 Primary areas:
 
@@ -164,6 +175,7 @@ Primary areas:
 - `komelia-domain/offline/src/commonMain/kotlin/snd/komelia/offline/sync/`
 - `komelia-domain/offline/src/commonMain/kotlin/snd/komelia/offline/tasks/`
 - `komelia-domain/core/src/commonMain/kotlin/snd/komelia/api/RemoteBookApi.kt`
+- `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/reader/`
 - `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/settings/offline/`
 - `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/series/SeriesViewModel.kt`
 - offline settings models, repositories, table, and migrations under
