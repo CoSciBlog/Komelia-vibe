@@ -2,6 +2,14 @@
 
 All notable changes to the Komelia-Vibe fork are documented here.
 
+## 0.20.5 - 2026-09-30
+
+- Ship the restricted-library offline-download correction across the Windows, Linux, and Android distributions.
+- Offline users remain unrestricted because the offline database contains only explicitly downloaded books; Komga continues to enforce access while online.
+- Retain upstream-compatible internal packages and model boundaries so the eventual upstream implementation can replace the fork patch cleanly.
+- Include the Android SQLite native-loading and visible application-name fixes introduced in 0.20.3 and 0.20.4.
+- This release, its cross-platform builds, and verification were prepared with assistance from OpenAI Codex.
+
 ## 0.20.4 - 2026-09-30
 
 - Fix legacy Android package installers displaying the internal `snd.komelia.App` class name instead of **Komelia-Vibe** after installation.

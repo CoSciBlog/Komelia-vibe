@@ -31,6 +31,7 @@ RUN echo 'deb https://deb.debian.org/debian bookworm-backports main' >> /etc/apt
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     cmake \
+    fakeroot \
     ninja-build \
     nasm \
     autoconf \
@@ -59,6 +60,10 @@ RUN curl -Lo node.tar.gz https://nodejs.org/dist/v24.8.0/node-v24.8.0-linux-x64.
       && tar xzf node.tar.gz --strip-components=1 -C /usr/local/
 
 RUN mkdir /.npm && chown -R 1000:1000 /.npm
+
+# Docker Desktop bind mounts may be owned by a different UID than the builder.
+# Trust only repositories inside the explicitly mounted build directory.
+RUN git config --system --add safe.directory '/build/*'
 
 USER 1000:1000
 WORKDIR build

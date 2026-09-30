@@ -3,8 +3,11 @@ include(ExternalProject)
 ExternalProject_Add(ep_ffi
         SOURCE_DIR ${THIRD_PARTY_SOURCE_PATH}/libffi
         PATCH_COMMAND git clean -dfx
-        BUILD_IN_SOURCE 1
-        CONFIGURE_COMMAND <SOURCE_DIR>/autogen.sh && <SOURCE_DIR>/configure ${HOST_FLAG}
+        BINARY_DIR ${CMAKE_BINARY_DIR}/sysroot/src/ep_ffi-build
+        # Generate the configure script in the source checkout, then build outside
+        # it. libffi's in-source cross-compile wrapper is unreliable on bind mounts.
+        CONFIGURE_COMMAND cd <SOURCE_DIR> && ./autogen.sh
+            && cd <BINARY_DIR> && <SOURCE_DIR>/configure ${HOST_FLAG}
             --disable-exec-static-tramp
             --disable-multi-os-directory
             --disable-static --enable-pax_emutramp
