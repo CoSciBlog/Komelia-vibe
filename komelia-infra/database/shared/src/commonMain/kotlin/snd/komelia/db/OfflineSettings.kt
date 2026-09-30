@@ -15,4 +15,6 @@ data class OfflineSettings(
     val serverId: OfflineMediaServerId? = null,
     val readProgressSyncDate: Instant? = null,
     val dataSyncDate: Instant? = null,
+    val downloadOnlyUnreadSeriesBooks: Boolean = false,
+    val deleteReadBooks: Boolean = false,
 )

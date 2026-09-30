@@ -10,6 +10,8 @@ object OfflineSettingsTable : Table("SETTINGS") {
     val downloadDirectory = text("download_directory")
     val readProgressSyncDate = long("read_progress_sync_date").nullable()
     val dataSyncDate = long("data_sync_date").nullable()
+    val downloadOnlyUnreadSeriesBooks = bool("download_only_unread_series_books")
+    val deleteReadBooks = bool("delete_read_books")
 
     override val primaryKey = PrimaryKey(version)
 }

@@ -105,6 +105,10 @@ class OfflineSettingsScreen : Screen {
                     val downloadsState = vm.downloadsSate
                     OfflineDownloadsContent(
                         storageLocation = downloadsState.storageLocation.collectAsState().value,
+                        downloadOnlyUnreadSeriesBooks = downloadsState.downloadOnlyUnreadSeriesBooks.collectAsState().value,
+                        deleteReadBooks = downloadsState.deleteReadBooks.collectAsState().value,
+                        onDownloadOnlyUnreadSeriesBooksChange = downloadsState::onDownloadOnlyUnreadSeriesBooksChange,
+                        onDeleteReadBooksChange = downloadsState::onDeleteReadBooksChange,
                         onStorageLocationChange = downloadsState::onStorageLocationChange,
                         onStorageLocationReset = downloadsState::onStorageLocationReset,
                         downloads = downloadsState.downloads.collectAsState().value,

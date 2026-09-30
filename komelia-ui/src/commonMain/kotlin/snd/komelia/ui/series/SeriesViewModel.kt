@@ -131,6 +131,7 @@ class SeriesViewModel(
 
         booksState.initialize()
         collectionsState.initialize()
+        taskEmitter?.cleanupReadSeriesDownloads(seriesId)
         startKomgaEventListener()
 
         reloadJobsFlow.onEach {

@@ -240,6 +240,8 @@ abstract class OfflineModule(
             taskEmitter = taskEmitter,
             downloadManager = downloadManager,
             komgaBookClient = komgaClientFactory.bookClient(),
+            settingsRepository = repositories.offlineSettingsRepository,
+            isOffline = isOffline,
         )
         val taskProcessor = TaskProcessor(
             tasksRepository = repositories.tasksRepository,
@@ -384,7 +386,7 @@ abstract class OfflineModule(
                     libraryRepository = repositories.libraryRepository,
                     mediaServerRepository = repositories.mediaServerRepository,
                     logJournalRepository = repositories.logJournalRepository,
-                    transactionTemplate = repositories.transactionTemplate
+                    transactionTemplate = repositories.transactionTemplate,
                 ),
                 LibraryPatchAction(),
                 LibraryRefreshMetadataAction(),
@@ -427,7 +429,7 @@ abstract class OfflineModule(
                     bookRepository = repositories.bookRepository,
                     bookMetadataRepository = repositories.bookMetadataRepository,
                     bookMetadataAggregationRepository = repositories.bookMetadataAggregationRepository,
-                    transactionTemplate = repositories.transactionTemplate
+                    transactionTemplate = repositories.transactionTemplate,
                 ),
                 SeriesAnalyzeAction(),
                 SeriesDeleteAction(
@@ -464,7 +466,8 @@ abstract class OfflineModule(
                     mediaServerRepository = repositories.mediaServerRepository,
                     userRepository = repositories.userRepository,
                     logJournalRepository = repositories.logJournalRepository,
-                    transactionTemplate = repositories.transactionTemplate
+                    transactionTemplate = repositories.transactionTemplate,
+                    taskEmitter = taskEmitter,
                 ),
                 MediaServerSaveAction(
                     mediaServerRepository = repositories.mediaServerRepository,

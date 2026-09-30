@@ -13,6 +13,7 @@ import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.errorLogEntry
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.infoLogEntry
 import snd.komelia.offline.sync.repository.LogJournalRepository
+import snd.komelia.offline.tasks.OfflineTaskEmitter
 import snd.komelia.offline.user.repository.OfflineUserRepository
 import snd.komga.client.book.KomgaBookClient
 import snd.komga.client.book.KomgaBookId
@@ -35,11 +36,14 @@ class SyncReadProgressAction(
     private val userRepository: OfflineUserRepository,
     private val logJournalRepository: LogJournalRepository,
     private val transactionTemplate: TransactionTemplate,
+    private val taskEmitter: OfflineTaskEmitter,
 ) : OfflineAction {
 
     suspend fun execute(komgaUser: KomgaUser) {
         val newSyncDate = Clock.System.now()
         val lastSyncDate = settingsRepository.getReadProgressSyncDate().first()
+        val deleteReadBooks = settingsRepository.getDeleteReadBooks().first()
+        val booksToDelete = mutableListOf<KomgaBookId>()
 
         transactionTemplate.execute {
             val offlineUser = userRepository.find(komgaUser.id) ?: return@execute
@@ -52,16 +56,19 @@ class SyncReadProgressAction(
 
 
             for (localProgress in readProgresses) {
-                syncReadProgress(localProgress)
+                if (deleteReadBooks && syncReadProgress(localProgress)) {
+                    booksToDelete += localProgress.bookId
+                }
 
             }
         }
 
         settingsRepository.putReadProgressSyncDate(newSyncDate)
+        booksToDelete.forEach { taskEmitter.deleteBook(it) }
     }
 
-    private suspend fun syncReadProgress(localProgress: OfflineReadProgress) {
-        try {
+    private suspend fun syncReadProgress(localProgress: OfflineReadProgress): Boolean {
+        return try {
             val remoteBook = bookClient.getOne(localProgress.bookId)
             val remoteProgress = remoteBook.readProgress
 
@@ -77,6 +84,9 @@ class SyncReadProgressAction(
                 logJournalRepository.save(
                     infoLogEntry { "Read progress sync ${remoteBook.metadata.title}" }
                 )
+                localProgress.completed
+            } else {
+                remoteProgress.completed
             }
 
         } catch (e: Exception) {
@@ -86,6 +96,7 @@ class SyncReadProgressAction(
             })
 
             currentCoroutineContext().ensureActive()
+            false
         }
     }
 

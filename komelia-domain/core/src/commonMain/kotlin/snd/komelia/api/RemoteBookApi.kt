@@ -1,8 +1,12 @@
 package snd.komelia.api
 
+import kotlinx.coroutines.flow.first
 import snd.komelia.komga.api.KomgaBookApi
 import snd.komelia.komga.api.model.KomeliaBook
 import snd.komelia.offline.book.repository.OfflineBookRepository
+import snd.komelia.offline.settings.OfflineSettingsRepository
+import snd.komelia.offline.sync.shouldDeleteReadDownload
+import snd.komelia.offline.tasks.OfflineTaskEmitter
 import snd.komga.client.book.KomgaBook
 import snd.komga.client.book.KomgaBookClient
 import snd.komga.client.book.KomgaBookId
@@ -24,6 +28,8 @@ import snd.komga.client.search.BookConditionBuilder
 class RemoteBookApi(
     private val bookClient: KomgaBookClient,
     private val offlineBookRepository: OfflineBookRepository?,
+    private val offlineSettingsRepository: OfflineSettingsRepository?,
+    private val offlineTaskEmitter: OfflineTaskEmitter?,
 ) : KomgaBookApi {
     override suspend fun getOne(bookId: KomgaBookId): KomeliaBook {
         val book = bookClient.getOne(bookId)
@@ -100,6 +106,7 @@ class RemoteBookApi(
         request: KomgaBookReadProgressUpdateRequest
     ) {
         bookClient.markReadProgress(bookId, request)
+        cleanupReadDownload(bookId, request.completed == true)
     }
 
     override suspend fun deleteReadProgress(bookId: KomgaBookId) {
@@ -177,6 +184,11 @@ class RemoteBookApi(
         progression: R2Progression
     ) {
         bookClient.updateReadiumProgression(bookId, progression)
+        val deleteReadBooks = offlineSettingsRepository?.getDeleteReadBooks()?.first() == true
+        if (deleteReadBooks) {
+            val completed = bookClient.getOne(bookId).readProgress?.completed == true
+            cleanupReadDownload(bookId, completed)
+        }
     }
 
     override suspend fun getReadiumPositions(bookId: KomgaBookId): R2Positions {
@@ -202,6 +214,16 @@ class RemoteBookApi(
             localFileLastModified = offlineBook?.localFileLastModified,
             remoteFileUnavailable = offlineBook?.remoteUnavailable ?: false
         )
+    }
+
+    private suspend fun cleanupReadDownload(bookId: KomgaBookId, completed: Boolean) {
+        val settings = offlineSettingsRepository ?: return
+        val taskEmitter = offlineTaskEmitter ?: return
+        val repository = offlineBookRepository ?: return
+        val deleteReadBooks = settings.getDeleteReadBooks().first()
+        if (shouldDeleteReadDownload(deleteReadBooks, completed) && repository.exists(bookId)) {
+            taskEmitter.deleteBook(bookId)
+        }
     }
 
     private suspend fun getKomeliaBookPage(bookPage: Page<KomgaBook>): Page<KomeliaBook> {

@@ -153,8 +153,7 @@ abstract class AppModule {
             if (offline && offlineModule != null) offlineModule.komgaApi
             else createRemoteApi(
                 komgaClientFactory = komgaClientFactory,
-                offlineRepositories = offlineRepositories,
-                offlineEvents = offlineModule?.komgaEvents,
+                offlineDependencies = offlineModule,
                 komfMangaBaka = komfMangaBaka
             )
         }.stateIn(initScope)
@@ -163,8 +162,7 @@ abstract class AppModule {
             if (offline && offlineModule != null) offlineModule.komgaApi
             else createRemoteApi(
                 komgaClientFactory = komgaClientFactoryNoCache,
-                offlineRepositories = offlineRepositories,
-                offlineEvents = offlineModule?.komgaEvents,
+                offlineDependencies = offlineModule,
                 komfMangaBaka = komfMangaBaka
             )
         }.stateIn(initScope)
@@ -263,22 +261,23 @@ abstract class AppModule {
 
     protected fun createRemoteApi(
         komgaClientFactory: KomgaClientFactory,
-        offlineRepositories: OfflineRepositories?,
-        offlineEvents: SharedFlow<KomgaEvent>?,
+        offlineDependencies: OfflineDependencies?,
         komfMangaBaka: Flow<KomfMangaBakaClient?>,
     ) = RemoteApi(
         actuatorApi = RemoteActuatorApi(komgaClientFactory.actuatorClient()),
         announcementsApi = RemoteAnnouncementsApi(komgaClientFactory.announcementClient()),
         bookApi = RemoteBookApi(
             bookClient = komgaClientFactory.bookClient(),
-            offlineBookRepository = offlineRepositories?.bookRepository
+            offlineBookRepository = offlineDependencies?.repositories?.bookRepository,
+            offlineSettingsRepository = offlineDependencies?.repositories?.offlineSettingsRepository,
+            offlineTaskEmitter = offlineDependencies?.taskEmitter,
         ),
         collectionsApi = RemoteCollectionsApi(komgaClientFactory.collectionClient(), komfMangaBaka),
         fileSystemApi = RemoteFileSystemApi(komgaClientFactory.fileSystemClient()),
         libraryApi = RemoteLibraryApi(komgaClientFactory.libraryClient()),
         readListApi = RemoteReadListApi(
             readListClient = komgaClientFactory.readListClient(),
-            offlineBookRepository = offlineRepositories?.bookRepository
+            offlineBookRepository = offlineDependencies?.repositories?.bookRepository
         ),
         referentialApi = RemoteReferentialApi(komgaClientFactory.referentialClient()),
         seriesApi = RemoteSeriesApi(komgaClientFactory.seriesClient(), komfMangaBaka),
@@ -286,7 +285,7 @@ abstract class AppModule {
         tasksApi = RemoteTaskApi(komgaClientFactory.taskClient()),
         userApi = RemoteUserApi(komgaClientFactory.userClient()),
         komgaClientFactory = komgaClientFactory,
-        offlineEvents = offlineEvents ?: MutableSharedFlow()
+        offlineEvents = offlineDependencies?.komgaEvents ?: MutableSharedFlow()
     )
 
     protected fun createCoil(
