@@ -20,3 +20,12 @@
 - Preserve Komga protocol compatibility and the ability to integrate future upstream Komelia changes.
 - Prefer changing distribution identity (Android application ID, packaging metadata, data directories, update source) over renaming internal Kotlin packages.
 - Komelia-Vibe must remain independently installable and must not overwrite, update, or share mutable application data with upstream Komelia.
+
+## Fork change preservation
+
+- `FORK_CHANGES.md` is the authoritative register of owner-requested fork behavior and protected invariants. Read it completely before integrating, merging, or rebasing changes from `upstream`.
+- Preserve documented behavior across upstream refactors; do not rely only on old file paths or symbol names when checking whether a customization still exists.
+- Never resolve conflicts in a protected area by blindly accepting the upstream side or by dropping fork database migrations, distribution identifiers, storage separation, tests, or safety checks.
+- An upstream implementation may replace fork-specific code only after its behavior, defaults, persistence, migrations, compatibility, and edge cases have been compared and verified by relevant tests.
+- Update `FORK_CHANGES.md` in the same pull request whenever an owner-requested fork behavior is added, changed, replaced by an upstream implementation, or deliberately removed.
+- Every upstream-integration pull request must state which registered changes were reviewed, how conflicts were resolved, and which tests or package inspections confirm that the protected behavior remains intact.
