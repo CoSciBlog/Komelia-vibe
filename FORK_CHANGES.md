@@ -47,6 +47,9 @@ Introduced in 0.20.1.
   fork-specific `Komelia-Vibe` or `komelia-vibe` identities.
 - In-app update discovery targets `CoSciBlog/Komelia-vibe`, never the upstream
   release feed.
+- The in-app current-version value is generated from `app-version` in the Gradle
+  version catalog; do not replace it with a hard-coded Kotlin version. Android
+  updates prefer the fork's `-android-universal.apk` release asset.
 - The root project and release metadata use Komelia-Vibe branding, while internal
   Kotlin packages intentionally remain `snd.komelia`.
 
@@ -162,7 +165,7 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
 - Image and EPUB readers prefer an already downloaded book automatically, even when
   the application remains online. A failed connection must not require the user to
   switch manually into offline mode before opening local content.
-- The opt-in next-book preload threshold accepts `0` through `10` remaining pages;
+- The opt-in next-book preload threshold accepts `0` through `20` remaining pages;
   `0` disables the behavior. Preloading requires a validated Wi-Fi or mobile-data
   connection and skips a book already downloaded or already requested.
 - A separate opt-in notification reports when a next-book preload starts.

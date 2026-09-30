@@ -447,7 +447,7 @@ tasks.register("androidDebug") {
 val androidUniversalReleaseName = "Komelia-Vibe-${libs.versions.app.version.get()}-android-universal-unsigned.apk"
 val androidUniversalReleaseFile = file("$rootDir/komelia-app/androidApp/build/outputs/apk/universal/$androidUniversalReleaseName")
 
-val exportAndroidUniversalRelease = tasks.register<Copy>("exportAndroidUniversalRelease") {
+val exportAndroidUniversalRelease = tasks.register<Sync>("exportAndroidUniversalRelease") {
     description = "copy the unsigned universal release APK to an unambiguous artifact name"
     group = "komelia-package"
     dependsOn(projects.komeliaApp.androidApp.path + ":assembleRelease")

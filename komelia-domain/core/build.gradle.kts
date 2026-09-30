@@ -12,6 +12,24 @@ plugins {
 group = "io.github.snd-r.komelia.domain.core"
 version = "unspecified"
 
+val generatedAppVersionDirectory = layout.buildDirectory.dir("generated/sources/appVersion/commonMain/kotlin")
+val generateAppVersionSource = tasks.register("generateAppVersionSource") {
+    val appVersion = libs.versions.app.version.get()
+    inputs.property("appVersion", appVersion)
+    outputs.dir(generatedAppVersionDirectory)
+    doLast {
+        val source = generatedAppVersionDirectory.get()
+            .file("snd/komelia/updates/GeneratedAppVersion.kt").asFile
+        source.parentFile.mkdirs()
+        source.writeText(
+            """package snd.komelia.updates
+
+internal const val GENERATED_APP_VERSION = "$appVersion"
+"""
+        )
+    }
+}
+
 kotlin {
     android {
         namespace = "io.github.snd_r.komelia.domain.core"
@@ -62,6 +80,9 @@ kotlin {
             implementation(libs.markdown)
             implementation(libs.reorderable)
             implementation(libs.richEditor.compose)
+        }
+        commonMain {
+            kotlin.srcDir(generateAppVersionSource)
         }
 
         androidMain.dependencies {

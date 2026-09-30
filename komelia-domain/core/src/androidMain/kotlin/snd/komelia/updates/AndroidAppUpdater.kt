@@ -83,7 +83,8 @@ class AndroidAppUpdater(
     }
 
     private fun GithubRelease.toAppRelease(): AppRelease {
-        val asset = assets.firstOrNull { it.name.endsWith(".apk") }
+        val asset = assets.firstOrNull { it.name.endsWith("-android-universal.apk") }
+            ?: assets.firstOrNull { it.name.endsWith(".apk") }
 
         return AppRelease(
             version = AppVersion.fromString(tagName),

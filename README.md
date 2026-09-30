@@ -18,7 +18,7 @@ The offline download settings also provide opt-in storage and reader controls:
   completed progress is confirmed by Komga. When a series is opened online, books
   completed on another device are cleaned up as well. Progress created offline is
   retained until synchronization succeeds, so cleanup never discards unsent progress.
-- **Preload next book** accepts a threshold from 0 to 10 pages. A value of 0 disables
+- **Preload next book** accepts a threshold from 0 to 20 pages. A value of 0 disables
   preloading; otherwise, the next book is downloaded in the background when the
   configured number of pages remains. An optional notification reports when this
   starts.
@@ -37,10 +37,10 @@ Development and maintenance changes in this fork may be made with the assistance
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.6 is an Android-only feature release;
+- Release assets vary by version. Version 0.20.7 is an Android-only feature release;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
-- All Android artifacts produced after 0.20.6 are universal APKs containing ARM64,
+- All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
@@ -137,7 +137,8 @@ architectures—`aarch64`, `armv7a`, `x86_64`, and `x86`—before packaging:
 Then choose app build option:
 
 - `./gradlew :androidDebug` output in `./komelia-app/androidApp/build/outputs/apk/debug`
-- `./gradlew :androidRelease` output in `./komelia-app/androidApp/build/outputs/apk/release`
+- `./gradlew :androidRelease` output in `./komelia-app/androidApp/build/outputs/apk/universal`
+  as `Komelia-Vibe-<version>-android-universal-unsigned.apk`
 
 On Windows, use `./gradlew.bat` and set `JAVA_HOME` to JDK 17 or newer and
 `ANDROID_HOME` to your Android SDK directory. Docker Desktop must be running
