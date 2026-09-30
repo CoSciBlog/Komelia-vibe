@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import snd.komga.client.user.KomgaUserId
 import kotlin.time.Instant
 
+const val MAX_PRELOAD_NEXT_BOOK_PAGES = 20
+
 interface OfflineSettingsRepository {
     fun getOfflineMode(): Flow<Boolean>
     suspend fun putOfflineMode(offline: Boolean)

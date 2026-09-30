@@ -4,12 +4,19 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.7 - 2026-09-30
+
+- Ship an Android-only release; Windows and Linux packages are intentionally not rebuilt.
 - Make every Android debug and release export a verified universal APK containing
   ARM64, ARMv7, x86_64, and x86 native libraries; incomplete ABI sets now fail
   packaging instead of producing an architecture-specific artifact.
+- Derive the installed version shown by the update screen from the same Gradle
+  version metadata used by the APK instead of a stale hard-coded value.
+- Prefer a release asset ending in `-android-universal.apk` during Android
+  self-updates, with the existing generic APK fallback retained for older releases.
 - Prefer downloaded image and EPUB book content automatically, regardless of the
   current online/offline mode, to reduce mobile-data use and reader latency.
-- Add a configurable next-book preload threshold from 0 to 10 remaining pages;
+- Add a configurable next-book preload threshold from 0 to 20 remaining pages;
   `0` disables preloading and an optional notification announces the download.
 - Require a validated network connection before preloading and skip books that are
   already downloaded or already queued.

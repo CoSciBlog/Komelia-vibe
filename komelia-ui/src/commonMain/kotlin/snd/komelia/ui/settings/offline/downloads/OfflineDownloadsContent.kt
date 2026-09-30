@@ -46,6 +46,7 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offlin
 import io.github.vinceglb.filekit.PlatformFile
 import org.jetbrains.compose.resources.stringResource
 import snd.komelia.formatDecimal
+import snd.komelia.offline.settings.MAX_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.ui.common.components.SwitchWithLabel
 import snd.komelia.ui.common.components.CheckboxWithLabel
@@ -87,7 +88,9 @@ fun OfflineDownloadsContent(
         NumberField(
             value = preloadNextBookPages,
             onValueChange = { pages ->
-                if (pages != null && pages in 0..10) onPreloadNextBookPagesChange(pages)
+                if (pages != null && pages in 0..MAX_PRELOAD_NEXT_BOOK_PAGES) {
+                    onPreloadNextBookPagesChange(pages)
+                }
             },
             modifier = Modifier.widthIn(max = 520.dp),
             label = { Text(stringResource(Res.string.settings_offline_mode_preload_next_book_pages)) },
