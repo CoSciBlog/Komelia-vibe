@@ -108,6 +108,9 @@ to the APK build. For multiple ABIs, use a comma-separated list (for example
 `"-Pkomelia.android.abis=arm64-v8a,armeabi-v7a"`) after building/copying each ABI.
 Keep the whole `-P...` argument quoted in PowerShell.
 Packaging checks the native libraries and reader assets before building the APK.
+The visible Android application label is stored directly as `Komelia-Vibe` in all
+distribution manifests for compatibility with package installers that cannot resolve
+resource-backed labels before installation.
 Android JNI libraries are extracted during installation so libraries loaded through
 `System.loadLibrary`, including `libsqlitejdbc.so`, are available from the app's
 native library directory on all supported devices.
