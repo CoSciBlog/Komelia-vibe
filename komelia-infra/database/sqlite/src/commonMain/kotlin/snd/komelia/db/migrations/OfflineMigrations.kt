@@ -9,6 +9,7 @@ class OfflineMigrations : MigrationResourcesProvider() {
     private val migrations = listOf(
         "V1__offline_mode.sql",
         "V2__download_cleanup_settings.sql",
+        "V3__reader_preload_settings.sql",
     )
 
     override suspend fun getMigration(name: String): ByteArray? {

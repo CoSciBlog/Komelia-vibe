@@ -32,6 +32,7 @@ import snd.komelia.settings.model.ReaderType.PAGED
 import snd.komelia.settings.model.ReaderType.PANELS
 import snd.komelia.ui.BookSiblingsContext
 import snd.komelia.ui.LoadState
+import snd.komelia.ui.reader.ReaderDownloadState
 import snd.komelia.ui.reader.image.continuous.ContinuousReaderState
 import snd.komelia.ui.reader.image.paged.PagedReaderState
 import snd.komelia.ui.reader.image.panels.PanelsReaderState
@@ -43,7 +44,9 @@ private val logger = KotlinLogging.logger { }
 
 class ReaderViewModel(
     bookApi: KomgaBookApi,
+    offlineBookApi: KomgaBookApi?,
     seriesApi: KomgaSeriesApi,
+    offlineSeriesApi: KomgaSeriesApi?,
     readListApi: KomgaReadListApi,
     navigator: Navigator,
     appNotifications: AppNotifications,
@@ -54,6 +57,7 @@ class ReaderViewModel(
     currentBookId: MutableStateFlow<KomgaBookId?>,
     bookSiblingsContext: BookSiblingsContext,
     colorCorrectionRepository: BookColorCorrectionRepository,
+    readerDownloadState: ReaderDownloadState?,
     private val onnxRuntime: OnnxRuntime?,
     private val panelDetector: KomeliaPanelDetector?,
     private val upscaler: KomeliaUpscaler?,
@@ -79,7 +83,9 @@ class ReaderViewModel(
 
     val readerState: ReaderState = ReaderState(
         bookApi = bookApi,
+        offlineBookApi = offlineBookApi,
         seriesApi = seriesApi,
+        offlineSeriesApi = offlineSeriesApi,
         readListApi = readListApi,
         navigator = navigator,
         appNotifications = appNotifications,
@@ -90,6 +96,7 @@ class ReaderViewModel(
         bookSiblingsContext = bookSiblingsContext,
         colorCorrectionRepository = colorCorrectionRepository,
         pageChangeFlow = pageChangeFlow,
+        readerDownloadState = readerDownloadState,
     )
 
     val pagedReaderState = PagedReaderState(

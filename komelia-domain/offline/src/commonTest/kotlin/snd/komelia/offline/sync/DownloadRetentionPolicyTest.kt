@@ -18,4 +18,51 @@ class DownloadRetentionPolicyTest {
         assertFalse(shouldDeleteReadDownload(deleteReadBooks = true, completed = false))
         assertFalse(shouldDeleteReadDownload(deleteReadBooks = false, completed = true))
     }
+
+    @Test
+    fun preloadStartsInsideConfiguredEndWindow() {
+        assertTrue(
+            shouldPreloadNextBook(
+                preloadPages = 3,
+                currentPage = 47,
+                totalPages = 50,
+                isOnline = true,
+                isNextBookDownloaded = false,
+                isPreloadAlreadyRequested = false,
+            )
+        )
+        assertFalse(
+            shouldPreloadNextBook(
+                preloadPages = 3,
+                currentPage = 46,
+                totalPages = 50,
+                isOnline = true,
+                isNextBookDownloaded = false,
+                isPreloadAlreadyRequested = false,
+            )
+        )
+    }
+
+    @Test
+    fun preloadIsDisabledOrSkippedWhenUnsafeOrRedundant() {
+        fun decision(
+            preloadPages: Int = 3,
+            isOnline: Boolean = true,
+            downloaded: Boolean = false,
+            requested: Boolean = false,
+        ) = shouldPreloadNextBook(
+            preloadPages = preloadPages,
+            currentPage = 49,
+            totalPages = 50,
+            isOnline = isOnline,
+            isNextBookDownloaded = downloaded,
+            isPreloadAlreadyRequested = requested,
+        )
+
+        assertFalse(decision(preloadPages = 0))
+        assertFalse(decision(preloadPages = 11))
+        assertFalse(decision(isOnline = false))
+        assertFalse(decision(downloaded = true))
+        assertFalse(decision(requested = true))
+    }
 }

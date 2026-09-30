@@ -67,4 +67,20 @@ class OfflineSettingsRepositoryWrapper(
     override suspend fun putDeleteReadBooks(enabled: Boolean) {
         wrapper.transform { it.copy(deleteReadBooks = enabled) }
     }
+
+    override fun getPreloadNextBookPages(): Flow<Int> {
+        return wrapper.mapState { it.preloadNextBookPages }
+    }
+
+    override suspend fun putPreloadNextBookPages(pages: Int) {
+        wrapper.transform { it.copy(preloadNextBookPages = pages.coerceIn(0, 10)) }
+    }
+
+    override fun getShowPreloadNotification(): Flow<Boolean> {
+        return wrapper.mapState { it.showPreloadNotification }
+    }
+
+    override suspend fun putShowPreloadNotification(enabled: Boolean) {
+        wrapper.transform { it.copy(showPreloadNotification = enabled) }
+    }
 }

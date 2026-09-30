@@ -26,4 +26,10 @@ interface OfflineSettingsRepository {
 
     fun getDeleteReadBooks(): Flow<Boolean>
     suspend fun putDeleteReadBooks(enabled: Boolean)
+
+    fun getPreloadNextBookPages(): Flow<Int>
+    suspend fun putPreloadNextBookPages(pages: Int)
+
+    fun getShowPreloadNotification(): Flow<Boolean>
+    suspend fun putShowPreloadNotification(enabled: Boolean)
 }

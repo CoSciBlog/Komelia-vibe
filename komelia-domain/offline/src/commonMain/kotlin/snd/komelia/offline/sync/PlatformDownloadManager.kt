@@ -8,6 +8,7 @@ import snd.komga.client.book.KomgaBookId
  */
 
 interface PlatformDownloadManager {
+    fun isNetworkAvailable(): Boolean = true
     suspend fun launchBookDownload(bookId: KomgaBookId)
     suspend fun cancelBookDownload(bookId: KomgaBookId)
 }

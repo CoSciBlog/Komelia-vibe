@@ -276,6 +276,7 @@ abstract class OfflineModule(
             komgaEvents = komgaEvents,
             bookDownloadEvents = bookDownloadEvents,
             downloadService = downloadService,
+            downloadManager = downloadManager,
             repositories = repositories,
             fileService = fileService,
             komgaApi = komgaApi

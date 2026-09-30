@@ -83,7 +83,9 @@ class TaskHandler(
             is ScanLibrary -> {}
 
             is DownloadBook -> {
-                downloadManager.launchBookDownload(task.bookId)
+                if (!bookRepository.exists(task.bookId)) {
+                    downloadManager.launchBookDownload(task.bookId)
+                }
             }
 
             is DownloadSeries -> {

@@ -38,6 +38,10 @@ class OfflineDownloadsState(
         .stateIn(coroutineScope, SharingStarted.Eagerly, false)
     val deleteReadBooks = settingsRepository.getDeleteReadBooks()
         .stateIn(coroutineScope, SharingStarted.Eagerly, false)
+    val preloadNextBookPages = settingsRepository.getPreloadNextBookPages()
+        .stateIn(coroutineScope, SharingStarted.Eagerly, 0)
+    val showPreloadNotification = settingsRepository.getShowPreloadNotification()
+        .stateIn(coroutineScope, SharingStarted.Eagerly, false)
 
     init {
         downloadEvents.onEach { event ->
@@ -74,6 +78,14 @@ class OfflineDownloadsState(
 
     fun onDeleteReadBooksChange(enabled: Boolean) {
         coroutineScope.launch { settingsRepository.putDeleteReadBooks(enabled) }
+    }
+
+    fun onPreloadNextBookPagesChange(pages: Int) {
+        coroutineScope.launch { settingsRepository.putPreloadNextBookPages(pages) }
+    }
+
+    fun onShowPreloadNotificationChange(enabled: Boolean) {
+        coroutineScope.launch { settingsRepository.putShowPreloadNotification(enabled) }
     }
 
     private fun updateDownloads(event: DownloadEvent) {
