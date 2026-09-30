@@ -40,6 +40,8 @@ Development and maintenance changes in this fork may be made with the assistance
 - Release assets vary by version. Version 0.20.6 is an Android-only feature release;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
+- All Android artifacts produced after 0.20.6 are universal APKs containing ARM64,
+  ARMv7, x86_64, and x86 native libraries.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots
@@ -122,13 +124,15 @@ docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,r
 ```
 
 ## Android App
-Replace <*arch*> placeholder with your target architecture.\
-Available architectures include:  `aarch64`, `armv7a`, `x86_64`, `x86`
+
+Komelia-Vibe Android exports are always universal. Build all four native
+architectures—`aarch64`, `armv7a`, `x86_64`, and `x86`—before packaging:
 
 - `docker build -t komelia-build-android . -f ./cmake/android.Dockerfile `
-- `docker run -v .:/build komelia-build-android <arch>`
-- `./gradlew android-<arch>_copyJniLibs`
-- `./gradlew buildEpubReaders`
+- Run `docker run -v .:/build komelia-build-android <arch>` once for each architecture.
+- Run `./gradlew :androidRelease`; the task copies JNI and SQLite libraries for all
+  four ABIs, builds the EPUB readers, verifies every packaging input, and then
+  creates one universal APK.
 
 Then choose app build option:
 
@@ -142,13 +146,9 @@ Shell scripts must use LF line endings; `.gitattributes` enforces this for new
 checkouts. For an existing checkout, convert `cmake/android-build.sh` to LF if
 Docker reports `exec ./cmake/android-build.sh: no such file or directory`.
 
-For ARM64 devices, use `aarch64` for the Docker argument and
-`android-aarch64_copyJniLibs` for the Gradle task. APKs default to ARM64.
-For other devices, pass `"-Pkomelia.android.abis=armeabi-v7a"` (or use `x86_64` or `x86` as the value)
-to the APK build. For multiple ABIs, use a comma-separated list (for example
-`"-Pkomelia.android.abis=arm64-v8a,armeabi-v7a"`) after building/copying each ABI.
-Keep the whole `-P...` argument quoted in PowerShell.
-Packaging checks the native libraries and reader assets before building the APK.
+Architecture-specific exports and ABI overrides are intentionally unsupported.
+Packaging fails if even one ABI is missing its native libraries, SQLite JNI library,
+or reader assets. Do not rename a partial APK to include `universal` in its filename.
 The visible Android application label is stored directly as `Komelia-Vibe` in all
 distribution manifests for compatibility with package installers that cannot resolve
 resource-backed labels before installation.
@@ -161,17 +161,20 @@ Verify the exported APK with `apksigner verify --verbose --print-certs` and
 `aapt dump badging`. Keep signing keys and passwords private and reuse the same
 key for future updates.
 
-For Windows checkouts, or whenever submodules contain local work, use an isolated
-native build. The existing CMake dependency steps reset/clean their source trees;
-this wrapper runs those steps on fresh container-local clones. Run from the
-repository root in PowerShell (replace `aarch64` consistently for another ABI):
+For Windows checkouts, or whenever submodules contain local work, use isolated
+native builds. The existing CMake dependency steps reset/clean their source trees;
+this loop runs them on fresh container-local clones for every required ABI. Run
+from the repository root in PowerShell:
 
 ```powershell
 docker build -t komelia-build-android . -f ./cmake/android.Dockerfile
-New-Item -ItemType Directory -Force ./cmake/build-android-aarch64/sysroot | Out-Null
-docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-android-aarch64/sysroot,target=/export" --entrypoint bash komelia-build-android /source/cmake/android-isolated-build.sh aarch64
-./gradlew.bat android-aarch64_copyJniLibs
-./gradlew.bat buildEpubReaders
+$architectures = @("aarch64", "armv7a", "x86_64", "x86")
+foreach ($architecture in $architectures) {
+    $output = "$($PWD.Path)/cmake/build-android-$architecture/sysroot"
+    New-Item -ItemType Directory -Force $output | Out-Null
+    docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$output,target=/export" --entrypoint bash komelia-build-android /source/cmake/android-isolated-build.sh $architecture
+    if ($LASTEXITCODE -ne 0) { throw "Android native build failed for $architecture" }
+}
 ./gradlew.bat :androidRelease
 ```
 
@@ -179,6 +182,9 @@ The wrapper uses the currently checked-out submodule commits and includes local
 tracked CMake build-system edits. Commit any native dependency source changes you
 want to build before running it. Its source mount is read-only, so dependency
 cleanup cannot remove files from the host checkout.
+Name the aligned and signed release artifact
+`Komelia-Vibe-<version>-android-universal.apk` only after APK inspection confirms
+all four ABI directories and their required libraries.
 
 
 ## Komf Wasm WebUI

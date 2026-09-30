@@ -4,6 +4,9 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+- Make every Android debug and release export a verified universal APK containing
+  ARM64, ARMv7, x86_64, and x86 native libraries; incomplete ABI sets now fail
+  packaging instead of producing an architecture-specific artifact.
 - Prefer downloaded image and EPUB book content automatically, regardless of the
   current online/offline mode, to reduce mobile-data use and reader latency.
 - Add a configurable next-book preload threshold from 0 to 10 remaining pages;

@@ -74,13 +74,9 @@ android {
         buildConfig = true
     }
     defaultConfig {
-        // AndroidX ships additional ABIs; only advertise ABIs built for this app.
-        val packagedAbis = providers.gradleProperty("komelia.android.abis")
-            .orElse("arm64-v8a").get().split(",").map { it.trim() }.toSet()
-        require(packagedAbis.all { it in setOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86") }) {
-            "komelia.android.abis must contain Android ABI names separated by commas"
-        }
-        ndk.abiFilters += packagedAbis
+        // Every Komelia-Vibe APK is universal. Packaging validation rejects the
+        // export if any ABI is missing the app's complete native dependency set.
+        ndk.abiFilters += setOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
         // Fork-specific ID: allows Komelia-Vibe and upstream Komelia to coexist.
         applicationId = "io.github.cosciblog.komelia.vibe"
         minSdk = libs.versions.android.minSdk.get().toInt()
