@@ -86,10 +86,16 @@ On Windows checkouts, use the isolated desktop wrapper so native dependency
 cleanup and line-ending conversion happen only in disposable container-local clones:
 
 ```powershell
-New-Item -ItemType Directory -Force ./cmake/isolated-output/windows-x86_64 | Out-Null
-docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/isolated-output/windows-x86_64,target=/export" --entrypoint bash komelia-build-windows-x86_64 /source/cmake/desktop-isolated-build.sh windows-x86_64
-New-Item -ItemType Directory -Force ./cmake/isolated-output/linux-x86_64 | Out-Null
-docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/isolated-output/linux-x86_64,target=/export" --entrypoint bash komelia-build-linux-x86_64 /source/cmake/desktop-isolated-build.sh linux-x86_64
+New-Item -ItemType Directory -Force ./cmake/build-isolated-output/private-mask, ./cmake/build-isolated-output/windows-x86_64, ./cmake/build-isolated-output/linux-x86_64 | Out-Null
+docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-isolated-output/private-mask,target=/source/release-artifacts/private,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-isolated-output/windows-x86_64,target=/export" --entrypoint bash komelia-build-windows-x86_64 /source/cmake/desktop-isolated-build.sh windows-x86_64
+docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-isolated-output/private-mask,target=/source/release-artifacts/private,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-isolated-output/linux-x86_64,target=/export" --entrypoint bash komelia-build-linux-x86_64 /source/cmake/desktop-isolated-build.sh linux-x86_64
+```
+
+The Linux Debian package can also be produced without modifying the checkout:
+
+```powershell
+New-Item -ItemType Directory -Force ./release-artifacts/linux-package | Out-Null
+docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-isolated-output/private-mask,target=/source/release-artifacts/private,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/build-isolated-output/linux-x86_64/lib,target=/native,readonly" --mount "type=bind,source=$($PWD.Path)/release-artifacts/linux-package,target=/export" --entrypoint bash komelia-build-linux-x86_64 /source/cmake/linux-isolated-package.sh
 ```
 
 ## Android App
