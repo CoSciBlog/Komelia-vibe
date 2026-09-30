@@ -23,6 +23,7 @@ val androidArm64BuildDir = "$projectDir/cmake/build-android-aarch64"
 val androidArmv7aBuildDir = "$projectDir/cmake/build-android-armv7a"
 val androidx8664BuildDir = "$projectDir/cmake/build-android-x86_64"
 val androidx86BuildDir = "$projectDir/cmake/build-android-x86"
+val universalAndroidAbis = setOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
 
 val resourcesDir = "$projectDir/komelia-infra/jni/src/jvmMain/resources/"
 val androidJniLibsDir = "$projectDir/komelia-infra/jni/src/androidMain/jniLibs"
@@ -321,6 +322,12 @@ tasks.register<Sync>("buildEpubReaders") {
     into(composeCommonResources)
 }
 
+project(":komelia-ui").tasks.matching {
+    it.name == "copyNonXmlValueResourcesForCommonMain"
+}.configureEach {
+    dependsOn(rootProject.tasks.named("buildEpubReaders"))
+}
+
 tasks.register<Exec>("cmakeSystemDepsConfigure") {
     group = "komelia-build"
     delete("$projectDir/cmake-build")
@@ -408,8 +415,7 @@ tasks.register("verifyAndroidPackagingInputs") {
     val nativeRoot = file(androidJniLibsDir)
     val sqliteRoot = file("$rootDir/komelia-infra/database/sqlite/src/androidMain/jniLibs")
     val readerRoot = file(composeCommonResources)
-    val packagedAbis = providers.gradleProperty("komelia.android.abis")
-        .orElse("arm64-v8a").get().split(",").map { it.trim() }.toSet()
+    val packagedAbis = universalAndroidAbis
     val requiredLibraries = listOf(
         "libkomelia_android_bitmap.so", "libkomelia_vips.so",
         "libkomelia_onnxruntime.so", "libvips.so", "libpng16.so", "libonnxruntime.so"
@@ -431,13 +437,66 @@ tasks.register("verifyAndroidPackagingInputs") {
 tasks.register("androidDebug") {
     description = "build debug apk"
     group = "komelia-package"
+    dependsOn(
+        "android-aarch64_copyJniLibs", "android-armv7a_copyJniLibs",
+        "android-x86_64_copyJniLibs", "android-x86_copyJniLibs", "buildEpubReaders"
+    )
     dependsOn(projects.komeliaApp.androidApp.path + ":assembleDebug")
+}
+
+val androidUniversalReleaseName = "Komelia-Vibe-${libs.versions.app.version.get()}-android-universal-unsigned.apk"
+val androidUniversalReleaseFile = file("$rootDir/komelia-app/androidApp/build/outputs/apk/universal/$androidUniversalReleaseName")
+
+val exportAndroidUniversalRelease = tasks.register<Copy>("exportAndroidUniversalRelease") {
+    description = "copy the unsigned universal release APK to an unambiguous artifact name"
+    group = "komelia-package"
+    dependsOn(projects.komeliaApp.androidApp.path + ":assembleRelease")
+    from("$rootDir/komelia-app/androidApp/build/outputs/apk/release") {
+        include("*-release-unsigned.apk")
+        rename { androidUniversalReleaseName }
+    }
+    into("$rootDir/komelia-app/androidApp/build/outputs/apk/universal")
+}
+
+val verifyAndroidUniversalApk = tasks.register("verifyAndroidUniversalApk") {
+    description = "verify that the exported APK really contains every supported Android ABI"
+    group = "verification"
+    dependsOn(exportAndroidUniversalRelease)
+    doLast {
+        check(androidUniversalReleaseFile.isFile) { "Missing universal APK: $androidUniversalReleaseFile" }
+        java.util.zip.ZipFile(androidUniversalReleaseFile).use { apk ->
+            val entries = apk.entries().asSequence().map { it.name }.toList()
+            val nativeLibraries = entries.filter { it.startsWith("lib/") && it.endsWith(".so") }
+            val packagedAbis = nativeLibraries.map { it.split('/')[1] }.toSet()
+            check(packagedAbis == universalAndroidAbis) {
+                "Universal APK has ABIs $packagedAbis, expected $universalAndroidAbis"
+            }
+            val requiredLibraries = setOf(
+                "libkomelia_android_bitmap.so", "libkomelia_vips.so", "libkomelia_onnxruntime.so",
+                "libvips.so", "libpng16.so", "libonnxruntime.so", "libsqlitejdbc.so"
+            )
+            val missing = universalAndroidAbis.flatMap { abi ->
+                requiredLibraries.map { "lib/$abi/$it" }
+            }.filterNot(entries::contains)
+            check(missing.isEmpty()) { "Universal APK is missing native libraries: ${missing.joinToString()}" }
+            check(entries.any { it.startsWith("assets/") && it.endsWith("/komga.html") }) {
+                "Universal APK is missing the Komga EPUB reader"
+            }
+            check(entries.any { it.startsWith("assets/") && it.endsWith("/ttsu.html") }) {
+                "Universal APK is missing the Ttsu EPUB reader"
+            }
+        }
+    }
 }
 
 tasks.register("androidRelease") {
     description = "build release apk"
     group = "komelia-package"
-    dependsOn(projects.komeliaApp.androidApp.path + ":assembleRelease")
+    dependsOn(
+        "android-aarch64_copyJniLibs", "android-armv7a_copyJniLibs",
+        "android-x86_64_copyJniLibs", "android-x86_copyJniLibs", "buildEpubReaders"
+    )
+    dependsOn(verifyAndroidUniversalApk)
 }
 
 tasks.register("komfExtensionChrome") {

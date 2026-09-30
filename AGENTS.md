@@ -22,6 +22,7 @@
 - Preserve Komga protocol compatibility and the ability to integrate future upstream Komelia changes.
 - Prefer changing distribution identity (Android application ID, packaging metadata, data directories, update source) over renaming internal Kotlin packages.
 - Komelia-Vibe must remain independently installable and must not overwrite, update, or share mutable application data with upstream Komelia.
+- Export and publish Android builds only as verified universal APKs containing `arm64-v8a`, `armeabi-v7a`, `x86_64`, and `x86`; never publish an ABI-specific APK or relabel one as universal.
 
 ## Fork change preservation
 

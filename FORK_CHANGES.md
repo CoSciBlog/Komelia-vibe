@@ -22,8 +22,9 @@ These requirements must remain true after every upstream integration:
 3. Restricted Komga users can download books for offline use. Offline access is
    limited by the locally downloaded data rather than copied remote library and
    label restrictions.
-4. Android release APKs contain every required native library and EPUB reader
-   asset, including `libsqlitejdbc.so`, and advertise only ABIs actually built.
+4. Android release APKs are universal and contain every required native library
+   for `arm64-v8a`, `armeabi-v7a`, `x86_64`, and `x86`, plus EPUB reader assets.
+   This includes `libsqlitejdbc.so` for every ABI.
 5. User-created offline reading progress is never deleted before successful
    synchronization with Komga.
 6. Fork-specific settings retain their stored values and database migrations
@@ -97,9 +98,9 @@ name fixed in 0.20.4.
 - Packaging validation fails before export if native libraries, SQLite JNI, or the
   `komga.html` / `ttsu.html` EPUB readers are missing.
 - `libpng16.so` is included because it is the SONAME required by Android `libvips`.
-- APK ABI filters default to `arm64-v8a` and may include only explicitly built
-  supported ABIs. AndroidX-provided libraries must not make an incomplete ABI look
-  supported.
+- APK ABI filters always include `arm64-v8a`, `armeabi-v7a`, `x86_64`, and `x86`.
+  Packaging must fail if any ABI lacks the complete native dependency set;
+  AndroidX-provided libraries must not make an incomplete ABI look supported.
 - SQLite extraction and JNI preparation occur before Android native-library merge.
 - Android uses extracted JNI packaging so `System.loadLibrary("sqlitejdbc")` can
   resolve the packaged `libsqlitejdbc.so` from `nativeLibraryDir`.
@@ -118,7 +119,8 @@ Primary areas:
 - Android build and verification instructions in `README.md`
 
 Never remove a packaging check merely because compilation succeeds. A valid
-release must also install and load its native libraries at runtime.
+release must also install and load its native libraries at runtime. Never publish
+an ABI-specific APK or rename one to look like a universal artifact.
 
 ### 4. Isolated Windows and Linux release builds
 
