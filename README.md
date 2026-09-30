@@ -15,6 +15,8 @@ Development and maintenance changes in this fork may be made with the assistance
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
+- Release assets include a Windows x64 installer, a Linux x64 Debian package, and
+  an Android ARM64 APK. Each platform keeps the independent Komelia-Vibe identity.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots
@@ -79,6 +81,16 @@ Then choose your packaging option:
 - `./gradlew :desktopJar` output in `./komelia-app/desktopApp/build/compose/jars`
 - `./gradlew :desktopDeb` output in `./komelia-app/desktopApp/build/compose/binaries`
 - `./gradlew :desktopMsi` output in `./komelia-app/desktopApp/build/compose/binaries`
+
+On Windows checkouts, use the isolated desktop wrapper so native dependency
+cleanup and line-ending conversion happen only in disposable container-local clones:
+
+```powershell
+New-Item -ItemType Directory -Force ./cmake/isolated-output/windows-x86_64 | Out-Null
+docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/isolated-output/windows-x86_64,target=/export" --entrypoint bash komelia-build-windows-x86_64 /source/cmake/desktop-isolated-build.sh windows-x86_64
+New-Item -ItemType Directory -Force ./cmake/isolated-output/linux-x86_64 | Out-Null
+docker run --rm --user 0 --mount "type=bind,source=$($PWD.Path),target=/source,readonly" --mount "type=bind,source=$($PWD.Path)/cmake/isolated-output/linux-x86_64,target=/export" --entrypoint bash komelia-build-linux-x86_64 /source/cmake/desktop-isolated-build.sh linux-x86_64
+```
 
 ## Android App
 Replace <*arch*> placeholder with your target architecture.\

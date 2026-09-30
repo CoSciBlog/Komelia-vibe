@@ -43,6 +43,10 @@ RUN mkdir /cuda_download && mkdir /cuda \
     && cd / \
     && rm -rf /cuda_download
 
+# Docker Desktop bind mounts may be owned by a different UID than the builder.
+# Trust only repositories inside the explicitly mounted build directory.
+RUN git config --system --add safe.directory '/build/*'
+
 USER 1000:1000
 WORKDIR build
 

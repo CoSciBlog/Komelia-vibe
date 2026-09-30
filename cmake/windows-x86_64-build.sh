@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 rm -rf ./cmake/build-w64
 mkdir -p ./cmake/build-w64/sysroot
