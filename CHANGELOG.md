@@ -2,6 +2,12 @@
 
 All notable changes to the Komelia-Vibe fork are documented here.
 
+## 0.20.4 - 2026-09-30
+
+- Fix legacy Android package installers displaying the internal `snd.komelia.App` class name instead of **Komelia-Vibe** after installation.
+- Store the Android application label directly in every distribution manifest so installers do not need to resolve a string resource for the visible name.
+- This fix and its Android package verification were developed with assistance from OpenAI Codex.
+
 ## 0.20.3 - 2026-09-30
 
 - Fix Android startup failures where `System.loadLibrary("sqlitejdbc")` could not find the packaged `libsqlitejdbc.so`.
