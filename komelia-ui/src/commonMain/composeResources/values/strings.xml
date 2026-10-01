@@ -1045,4 +1045,25 @@
     <string name="error_restart">Restart</string>
     <string name="error_exit">Exit</string>
 
+    <string name="reader_overlay_title">Reader overlay</string>
+    <string name="reader_overlay_clock">Clock</string>
+    <string name="reader_overlay_battery">Battery level</string>
+    <string name="reader_overlay_page_number">Page number</string>
+    <string name="reader_overlay_position">Position</string>
+    <string name="reader_overlay_top_left">Top left</string>
+    <string name="reader_overlay_top_center">Top center</string>
+    <string name="reader_overlay_top_right">Top right</string>
+    <string name="reader_overlay_bottom_left">Bottom left</string>
+    <string name="reader_overlay_bottom_center">Bottom center</string>
+    <string name="reader_overlay_bottom_right">Bottom right</string>
+    <string name="reader_overlay_text_color">Text color</string>
+    <string name="reader_overlay_color_auto">Automatic</string>
+    <string name="reader_overlay_color_white">White</string>
+    <string name="reader_overlay_color_black">Black</string>
+    <string name="reader_overlay_color_red">Red</string>
+    <string name="reader_overlay_color_yellow">Yellow</string>
+    <string name="reader_overlay_color_green">Green</string>
+    <string name="reader_overlay_color_blue">Blue</string>
+    <string name="reader_overlay_font_size">Font size: %1$d</string>
+
 </resources>

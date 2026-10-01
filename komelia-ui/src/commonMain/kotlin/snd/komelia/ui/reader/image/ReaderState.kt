@@ -30,6 +30,8 @@ import snd.komelia.komga.api.model.KomeliaBook
 import snd.komelia.komga.api.model.KomeliaSeries
 import snd.komelia.settings.ImageReaderSettingsRepository
 import snd.komelia.settings.model.ReaderFlashColor
+import snd.komelia.settings.model.ReaderOverlayPosition
+import snd.komelia.settings.model.ReaderOverlayTextColor
 import snd.komelia.settings.model.ReaderType
 import snd.komelia.ui.BookSiblingsContext
 import snd.komelia.ui.LoadState
@@ -87,6 +89,12 @@ class ReaderState(
     val flashWith = MutableStateFlow(ReaderFlashColor.BLACK)
 
     val volumeKeysNavigation = MutableStateFlow(false)
+    val readerOverlayShowClock = MutableStateFlow(true)
+    val readerOverlayShowBattery = MutableStateFlow(true)
+    val readerOverlayShowPageNumber = MutableStateFlow(true)
+    val readerOverlayPosition = MutableStateFlow(ReaderOverlayPosition.TOP_RIGHT)
+    val readerOverlayTextColor = MutableStateFlow(ReaderOverlayTextColor.AUTO)
+    val readerOverlayFontSize = MutableStateFlow(14)
     val pixelDensity = MutableStateFlow<Density?>(null)
 
     suspend fun initialize(bookId: KomgaBookId) {
@@ -101,6 +109,12 @@ class ReaderState(
         flashEveryNPages.value = readerSettingsRepository.getFlashEveryNPages().first()
         flashWith.value = readerSettingsRepository.getFlashWith().first()
         volumeKeysNavigation.value = readerSettingsRepository.getVolumeKeysNavigation().first()
+        readerOverlayShowClock.value = readerSettingsRepository.getReaderOverlayShowClock().first()
+        readerOverlayShowBattery.value = readerSettingsRepository.getReaderOverlayShowBattery().first()
+        readerOverlayShowPageNumber.value = readerSettingsRepository.getReaderOverlayShowPageNumber().first()
+        readerOverlayPosition.value = readerSettingsRepository.getReaderOverlayPosition().first()
+        readerOverlayTextColor.value = readerSettingsRepository.getReaderOverlayTextColor().first()
+        readerOverlayFontSize.value = readerSettingsRepository.getReaderOverlayFontSize().first()
 
         appNotifications.runCatchingToNotifications {
             state.value = LoadState.Loading
@@ -334,6 +348,37 @@ class ReaderState(
     fun onLinearLightDownsamplingChange(linear: Boolean) {
         linearLightDownsampling.value = linear
         stateScope.launch { readerSettingsRepository.putLinearLightDownsampling(linear) }
+    }
+
+    fun onReaderOverlayShowClockChange(show: Boolean) {
+        readerOverlayShowClock.value = show
+        stateScope.launch { readerSettingsRepository.putReaderOverlayShowClock(show) }
+    }
+
+    fun onReaderOverlayShowBatteryChange(show: Boolean) {
+        readerOverlayShowBattery.value = show
+        stateScope.launch { readerSettingsRepository.putReaderOverlayShowBattery(show) }
+    }
+
+    fun onReaderOverlayShowPageNumberChange(show: Boolean) {
+        readerOverlayShowPageNumber.value = show
+        stateScope.launch { readerSettingsRepository.putReaderOverlayShowPageNumber(show) }
+    }
+
+    fun onReaderOverlayPositionChange(position: ReaderOverlayPosition) {
+        readerOverlayPosition.value = position
+        stateScope.launch { readerSettingsRepository.putReaderOverlayPosition(position) }
+    }
+
+    fun onReaderOverlayTextColorChange(color: ReaderOverlayTextColor) {
+        readerOverlayTextColor.value = color
+        stateScope.launch { readerSettingsRepository.putReaderOverlayTextColor(color) }
+    }
+
+    fun onReaderOverlayFontSizeChange(size: Int) {
+        val constrainedSize = size.coerceIn(10, 32)
+        readerOverlayFontSize.value = constrainedSize
+        stateScope.launch { readerSettingsRepository.putReaderOverlayFontSize(constrainedSize) }
     }
 
     fun onColorCorrectionDisable() {

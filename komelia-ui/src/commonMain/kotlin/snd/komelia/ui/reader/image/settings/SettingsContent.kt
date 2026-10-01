@@ -83,6 +83,7 @@ fun BoxScope.SettingsOverlay(
 
     if ((windowWidth == COMPACT || windowWidth == MEDIUM) && platform != DESKTOP) {
         BottomSheetSettingsOverlay(
+            commonReaderState = commonReaderState,
             book = book,
             readerType = readerType,
             onReaderTypeChange = commonReaderState::onReaderTypeChange,
@@ -118,6 +119,7 @@ fun BoxScope.SettingsOverlay(
         )
     } else {
         SettingsSideMenuOverlay(
+            commonReaderState = commonReaderState,
             book = book,
             readerType = readerType,
             onReaderTypeChange = commonReaderState::onReaderTypeChange,

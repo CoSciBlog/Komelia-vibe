@@ -193,6 +193,32 @@ Regression test:
 An upstream implementation may replace this code only after confirming equivalent
 defaults, cross-device cleanup, sync-before-delete safety, and migration continuity.
 
+### 6. Configurable comic-reader status overlay
+
+Introduced after 0.20.7.
+
+- The image reader can display the current time, Android battery percentage, and
+  current/total page count in paged, continuous, and panel modes.
+- Clock, battery, and page count can be enabled independently. Position supports
+  top or bottom combined with left, center, or right alignment.
+- Text color and font size are user-configurable. Preferences apply consistently
+  across books and survive application restarts and upgrades.
+- App migration `V14__reader_status_overlay.sql` and the serializable setting
+  defaults are part of the persistence and cross-target compatibility contract.
+- Platforms without a supported battery source omit only the battery value; time
+  and page progress remain available.
+
+Primary areas:
+
+- `komelia-domain/core/src/commonMain/kotlin/snd/komelia/settings/`
+- `komelia-infra/database/shared/` and `komelia-infra/database/sqlite/`
+- `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/reader/image/`
+- Android battery integration under `komelia-ui/src/androidMain/`
+
+An upstream replacement is acceptable only if it preserves all display choices,
+stored values, migration continuity, all image-reader modes, and graceful behavior
+on platforms where battery information is unavailable.
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:

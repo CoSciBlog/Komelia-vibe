@@ -20,6 +20,13 @@ object ImageReaderSettingsTable : Table("ImageReaderSettings") {
     val loadThumbnailPreviews = bool("load_thumbnail_previews")
     val volumeKeysNavigation = bool("volume_keys_navigation")
 
+    val readerOverlayShowClock = bool("reader_overlay_show_clock")
+    val readerOverlayShowBattery = bool("reader_overlay_show_battery")
+    val readerOverlayShowPageNumber = bool("reader_overlay_show_page_number")
+    val readerOverlayPosition = text("reader_overlay_position")
+    val readerOverlayTextColor = text("reader_overlay_text_color")
+    val readerOverlayFontSize = integer("reader_overlay_font_size")
+
     val flashOnPageChange = bool("flash_on_page_change")
     val flashDuration = long("flash_duration")
     val flashEveryNPages = integer("flash_every_n_pages")

@@ -18,6 +18,8 @@ import snd.komelia.settings.model.LayoutScaleType
 import snd.komelia.settings.model.PageDisplayLayout
 import snd.komelia.settings.model.PagedReadingDirection
 import snd.komelia.settings.model.ReaderFlashColor
+import snd.komelia.settings.model.ReaderOverlayPosition
+import snd.komelia.settings.model.ReaderOverlayTextColor
 import snd.komelia.settings.model.ReaderType
 
 class ExposedImageReaderSettingsRepository(database: Database) : ExposedRepository(database) {
@@ -48,6 +50,12 @@ class ExposedImageReaderSettingsRepository(database: Database) : ExposedReposito
                         upsamplingMode = UpsamplingMode.valueOf(it[ImageReaderSettingsTable.upsamplingMode]),
                         loadThumbnailPreviews = it[ImageReaderSettingsTable.loadThumbnailPreviews],
                         volumeKeysNavigation = it[ImageReaderSettingsTable.volumeKeysNavigation],
+                        readerOverlayShowClock = it[ImageReaderSettingsTable.readerOverlayShowClock],
+                        readerOverlayShowBattery = it[ImageReaderSettingsTable.readerOverlayShowBattery],
+                        readerOverlayShowPageNumber = it[ImageReaderSettingsTable.readerOverlayShowPageNumber],
+                        readerOverlayPosition = ReaderOverlayPosition.valueOf(it[ImageReaderSettingsTable.readerOverlayPosition]),
+                        readerOverlayTextColor = ReaderOverlayTextColor.valueOf(it[ImageReaderSettingsTable.readerOverlayTextColor]),
+                        readerOverlayFontSize = it[ImageReaderSettingsTable.readerOverlayFontSize],
                         ortUpscalerMode = UpscaleMode.valueOf(it[ImageReaderSettingsTable.ortUpscalerMode]),
                         ortUpscalerUserModelPath = it[ImageReaderSettingsTable.ortUpscalerUserModelPath]
                             ?.let { PlatformFile(it) },
@@ -79,6 +87,12 @@ class ExposedImageReaderSettingsRepository(database: Database) : ExposedReposito
                 it[linearLightDownsampling] = settings.linearLightDownsampling
                 it[loadThumbnailPreviews] = settings.loadThumbnailPreviews
                 it[volumeKeysNavigation] = settings.volumeKeysNavigation
+                it[readerOverlayShowClock] = settings.readerOverlayShowClock
+                it[readerOverlayShowBattery] = settings.readerOverlayShowBattery
+                it[readerOverlayShowPageNumber] = settings.readerOverlayShowPageNumber
+                it[readerOverlayPosition] = settings.readerOverlayPosition.name
+                it[readerOverlayTextColor] = settings.readerOverlayTextColor.name
+                it[readerOverlayFontSize] = settings.readerOverlayFontSize
                 it[upsamplingMode] = settings.upsamplingMode.name
                 it[ortUpscalerMode] = settings.ortUpscalerMode.name
                 it[ortUpscalerUserModelPath] = settings.ortUpscalerUserModelPath?.path

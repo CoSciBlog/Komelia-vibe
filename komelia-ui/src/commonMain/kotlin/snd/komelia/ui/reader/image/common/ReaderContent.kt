@@ -172,6 +172,20 @@ fun ReaderContent(
 
         }
 
+        if (!showSettingsMenu) {
+            val bookState = commonReaderState.booksState.collectAsState().value
+            ReaderStatusOverlay(
+                showClock = commonReaderState.readerOverlayShowClock.collectAsState().value,
+                showBattery = commonReaderState.readerOverlayShowBattery.collectAsState().value,
+                showPageNumber = commonReaderState.readerOverlayShowPageNumber.collectAsState().value,
+                position = commonReaderState.readerOverlayPosition.collectAsState().value,
+                textColor = commonReaderState.readerOverlayTextColor.collectAsState().value,
+                fontSize = commonReaderState.readerOverlayFontSize.collectAsState().value,
+                currentPage = commonReaderState.readProgressPage.collectAsState().value,
+                totalPages = bookState?.currentBookPages?.size ?: 0,
+            )
+        }
+
         SettingsOverlay(
             show = showSettingsMenu,
             commonReaderState = commonReaderState,
