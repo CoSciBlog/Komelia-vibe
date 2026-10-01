@@ -4,9 +4,12 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.10 - 2026-10-01
+
 - Fix an `IndexOutOfBoundsException` when the reader switches to a preloaded next
   book while still exposing the completed book's final page, and safely handle
   missing or empty page selections in paged and panel modes.
+- This fix and its tests were prepared with assistance from OpenAI Codex.
 
 ## 0.20.9 - 2026-10-01
 
