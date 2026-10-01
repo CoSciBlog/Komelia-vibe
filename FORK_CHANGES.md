@@ -168,6 +168,9 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
 - Next-book preloading has an explicit opt-in checkbox and a discrete threshold
   slider accepting `1` through `20` remaining pages. Preloading requires a validated
   Wi-Fi or mobile-data connection and skips a book already downloaded or requested.
+- Switching to a preloaded next book resets the reader page before publishing the
+  new book state. Paged and panel readers must treat missing or empty page selections
+  as recoverable state and never use `indexOfFirst`'s `-1` result as a list index.
 - A separate opt-in notification reports when a next-book preload starts.
 - Local-first page loading falls back to Komga when local extraction fails and a
   connection is available. Local page-load and preload failures must retain book ID,

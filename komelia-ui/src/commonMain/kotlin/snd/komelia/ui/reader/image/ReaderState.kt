@@ -220,6 +220,11 @@ class ReaderState(
             val nextBook = getNextBook(booksState.nextBook.id)
             val nextBookPages = if (nextBook != null) loadBookPages(nextBook.id) else emptyList()
 
+            // Set the new book's initial page before publishing booksState. Reader
+            // implementations observe booksState asynchronously and must never use
+            // the completed book's last page to index the next book's page list.
+            readProgressPage.value = 1
+
             this.booksState.value = BookState(
                 currentBook = booksState.nextBook,
                 currentBookPages = booksState.nextBookPages,
