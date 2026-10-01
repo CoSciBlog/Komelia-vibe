@@ -13,6 +13,7 @@ object OfflineSettingsTable : Table("SETTINGS") {
     val downloadOnlyUnreadSeriesBooks = bool("download_only_unread_series_books")
     val deleteReadBooks = bool("delete_read_books")
     val preloadNextBookPages = integer("preload_next_book_pages")
+    val preloadNextBookEnabled = bool("preload_next_book_enabled")
     val showPreloadNotification = bool("show_preload_notification")
 
     override val primaryKey = PrimaryKey(version)

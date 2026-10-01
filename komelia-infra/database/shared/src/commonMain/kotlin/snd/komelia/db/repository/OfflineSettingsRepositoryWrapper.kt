@@ -6,6 +6,7 @@ import snd.komelia.db.OfflineSettings
 import snd.komelia.db.SettingsStateWrapper
 import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.settings.MAX_PRELOAD_NEXT_BOOK_PAGES
+import snd.komelia.offline.settings.MIN_PRELOAD_NEXT_BOOK_PAGES
 import snd.komga.client.user.KomgaUserId
 import kotlin.time.Instant
 
@@ -74,7 +75,17 @@ class OfflineSettingsRepositoryWrapper(
     }
 
     override suspend fun putPreloadNextBookPages(pages: Int) {
-        wrapper.transform { it.copy(preloadNextBookPages = pages.coerceIn(0, MAX_PRELOAD_NEXT_BOOK_PAGES)) }
+        wrapper.transform {
+            it.copy(preloadNextBookPages = pages.coerceIn(MIN_PRELOAD_NEXT_BOOK_PAGES, MAX_PRELOAD_NEXT_BOOK_PAGES))
+        }
+    }
+
+    override fun getPreloadNextBookEnabled(): Flow<Boolean> {
+        return wrapper.mapState { it.preloadNextBookEnabled }
+    }
+
+    override suspend fun putPreloadNextBookEnabled(enabled: Boolean) {
+        wrapper.transform { it.copy(preloadNextBookEnabled = enabled) }
     }
 
     override fun getShowPreloadNotification(): Flow<Boolean> {

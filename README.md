@@ -18,15 +18,19 @@ The offline download settings also provide opt-in storage and reader controls:
   completed progress is confirmed by Komga. When a series is opened online, books
   completed on another device are cleaned up as well. Progress created offline is
   retained until synchronization succeeds, so cleanup never discards unsent progress.
-- **Preload next book** accepts a threshold from 0 to 20 pages. A value of 0 disables
-  preloading; otherwise, the next book is downloaded in the background when the
-  configured number of pages remains. An optional notification reports when this
-  starts.
+- **Preload next book** has a separate enable checkbox and a 1–20 page slider.
+  When enabled, the next book is downloaded in the background when the configured
+  number of pages remains. An optional notification reports when this starts.
 
 Downloaded books are preferred automatically in the image and EPUB readers even
 while Wi-Fi or mobile data is available. Preloading checks for a validated network
 connection, does not queue a book that is already local or already requested, and
 leaves the current reader usable when the device is offline.
+
+If a locally stored page uses a format or storage operation that the local reader
+cannot decode, the online reader retries that page from Komga when connected. The
+offline log records the affected book, page, preload context, and full stack trace
+for diagnosis instead of exposing only a generic reader error.
 
 All controls are disabled by default. They use the existing Komga models and the
 fork's offline task layer without changing protocol payloads or internal Kotlin package

@@ -60,7 +60,8 @@ class DownloadRetentionPolicyTest {
         )
 
         assertFalse(decision(preloadPages = 0))
-        assertFalse(decision(preloadPages = 11))
+        assertTrue(decision(preloadPages = 20))
+        assertFalse(decision(preloadPages = 21))
         assertFalse(decision(isOnline = false))
         assertFalse(decision(downloaded = true))
         assertFalse(decision(requested = true))

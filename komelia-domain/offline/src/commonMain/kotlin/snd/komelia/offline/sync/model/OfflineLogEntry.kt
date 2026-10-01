@@ -35,7 +35,7 @@ data class OfflineLogEntry(
                     append(message())
                     error?.let {
                         append("\n")
-                        append("$it")
+                        append(it.stackTraceToString())
                     }
                 },
                 type = Type.ERROR
