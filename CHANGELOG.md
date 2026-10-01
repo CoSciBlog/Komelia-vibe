@@ -4,6 +4,8 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.8 - 2026-10-01
+
 - Replace the unreliable next-book preload number field with an explicit enable
   checkbox and a discrete 1–20 page slider.
 - Preserve previously enabled preload settings through offline database migration
