@@ -163,8 +163,10 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
 - Offline settings migration `V2__download_cleanup_settings.sql` and its persisted
   columns are part of the upgrade contract.
 - Image and EPUB readers prefer an already downloaded book automatically, even when
-  the application remains online. A failed connection must not require the user to
-  switch manually into offline mode before opening local content.
+  the application remains online. On Android, PDF pages are rendered from the
+  downloaded file instead of being fetched again from Komga. A failed connection
+  must not require the user to switch manually into offline mode before opening
+  local content.
 - Next-book preloading has an explicit opt-in checkbox and a discrete threshold
   slider accepting `1` through `20` remaining pages. Preloading requires a validated
   Wi-Fi or mobile-data connection and skips a book already downloaded or requested.
@@ -193,6 +195,7 @@ Primary areas:
 - `komelia-domain/offline/src/commonMain/kotlin/snd/komelia/offline/settings/`
 - `komelia-domain/offline/src/commonMain/kotlin/snd/komelia/offline/sync/`
 - `komelia-domain/offline/src/commonMain/kotlin/snd/komelia/offline/tasks/`
+- `komelia-domain/offline/src/*Main/kotlin/snd/komelia/offline/mediacontainer/`
 - `komelia-domain/core/src/commonMain/kotlin/snd/komelia/api/RemoteBookApi.kt`
 - `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/reader/`
 - `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/settings/offline/`

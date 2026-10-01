@@ -23,7 +23,8 @@ The offline download settings also provide opt-in storage and reader controls:
   number of pages remains. An optional notification reports when this starts.
 
 Downloaded books are preferred automatically in the image and EPUB readers even
-while Wi-Fi or mobile data is available. Preloading checks for a validated network
+while Wi-Fi or mobile data is available. On Android this includes rendering pages
+directly from downloaded PDF files. Preloading checks for a validated network
 connection, does not queue a book that is already local or already requested, and
 leaves the current reader usable when the device is offline.
 
