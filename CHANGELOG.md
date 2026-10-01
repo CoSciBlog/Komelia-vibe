@@ -4,6 +4,10 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+- Render downloaded PDF pages locally on Android instead of hitting the
+  `NotImplementedError` fallback and loading them again from Komga.
+- This fix and its tests were prepared with assistance from OpenAI Codex.
+
 ## 0.20.10 - 2026-10-01
 
 - Fix an `IndexOutOfBoundsException` when the reader switches to a preloaded next
