@@ -23,6 +23,9 @@ import snd.komelia.offline.readprogress.actions.ProgressCompleteForBookAction
 import snd.komelia.offline.readprogress.actions.ProgressDeleteForBookAction
 import snd.komelia.offline.readprogress.actions.ProgressMarkAction
 import snd.komelia.offline.readprogress.actions.ProgressMarkProgressionAction
+import snd.komelia.offline.sync.model.BookDownloadLog
+import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logInfo
+import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komga.client.book.KomgaBookId
 import snd.komga.client.book.KomgaBookMetadataUpdateRequest
 import snd.komga.client.book.KomgaBookPage
@@ -53,6 +56,7 @@ class OfflineBookApi(
     private val readProgressRepository: OfflineReadProgressRepository,
     private val actions: OfflineActions,
     private val fileContentExtractors: BookContentExtractors,
+    private val logJournalRepository: LogJournalRepository,
 
     private val offlineUserId: StateFlow<KomgaUserId>,
 ) : KomgaBookApi {
@@ -61,7 +65,17 @@ class OfflineBookApi(
         get() = offlineUserId.value
 
     override suspend fun getOne(bookId: KomgaBookId): KomeliaBook {
-        return komeliaBookRepository.get(bookId, userId)
+        return komeliaBookRepository.get(bookId, userId).also { book ->
+            runCatching {
+                logJournalRepository.logInfo {
+                    BookDownloadLog.loadedForReading(
+                        title = book.metadata.title,
+                        bookId = book.id,
+                        local = true,
+                    )
+                }
+            }
+        }
     }
 
     override suspend fun getBookList(

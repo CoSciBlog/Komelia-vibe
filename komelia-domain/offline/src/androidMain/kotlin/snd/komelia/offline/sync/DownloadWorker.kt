@@ -25,6 +25,8 @@ import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadCompleted
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadError
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadProgress
+import snd.komelia.offline.sync.model.BookDownloadLog
+import snd.komelia.offline.sync.model.BookDownloadSource
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logError
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logInfo
 import snd.komelia.offline.sync.repository.LogJournalRepository
@@ -34,6 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.roundToInt
 
 internal const val bookIdDataKey = "bookId"
+internal const val bookDownloadSourceDataKey = "bookDownloadSource"
 private val notificationIdCounter = AtomicInteger(1)
 const val downloadChannelId = "downloads_channel"
 private val jobLimit = Semaphore(4)
@@ -66,8 +69,11 @@ class DownloadWorker(
     override suspend fun doWork(): Result {
         val result = jobLimit.withPermit {
             val bookId = inputData.getString(bookIdDataKey)
+            val source = inputData.getString(bookDownloadSourceDataKey)
+                ?.let { runCatching { BookDownloadSource.valueOf(it) }.getOrNull() }
+                ?: BookDownloadSource.MANUAL_DOWNLOAD
             when {
-                bookId != null -> downloadBook(KomgaBookId(bookId))
+                bookId != null -> downloadBook(KomgaBookId(bookId), source)
                 else -> Result.failure()
             }
         }
@@ -76,7 +82,7 @@ class DownloadWorker(
     }
 
 
-    private suspend fun downloadBook(bookId: KomgaBookId): Result {
+    private suspend fun downloadBook(bookId: KomgaBookId, source: BookDownloadSource): Result {
         val isSuccess = AtomicBoolean(false)
 
         try {
@@ -91,13 +97,21 @@ class DownloadWorker(
                         }
 
                         is BookDownloadCompleted -> {
-                            logsJournalRepository.logInfo { "Book downloaded ${it.book.metadata.title}" }
+                            logsJournalRepository.logInfo {
+                                BookDownloadLog.downloaded(it.book.metadata.title, it.book.id, source)
+                            }
                             isSuccess.set(true)
                         }
 
                         is BookDownloadError -> {
                             setErrorNotification(it)
-                            logsJournalRepository.logError(it.error) { "Book downloaded error ${it.book?.metadata?.title ?: it.bookId}" }
+                            logsJournalRepository.logError(it.error) {
+                                BookDownloadLog.downloadFailed(
+                                    it.book?.metadata?.title ?: it.bookId.value,
+                                    it.bookId,
+                                    source,
+                                )
+                            }
                             isSuccess.set(false)
                         }
                     }

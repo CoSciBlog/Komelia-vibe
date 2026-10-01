@@ -10,6 +10,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import snd.komga.client.book.KomgaBookId
+import snd.komelia.offline.sync.model.BookDownloadSource
 
 /**
  *  recommended way to manage long-running download tasks
@@ -28,12 +29,13 @@ class AndroidDownloadManager(
                 capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
-    override suspend fun launchBookDownload(bookId: KomgaBookId) {
+    override suspend fun launchBookDownload(bookId: KomgaBookId, source: BookDownloadSource) {
 
         val request = OneTimeWorkRequestBuilder<DownloadWorker>()
             .setInputData(
                 Data.Builder()
                     .putString(bookIdDataKey, bookId.value)
+                    .putString(bookDownloadSourceDataKey, source.name)
                     .build()
             )
             .setConstraints(

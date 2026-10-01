@@ -4,6 +4,7 @@ import io.github.vinceglb.filekit.PlatformFile
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import snd.komelia.offline.model.BookMetadataPatchCapability
+import snd.komelia.offline.sync.model.BookDownloadSource
 import snd.komelia.offline.tasks.model.TaskEntry.TaskStatus.NEW
 import snd.komga.client.book.KomgaBookId
 import snd.komga.client.library.KomgaLibraryId
@@ -97,7 +98,10 @@ sealed interface TaskData {
 
     @Serializable
     @SerialName("DownloadBook")
-    data class DownloadBook(val bookId: KomgaBookId) : TaskData {
+    data class DownloadBook(
+        val bookId: KomgaBookId,
+        val source: BookDownloadSource = BookDownloadSource.MANUAL_DOWNLOAD,
+    ) : TaskData {
         override val uniqueName = "DownloadBook_${bookId}"
     }
 
