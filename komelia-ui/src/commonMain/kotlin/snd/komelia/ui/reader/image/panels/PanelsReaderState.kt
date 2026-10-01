@@ -44,6 +44,7 @@ import snd.komelia.ui.reader.image.BookState
 import snd.komelia.ui.reader.image.PageMetadata
 import snd.komelia.ui.reader.image.ReaderState
 import snd.komelia.ui.reader.image.ScreenScaleState
+import snd.komelia.ui.reader.image.resolvePageIndex
 import snd.komelia.ui.reader.image.paged.PagedReaderState.TransitionPage
 import snd.komelia.ui.reader.image.paged.PagedReaderState.TransitionPage.BookEnd
 import snd.komelia.ui.reader.image.paged.PagedReaderState.TransitionPage.BookStart
@@ -196,9 +197,19 @@ class PanelsReaderState(
 
     private fun onNewBookLoaded(bookState: BookState) {
         val newPages = bookState.currentBookPages
-        val newPageIndex = readerState.readProgressPage.value - 1
+        val newPageIndex = resolvePageIndex(
+            pageCount = newPages.size,
+            requestedPage = readerState.readProgressPage.value,
+        )
 
-        pageMetadata.value = bookState.currentBookPages
+        pageMetadata.value = newPages
+        if (newPageIndex == null) {
+            pageLoadScope.coroutineContext.cancelChildren()
+            currentPage.value = null
+            currentPageIndex.value = PageIndex(0, 0, false)
+            transitionPage.value = null
+            return
+        }
         currentPage.value = PanelsPage(
             metadata = newPages[newPageIndex],
             imageResult = null,

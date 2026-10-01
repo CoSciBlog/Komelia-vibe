@@ -46,6 +46,7 @@ import snd.komelia.ui.reader.image.PageMetadata
 import snd.komelia.ui.reader.image.ReaderState
 import snd.komelia.ui.reader.image.ScreenScaleState
 import snd.komelia.ui.reader.image.SpreadIndex
+import snd.komelia.ui.reader.image.resolveSpreadIndex
 import snd.komelia.ui.reader.image.paged.PagedReaderState.TransitionPage.BookEnd
 import snd.komelia.ui.reader.image.paged.PagedReaderState.TransitionPage.BookStart
 import snd.komga.client.common.KomgaReadingDirection
@@ -213,8 +214,16 @@ class PagedReaderState(
         val pageSpreads = buildSpreadMap(bookState.currentBookPages, layout.value)
         this.pageSpreads.value = pageSpreads
 
-        val newSpreadIndex = pageSpreads.indexOfFirst { spread ->
+        val matchedSpreadIndex = pageSpreads.indexOfFirst { spread ->
             spread.any { it.pageNumber == readerState.readProgressPage.value }
+        }
+        val newSpreadIndex = resolveSpreadIndex(pageSpreads.size, matchedSpreadIndex)
+        if (newSpreadIndex == null) {
+            pageLoadScope.coroutineContext.cancelChildren()
+            currentSpread.value = PageSpread(emptyList())
+            currentSpreadIndex.value = 0
+            transitionPage.value = null
+            return
         }
 
         currentSpread.value = PageSpread(
@@ -400,6 +409,7 @@ class PagedReaderState(
     }
 
     private fun buildSpreadMap(pages: List<PageMetadata>, layout: PageDisplayLayout): List<List<PageMetadata>> {
+        if (pages.isEmpty()) return emptyList()
         return when (layout) {
             SINGLE_PAGE -> pages.map { listOf(it) }
             DOUBLE_PAGES -> buildSpreadMapForDoublePages(
