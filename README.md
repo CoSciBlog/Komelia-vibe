@@ -52,7 +52,7 @@ Development and maintenance changes in this fork may be made with the assistance
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.9 is an Android-only feature release;
+- Release assets vary by version. Version 0.20.10 is an Android-only bug-fix release;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
