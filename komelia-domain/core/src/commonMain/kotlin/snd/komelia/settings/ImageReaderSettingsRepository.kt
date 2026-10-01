@@ -10,6 +10,8 @@ import snd.komelia.settings.model.LayoutScaleType
 import snd.komelia.settings.model.PageDisplayLayout
 import snd.komelia.settings.model.PagedReadingDirection
 import snd.komelia.settings.model.ReaderFlashColor
+import snd.komelia.settings.model.ReaderOverlayPosition
+import snd.komelia.settings.model.ReaderOverlayTextColor
 import snd.komelia.settings.model.ReaderType
 
 interface ImageReaderSettingsRepository {
@@ -66,6 +68,24 @@ interface ImageReaderSettingsRepository {
 
     fun getVolumeKeysNavigation(): Flow<Boolean>
     suspend fun putVolumeKeysNavigation(enable: Boolean)
+
+    fun getReaderOverlayShowClock(): Flow<Boolean>
+    suspend fun putReaderOverlayShowClock(show: Boolean)
+
+    fun getReaderOverlayShowBattery(): Flow<Boolean>
+    suspend fun putReaderOverlayShowBattery(show: Boolean)
+
+    fun getReaderOverlayShowPageNumber(): Flow<Boolean>
+    suspend fun putReaderOverlayShowPageNumber(show: Boolean)
+
+    fun getReaderOverlayPosition(): Flow<ReaderOverlayPosition>
+    suspend fun putReaderOverlayPosition(position: ReaderOverlayPosition)
+
+    fun getReaderOverlayTextColor(): Flow<ReaderOverlayTextColor>
+    suspend fun putReaderOverlayTextColor(color: ReaderOverlayTextColor)
+
+    fun getReaderOverlayFontSize(): Flow<Int>
+    suspend fun putReaderOverlayFontSize(size: Int)
 
     fun getUpscalerMode(): Flow<UpscaleMode>
     suspend fun putUpscalerMode(mode: UpscaleMode)

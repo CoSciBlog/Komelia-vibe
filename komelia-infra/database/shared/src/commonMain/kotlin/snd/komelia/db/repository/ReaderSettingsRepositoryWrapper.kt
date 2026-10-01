@@ -13,6 +13,8 @@ import snd.komelia.settings.model.LayoutScaleType
 import snd.komelia.settings.model.PageDisplayLayout
 import snd.komelia.settings.model.PagedReadingDirection
 import snd.komelia.settings.model.ReaderFlashColor
+import snd.komelia.settings.model.ReaderOverlayPosition
+import snd.komelia.settings.model.ReaderOverlayTextColor
 import snd.komelia.settings.model.ReaderType
 
 class ReaderSettingsRepositoryWrapper(
@@ -161,6 +163,48 @@ class ReaderSettingsRepositoryWrapper(
 
     override suspend fun putVolumeKeysNavigation(enable: Boolean) {
         wrapper.transform { it.copy(volumeKeysNavigation = enable) }
+    }
+
+    override fun getReaderOverlayShowClock(): Flow<Boolean> =
+        wrapper.mapState { it.readerOverlayShowClock }
+
+    override suspend fun putReaderOverlayShowClock(show: Boolean) {
+        wrapper.transform { it.copy(readerOverlayShowClock = show) }
+    }
+
+    override fun getReaderOverlayShowBattery(): Flow<Boolean> =
+        wrapper.mapState { it.readerOverlayShowBattery }
+
+    override suspend fun putReaderOverlayShowBattery(show: Boolean) {
+        wrapper.transform { it.copy(readerOverlayShowBattery = show) }
+    }
+
+    override fun getReaderOverlayShowPageNumber(): Flow<Boolean> =
+        wrapper.mapState { it.readerOverlayShowPageNumber }
+
+    override suspend fun putReaderOverlayShowPageNumber(show: Boolean) {
+        wrapper.transform { it.copy(readerOverlayShowPageNumber = show) }
+    }
+
+    override fun getReaderOverlayPosition(): Flow<ReaderOverlayPosition> =
+        wrapper.mapState { it.readerOverlayPosition }
+
+    override suspend fun putReaderOverlayPosition(position: ReaderOverlayPosition) {
+        wrapper.transform { it.copy(readerOverlayPosition = position) }
+    }
+
+    override fun getReaderOverlayTextColor(): Flow<ReaderOverlayTextColor> =
+        wrapper.mapState { it.readerOverlayTextColor }
+
+    override suspend fun putReaderOverlayTextColor(color: ReaderOverlayTextColor) {
+        wrapper.transform { it.copy(readerOverlayTextColor = color) }
+    }
+
+    override fun getReaderOverlayFontSize(): Flow<Int> =
+        wrapper.mapState { it.readerOverlayFontSize }
+
+    override suspend fun putReaderOverlayFontSize(size: Int) {
+        wrapper.transform { it.copy(readerOverlayFontSize = size) }
     }
 
     override fun getUpscalerMode(): Flow<UpscaleMode> {

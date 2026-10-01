@@ -88,6 +88,7 @@ import snd.komelia.ui.common.components.SwitchWithLabel
 import snd.komelia.ui.platform.PlatformType
 import snd.komelia.ui.platform.cursorForHand
 import snd.komelia.ui.reader.image.continuous.ContinuousReaderState
+import snd.komelia.ui.reader.image.ReaderState
 import snd.komelia.ui.reader.image.paged.PagedReaderState
 import snd.komelia.ui.reader.image.panels.PanelsReaderState
 import snd.komelia.ui.settings.imagereader.onnxruntime.DeviceSelector
@@ -101,6 +102,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SettingsSideMenuOverlay(
+    commonReaderState: ReaderState,
     book: KomeliaBook?,
     readerType: ReaderType,
     onReaderTypeChange: (ReaderType) -> Unit,
@@ -204,6 +206,9 @@ fun SettingsSideMenuOverlay(
                     CONTINUOUS -> ContinuousReaderSettingsContent(continuousReaderState)
                 }
             }
+
+            HorizontalDivider()
+            ReaderOverlaySettings(commonReaderState)
 
             HorizontalDivider()
             Row(

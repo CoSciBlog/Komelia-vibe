@@ -32,6 +32,12 @@ All controls are disabled by default. They use the existing Komga models and the
 fork's offline task layer without changing protocol payloads or internal Kotlin package
 names, keeping future upstream integration straightforward.
 
+The comic reader can show a compact status overlay with the current time, Android
+battery level, and page progress such as `1/17`. Reader settings allow every value
+to be toggled independently and configure the overlay's top/bottom and
+left/center/right position, text color, and font size. The same overlay works in
+paged, continuous, and panel reading modes.
+
 Development and maintenance changes in this fork may be made with the assistance of AI and OpenAI Codex. Such changes are still subject to the project's build and test workflow.
 
 ### Downloads:

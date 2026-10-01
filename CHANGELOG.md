@@ -4,6 +4,14 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+- Add a configurable comic-reader overlay for the current time, Android battery
+  level, and page progress such as `1/17` in paged, continuous, and panel modes.
+- Allow each overlay value to be enabled independently and configure its top/bottom
+  and left/center/right position, text color, and font size.
+- Persist reader-overlay preferences through app database migration V14 while
+  retaining serialization defaults for web and future upstream compatibility.
+- These changes were prepared with assistance from OpenAI Codex.
+
 ## 0.20.7 - 2026-09-30
 
 - Ship an Android-only release; Windows and Linux packages are intentionally not rebuilt.

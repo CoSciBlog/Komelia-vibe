@@ -95,6 +95,7 @@ import snd.komelia.ui.common.components.SwitchWithLabel
 import snd.komelia.ui.platform.WindowSizeClass.COMPACT
 import snd.komelia.ui.platform.cursorForHand
 import snd.komelia.ui.reader.image.continuous.ContinuousReaderState
+import snd.komelia.ui.reader.image.ReaderState
 import snd.komelia.ui.reader.image.paged.PagedReaderState
 import snd.komelia.ui.reader.image.panels.PanelsReaderState
 import snd.komelia.ui.strings.AppStrings
@@ -103,6 +104,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetSettingsOverlay(
+    commonReaderState: ReaderState,
     book: KomeliaBook?,
     readerType: ReaderType,
     onReaderTypeChange: (ReaderType) -> Unit,
@@ -242,6 +244,7 @@ fun BottomSheetSettingsOverlay(
                     when (selectedTab) {
                         0 -> {
                             BottomSheetReadingModeSettings(
+                                commonReaderState = commonReaderState,
                                 readerType = readerType,
                                 onReaderTypeChange = onReaderTypeChange,
                                 pagedReaderState = pagedReaderState,
@@ -288,6 +291,7 @@ fun BottomSheetSettingsOverlay(
 
 @Composable
 private fun BottomSheetReadingModeSettings(
+    commonReaderState: ReaderState,
     readerType: ReaderType,
     onReaderTypeChange: (ReaderType) -> Unit,
     pagedReaderState: PagedReaderState,
@@ -320,6 +324,8 @@ private fun BottomSheetReadingModeSettings(
             PANELS -> if (panelsReaderState != null) PanelsModeSettings(state = panelsReaderState)
             CONTINUOUS -> ContinuousModeSettings(state = continuousReaderState)
         }
+        HorizontalDivider(Modifier.padding(vertical = 10.dp))
+        ReaderOverlaySettings(commonReaderState)
     }
 }
 
