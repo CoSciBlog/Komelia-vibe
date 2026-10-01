@@ -201,6 +201,7 @@ abstract class OfflineModule(
                 readProgressRepository = repositories.readProgressRepository,
                 actions = actions,
                 fileContentExtractors = fileService,
+                logJournalRepository = repositories.logJournalRepository,
                 offlineUserId = offlineUserId,
             ),
             collectionsApi = OfflineCollectionsApi(),
@@ -242,6 +243,7 @@ abstract class OfflineModule(
             komgaBookClient = komgaClientFactory.bookClient(),
             settingsRepository = repositories.offlineSettingsRepository,
             isOffline = isOffline,
+            logJournalRepository = repositories.logJournalRepository,
         )
         val taskProcessor = TaskProcessor(
             tasksRepository = repositories.tasksRepository,

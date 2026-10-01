@@ -4,6 +4,18 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.9 - 2026-10-01
+
+- Extend the offline log with per-book download history for manual downloads,
+  complete-series downloads, and reader preloads.
+- Record whether each requested book was freshly downloaded or skipped because an
+  identical local download was already available.
+- Record whether opening a book loads its existing local copy or reads it from the
+  Komga server, including book title and ID for diagnosis.
+- Keep older persisted download tasks compatible by defaulting missing origin data
+  to a manual download.
+- This change and its tests were prepared with assistance from OpenAI Codex.
+
 ## 0.20.8 - 2026-10-01
 
 - Replace the unreliable next-book preload number field with an explicit enable

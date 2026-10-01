@@ -15,6 +15,10 @@ import snd.komelia.offline.series.actions.SeriesDeleteAction
 import snd.komelia.offline.series.actions.SeriesRefreshMetadataAction
 import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.sync.PlatformDownloadManager
+import snd.komelia.offline.sync.model.BookDownloadLog
+import snd.komelia.offline.sync.model.BookDownloadSource
+import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logInfo
+import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komelia.offline.sync.shouldDeleteReadDownload
 import snd.komelia.offline.sync.shouldDownloadSeriesBook
 import snd.komelia.offline.tasks.model.TaskData
@@ -44,6 +48,7 @@ class TaskHandler(
     private val komgaBookClient: KomgaBookClient,
     private val settingsRepository: OfflineSettingsRepository,
     private val isOffline: StateFlow<Boolean>,
+    private val logJournalRepository: LogJournalRepository,
 ) {
     suspend fun handleTask(entry: TaskEntry) {
         logger.info { "handling task ${entry.task}" }
@@ -83,8 +88,13 @@ class TaskHandler(
             is ScanLibrary -> {}
 
             is DownloadBook -> {
-                if (!bookRepository.exists(task.bookId)) {
-                    downloadManager.launchBookDownload(task.bookId)
+                val localBook = bookRepository.find(task.bookId)
+                if (localBook == null) {
+                    downloadManager.launchBookDownload(task.bookId, task.source)
+                } else {
+                    logJournalRepository.logInfo {
+                        BookDownloadLog.alreadyLocal(localBook.name, localBook.id, task.source)
+                    }
                 }
             }
 
@@ -97,7 +107,12 @@ class TaskHandler(
 
                 books.filter {
                     shouldDownloadSeriesBook(downloadOnlyUnread, it.readProgress?.completed == true)
-                }.forEach { taskEmitter.downloadBook(it.id) }
+                }.forEach {
+                    taskEmitter.downloadBook(
+                        bookId = it.id,
+                        source = BookDownloadSource.SERIES_DOWNLOAD,
+                    )
+                }
             }
 
             is CleanupReadSeriesDownloads -> {

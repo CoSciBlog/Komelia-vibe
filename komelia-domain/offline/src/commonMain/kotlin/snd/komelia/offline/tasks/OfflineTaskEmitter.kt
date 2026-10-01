@@ -18,6 +18,7 @@ import snd.komelia.offline.tasks.model.TaskData.RefreshBookMetadata
 import snd.komelia.offline.tasks.model.TaskData.RefreshSeriesMetadata
 import snd.komelia.offline.tasks.model.TaskEntry
 import snd.komelia.offline.tasks.repository.OfflineTasksRepository
+import snd.komelia.offline.sync.model.BookDownloadSource
 import snd.komga.client.book.KomgaBookId
 import snd.komga.client.library.KomgaLibraryId
 import snd.komga.client.series.KomgaSeriesId
@@ -153,11 +154,12 @@ class OfflineTaskEmitter(
     suspend fun downloadBook(
         bookId: KomgaBookId,
         priority: Int = DEFAULT_PRIORITY,
+        source: BookDownloadSource = BookDownloadSource.MANUAL_DOWNLOAD,
     ) {
         submitTask(
             TaskEntry(
                 priority = priority,
-                task = DownloadBook(bookId),
+                task = DownloadBook(bookId, source),
             )
         )
     }

@@ -172,6 +172,11 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
 - Local-first page loading falls back to Komga when local extraction fails and a
   connection is available. Local page-load and preload failures must retain book ID,
   page/threshold context, and a full stack trace in the offline log.
+- The offline log retains per-book download provenance for manual downloads,
+  complete-series downloads, and reader preloads. It distinguishes newly downloaded
+  files, already-local skips, local/offline reader loads, and Komga server loads.
+  Persisted download tasks without provenance must continue to decode as manual
+  downloads so upgrades do not lose queued work.
 - Advancing from an image book records completed progress, allowing the existing
   delete-after-reading policy to remove it only after Komga confirms that progress.
 - Offline settings migration `V3__reader_preload_settings.sql` and its persisted

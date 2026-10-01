@@ -8,6 +8,7 @@ import snd.komelia.komga.api.model.KomeliaBook
 import snd.komelia.offline.book.repository.OfflineBookRepository
 import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.sync.model.OfflineLogEntry
+import snd.komelia.offline.sync.model.BookDownloadLog
 import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komelia.offline.sync.shouldDeleteReadDownload
 import snd.komelia.offline.tasks.OfflineTaskEmitter
@@ -40,7 +41,9 @@ class RemoteBookApi(
     override suspend fun getOne(bookId: KomgaBookId): KomeliaBook {
         localApiFor(bookId)?.let { return it.getOne(bookId) }
         val book = bookClient.getOne(bookId)
-        return getKomeliaBook(book)
+        return getKomeliaBook(book).also { loadedBook ->
+            logBookLoaded(loadedBook, local = false)
+        }
     }
 
     override suspend fun getBookList(
@@ -263,6 +266,21 @@ class RemoteBookApi(
         val repository = offlineBookRepository ?: return null
         val localApi = offlineBookApi ?: return null
         return localApi.takeIf { repository.exists(bookId) }
+    }
+
+    private suspend fun logBookLoaded(book: KomeliaBook, local: Boolean) {
+        runCatching {
+            logJournalRepository?.save(
+                OfflineLogEntry(
+                    message = BookDownloadLog.loadedForReading(
+                        title = book.metadata.title,
+                        bookId = book.id,
+                        local = local,
+                    ),
+                    type = OfflineLogEntry.Type.INFO,
+                )
+            )
+        }
     }
 
     private suspend fun getKomeliaBook(book: KomgaBook): KomeliaBook {

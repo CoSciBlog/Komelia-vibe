@@ -32,6 +32,11 @@ cannot decode, the online reader retries that page from Komga when connected. Th
 offline log records the affected book, page, preload context, and full stack trace
 for diagnosis instead of exposing only a generic reader error.
 
+The offline log also keeps a per-book download history. Entries identify manual
+downloads, complete-series downloads, and reader preloads, and state whether the
+book was freshly downloaded or already available locally. Opening a book records
+whether the reader used the local download or loaded it from the Komga server.
+
 All controls are disabled by default. They use the existing Komga models and the
 fork's offline task layer without changing protocol payloads or internal Kotlin package
 names, keeping future upstream integration straightforward.
@@ -47,7 +52,7 @@ Development and maintenance changes in this fork may be made with the assistance
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.8 is an Android-only feature release;
+- Release assets vary by version. Version 0.20.9 is an Android-only feature release;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,

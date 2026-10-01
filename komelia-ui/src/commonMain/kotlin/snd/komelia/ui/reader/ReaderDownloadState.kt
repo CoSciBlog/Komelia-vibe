@@ -16,6 +16,7 @@ import snd.komelia.offline.book.repository.OfflineBookRepository
 import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.sync.PlatformDownloadManager
 import snd.komelia.offline.sync.model.OfflineLogEntry
+import snd.komelia.offline.sync.model.BookDownloadSource
 import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komelia.offline.sync.shouldPreloadNextBook
 import snd.komelia.offline.tasks.OfflineTaskEmitter
@@ -59,7 +60,11 @@ class ReaderDownloadState(
                     )
                 ) return@withLock
 
-                taskEmitter.downloadBook(nextBook.id, priority = HIGH_PRIORITY)
+                taskEmitter.downloadBook(
+                    bookId = nextBook.id,
+                    priority = HIGH_PRIORITY,
+                    source = BookDownloadSource.READER_PRELOAD,
+                )
                 requestedPreloads += nextBook.id
                 runCatching {
                     logJournalRepository.save(
