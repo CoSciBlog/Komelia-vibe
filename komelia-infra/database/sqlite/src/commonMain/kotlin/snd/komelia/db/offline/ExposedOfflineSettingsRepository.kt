@@ -36,6 +36,7 @@ class ExposedOfflineSettingsRepository(database: Database) : ExposedRepository(d
                 it[OfflineSettingsTable.downloadOnlyUnreadSeriesBooks] = settings.downloadOnlyUnreadSeriesBooks
                 it[OfflineSettingsTable.deleteReadBooks] = settings.deleteReadBooks
                 it[OfflineSettingsTable.preloadNextBookPages] = settings.preloadNextBookPages
+                it[OfflineSettingsTable.preloadNextBookEnabled] = settings.preloadNextBookEnabled
                 it[OfflineSettingsTable.showPreloadNotification] = settings.showPreloadNotification
             }
         }
@@ -52,6 +53,7 @@ class ExposedOfflineSettingsRepository(database: Database) : ExposedRepository(d
             downloadOnlyUnreadSeriesBooks = this[OfflineSettingsTable.downloadOnlyUnreadSeriesBooks],
             deleteReadBooks = this[OfflineSettingsTable.deleteReadBooks],
             preloadNextBookPages = this[OfflineSettingsTable.preloadNextBookPages],
+            preloadNextBookEnabled = this[OfflineSettingsTable.preloadNextBookEnabled],
             showPreloadNotification = this[OfflineSettingsTable.showPreloadNotification],
         )
     }

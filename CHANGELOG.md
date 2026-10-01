@@ -4,6 +4,13 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+- Replace the unreliable next-book preload number field with an explicit enable
+  checkbox and a discrete 1–20 page slider.
+- Preserve previously enabled preload settings through offline database migration
+  V4 while keeping preloading disabled for users whose old threshold was `0`.
+- Fix reader failures after a preload/local-download transition by falling back to
+  Komga when a locally stored page cannot be decoded, and record preload/page-load
+  failures with book, page, and stack-trace details in the offline log.
 - Add a configurable comic-reader overlay for the current time, Android battery
   level, and page progress such as `1/17` in paged, continuous, and panel modes.
 - Allow each overlay value to be enabled independently and configure its top/bottom

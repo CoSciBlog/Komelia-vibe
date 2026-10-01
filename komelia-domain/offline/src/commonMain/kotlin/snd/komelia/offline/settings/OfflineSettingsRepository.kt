@@ -6,6 +6,8 @@ import snd.komga.client.user.KomgaUserId
 import kotlin.time.Instant
 
 const val MAX_PRELOAD_NEXT_BOOK_PAGES = 20
+const val MIN_PRELOAD_NEXT_BOOK_PAGES = 1
+const val DEFAULT_PRELOAD_NEXT_BOOK_PAGES = 3
 
 interface OfflineSettingsRepository {
     fun getOfflineMode(): Flow<Boolean>
@@ -31,6 +33,9 @@ interface OfflineSettingsRepository {
 
     fun getPreloadNextBookPages(): Flow<Int>
     suspend fun putPreloadNextBookPages(pages: Int)
+
+    fun getPreloadNextBookEnabled(): Flow<Boolean>
+    suspend fun putPreloadNextBookEnabled(enabled: Boolean)
 
     fun getShowPreloadNotification(): Flow<Boolean>
     suspend fun putShowPreloadNotification(enabled: Boolean)

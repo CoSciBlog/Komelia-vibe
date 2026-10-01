@@ -7,6 +7,8 @@ import snd.komelia.komga.api.KomgaBookApi
 import snd.komelia.komga.api.model.KomeliaBook
 import snd.komelia.offline.book.repository.OfflineBookRepository
 import snd.komelia.offline.settings.OfflineSettingsRepository
+import snd.komelia.offline.sync.model.OfflineLogEntry
+import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komelia.offline.sync.shouldDeleteReadDownload
 import snd.komelia.offline.tasks.OfflineTaskEmitter
 import snd.komga.client.book.KomgaBook
@@ -33,6 +35,7 @@ class RemoteBookApi(
     private val offlineBookApi: KomgaBookApi?,
     private val offlineSettingsRepository: OfflineSettingsRepository?,
     private val offlineTaskEmitter: OfflineTaskEmitter?,
+    private val logJournalRepository: LogJournalRepository?,
 ) : KomgaBookApi {
     override suspend fun getOne(bookId: KomgaBookId): KomeliaBook {
         localApiFor(bookId)?.let { return it.getOne(bookId) }
@@ -190,7 +193,14 @@ class RemoteBookApi(
     }
 
     override suspend fun getPage(bookId: KomgaBookId, page: Int): ByteArray {
-        localApiFor(bookId)?.let { return it.getPage(bookId, page) }
+        localApiFor(bookId)?.let { localApi ->
+            try {
+                return localApi.getPage(bookId, page)
+            } catch (error: Throwable) {
+                currentCoroutineContext().ensureActive()
+                logLocalPageFailure(bookId, page, "full page", error)
+            }
+        }
         return bookClient.getPage(bookId, page)
     }
 
@@ -198,7 +208,14 @@ class RemoteBookApi(
         bookId: KomgaBookId,
         page: Int
     ): ByteArray {
-        localApiFor(bookId)?.let { return it.getPageThumbnail(bookId, page) }
+        localApiFor(bookId)?.let { localApi ->
+            try {
+                return localApi.getPageThumbnail(bookId, page)
+            } catch (error: Throwable) {
+                currentCoroutineContext().ensureActive()
+                logLocalPageFailure(bookId, page, "page thumbnail", error)
+            }
+        }
         return bookClient.getPageThumbnail(bookId, page)
     }
 
@@ -265,6 +282,27 @@ class RemoteBookApi(
         val deleteReadBooks = settings.getDeleteReadBooks().first()
         if (shouldDeleteReadDownload(deleteReadBooks, completed) && repository.exists(bookId)) {
             taskEmitter.deleteBook(bookId)
+        }
+    }
+
+    private suspend fun logLocalPageFailure(
+        bookId: KomgaBookId,
+        page: Int,
+        operation: String,
+        error: Throwable,
+    ) {
+        runCatching {
+            logJournalRepository?.save(
+                OfflineLogEntry(
+                    message = buildString {
+                        append("Local reader $operation failed; retrying from Komga")
+                        append("\nbookId=${bookId.value}, page=$page")
+                        append("\n")
+                        append(error.stackTraceToString())
+                    },
+                    type = OfflineLogEntry.Type.ERROR,
+                )
+            )
         }
     }
 

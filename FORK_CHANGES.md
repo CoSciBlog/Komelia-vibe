@@ -165,14 +165,20 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
 - Image and EPUB readers prefer an already downloaded book automatically, even when
   the application remains online. A failed connection must not require the user to
   switch manually into offline mode before opening local content.
-- The opt-in next-book preload threshold accepts `0` through `20` remaining pages;
-  `0` disables the behavior. Preloading requires a validated Wi-Fi or mobile-data
-  connection and skips a book already downloaded or already requested.
+- Next-book preloading has an explicit opt-in checkbox and a discrete threshold
+  slider accepting `1` through `20` remaining pages. Preloading requires a validated
+  Wi-Fi or mobile-data connection and skips a book already downloaded or requested.
 - A separate opt-in notification reports when a next-book preload starts.
+- Local-first page loading falls back to Komga when local extraction fails and a
+  connection is available. Local page-load and preload failures must retain book ID,
+  page/threshold context, and a full stack trace in the offline log.
 - Advancing from an image book records completed progress, allowing the existing
   delete-after-reading policy to remove it only after Komga confirms that progress.
 - Offline settings migration `V3__reader_preload_settings.sql` and its persisted
   preload threshold and notification columns are part of the upgrade contract.
+- Offline settings migration `V4__preload_enabled_setting.sql` separates activation
+  from the threshold. It keeps old positive thresholds enabled, maps the former
+  disabled value `0` to an unchecked checkbox, and retains a usable slider value.
 
 Primary areas:
 

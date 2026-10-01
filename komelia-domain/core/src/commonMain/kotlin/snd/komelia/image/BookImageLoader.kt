@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import snd.komelia.komga.api.KomgaBookApi
+import snd.komelia.offline.sync.model.OfflineLogEntry
+import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komga.client.book.KomgaBookId
 
 private val logger = KotlinLogging.logger {}
@@ -18,6 +20,7 @@ class BookImageLoader(
     private val readerImageFactory: ReaderImageFactory,
     //TODO consider non coil disk cache implementation?
     val diskCache: DiskCache?,
+    private val logJournalRepository: LogJournalRepository? = null,
 ) {
     val fileSystem = diskCache?.fileSystem
 
@@ -28,6 +31,7 @@ class BookImageLoader(
         } catch (e: Throwable) {
             currentCoroutineContext().ensureActive()
             logger.catching(e)
+            logPageFailure(bookId, page, e)
             ReaderImageResult.Error(e)
         }
     }
@@ -49,8 +53,25 @@ class BookImageLoader(
         } catch (e: Throwable) {
             currentCoroutineContext().ensureActive()
             logger.catching(e)
+            logPageFailure(bookId, page, e)
             ImageResult.Error(e)
         }
+    }
+
+    private suspend fun logPageFailure(bookId: KomgaBookId, page: Int, error: Throwable) {
+        runCatching {
+            logJournalRepository?.save(
+                OfflineLogEntry(
+                    message = buildString {
+                        append("Reader image load failed")
+                        append("\nbookId=${bookId.value}, page=$page")
+                        append("\n")
+                        append(error.stackTraceToString())
+                    },
+                    type = OfflineLogEntry.Type.ERROR,
+                )
+            )
+        }.onFailure { logger.catching(it) }
     }
 
     private suspend fun doLoad(bookId: KomgaBookId, page: Int): ImageSource {

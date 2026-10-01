@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
@@ -17,18 +16,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.text.KeyboardOptions
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_canceled
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_complete
@@ -38,6 +38,8 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offlin
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_only_unread_series_desc
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_next_book_pages
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_next_book_pages_desc
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_next_book_enabled
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_next_book_enabled_desc
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_notification
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_preload_notification_desc
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_storage_location
@@ -47,24 +49,27 @@ import io.github.vinceglb.filekit.PlatformFile
 import org.jetbrains.compose.resources.stringResource
 import snd.komelia.formatDecimal
 import snd.komelia.offline.settings.MAX_PRELOAD_NEXT_BOOK_PAGES
+import snd.komelia.offline.settings.MIN_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.ui.common.components.SwitchWithLabel
 import snd.komelia.ui.common.components.CheckboxWithLabel
-import snd.komelia.ui.common.components.NumberField
 import snd.komelia.ui.dialogs.permissions.StoragePermissionRequestDialog
 import snd.komga.client.book.KomgaBookId
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.math.roundToInt
 
 @Composable
 fun OfflineDownloadsContent(
     storageLocation: PlatformFile?,
     downloadOnlyUnreadSeriesBooks: Boolean,
     deleteReadBooks: Boolean,
+    preloadNextBookEnabled: Boolean,
     preloadNextBookPages: Int,
     showPreloadNotification: Boolean,
 
     onDownloadOnlyUnreadSeriesBooksChange: (Boolean) -> Unit,
     onDeleteReadBooksChange: (Boolean) -> Unit,
+    onPreloadNextBookEnabledChange: (Boolean) -> Unit,
     onPreloadNextBookPagesChange: (Int) -> Unit,
     onShowPreloadNotificationChange: (Boolean) -> Unit,
     onStorageLocationChange: (PlatformFile) -> Unit,
@@ -85,23 +90,48 @@ fun OfflineDownloadsContent(
             label = { Text(stringResource(Res.string.settings_offline_mode_delete_read_books)) },
             supportingText = { Text(stringResource(Res.string.settings_offline_mode_delete_read_books_desc)) },
         )
-        NumberField(
-            value = preloadNextBookPages,
-            onValueChange = { pages ->
-                if (pages != null && pages in 0..MAX_PRELOAD_NEXT_BOOK_PAGES) {
-                    onPreloadNextBookPagesChange(pages)
+        CheckboxWithLabel(
+            checked = preloadNextBookEnabled,
+            onCheckedChange = onPreloadNextBookEnabledChange,
+            labelAlignment = Alignment.Top,
+            label = {
+                Column {
+                    Text(stringResource(Res.string.settings_offline_mode_preload_next_book_enabled))
+                    Text(
+                        stringResource(Res.string.settings_offline_mode_preload_next_book_enabled_desc),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
             },
-            modifier = Modifier.widthIn(max = 520.dp),
-            label = { Text(stringResource(Res.string.settings_offline_mode_preload_next_book_pages)) },
-            supportingText = { Text(stringResource(Res.string.settings_offline_mode_preload_next_book_pages_desc)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            singleLine = true,
         )
+        var sliderValue by remember { mutableFloatStateOf(preloadNextBookPages.toFloat()) }
+        LaunchedEffect(preloadNextBookPages) { sliderValue = preloadNextBookPages.toFloat() }
+        Column(Modifier.padding(horizontal = 10.dp)) {
+            Text(
+                stringResource(
+                    Res.string.settings_offline_mode_preload_next_book_pages,
+                    sliderValue.roundToInt(),
+                )
+            )
+            Slider(
+                value = sliderValue,
+                onValueChange = { sliderValue = it.roundToInt().toFloat() },
+                onValueChangeFinished = { onPreloadNextBookPagesChange(sliderValue.roundToInt()) },
+                enabled = preloadNextBookEnabled,
+                valueRange = MIN_PRELOAD_NEXT_BOOK_PAGES.toFloat()..MAX_PRELOAD_NEXT_BOOK_PAGES.toFloat(),
+                steps = MAX_PRELOAD_NEXT_BOOK_PAGES - MIN_PRELOAD_NEXT_BOOK_PAGES - 1,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Text(
+                stringResource(Res.string.settings_offline_mode_preload_next_book_pages_desc),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         CheckboxWithLabel(
             checked = showPreloadNotification,
             onCheckedChange = onShowPreloadNotificationChange,
-            enabled = preloadNextBookPages > 0,
+            enabled = preloadNextBookEnabled,
             label = {
                 Column {
                     Text(stringResource(Res.string.settings_offline_mode_preload_notification))

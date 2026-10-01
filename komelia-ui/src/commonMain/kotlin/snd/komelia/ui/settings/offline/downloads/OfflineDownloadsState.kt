@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import snd.komelia.offline.settings.OfflineSettingsRepository
+import snd.komelia.offline.settings.DEFAULT_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadCompleted
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadError
@@ -39,7 +40,9 @@ class OfflineDownloadsState(
     val deleteReadBooks = settingsRepository.getDeleteReadBooks()
         .stateIn(coroutineScope, SharingStarted.Eagerly, false)
     val preloadNextBookPages = settingsRepository.getPreloadNextBookPages()
-        .stateIn(coroutineScope, SharingStarted.Eagerly, 0)
+        .stateIn(coroutineScope, SharingStarted.Eagerly, DEFAULT_PRELOAD_NEXT_BOOK_PAGES)
+    val preloadNextBookEnabled = settingsRepository.getPreloadNextBookEnabled()
+        .stateIn(coroutineScope, SharingStarted.Eagerly, false)
     val showPreloadNotification = settingsRepository.getShowPreloadNotification()
         .stateIn(coroutineScope, SharingStarted.Eagerly, false)
 
@@ -82,6 +85,10 @@ class OfflineDownloadsState(
 
     fun onPreloadNextBookPagesChange(pages: Int) {
         coroutineScope.launch { settingsRepository.putPreloadNextBookPages(pages) }
+    }
+
+    fun onPreloadNextBookEnabledChange(enabled: Boolean) {
+        coroutineScope.launch { settingsRepository.putPreloadNextBookEnabled(enabled) }
     }
 
     fun onShowPreloadNotificationChange(enabled: Boolean) {

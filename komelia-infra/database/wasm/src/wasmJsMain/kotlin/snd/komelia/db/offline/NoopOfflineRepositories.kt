@@ -34,6 +34,7 @@ import snd.komelia.offline.server.model.OfflineMediaServer
 import snd.komelia.offline.server.model.OfflineMediaServerId
 import snd.komelia.offline.server.repository.OfflineMediaServerRepository
 import snd.komelia.offline.settings.OfflineSettingsRepository
+import snd.komelia.offline.settings.DEFAULT_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.sync.model.LogEntryId
 import snd.komelia.offline.sync.model.OfflineLogEntry
 import snd.komelia.offline.sync.repository.LogJournalRepository
@@ -868,9 +869,14 @@ class NoopOfflineSettingsRepository : OfflineSettingsRepository {
     override suspend fun putDeleteReadBooks(enabled: Boolean) {
     }
 
-    override fun getPreloadNextBookPages(): Flow<Int> = flowOf(0)
+    override fun getPreloadNextBookPages(): Flow<Int> = flowOf(DEFAULT_PRELOAD_NEXT_BOOK_PAGES)
 
     override suspend fun putPreloadNextBookPages(pages: Int) {
+    }
+
+    override fun getPreloadNextBookEnabled(): Flow<Boolean> = flowOf(false)
+
+    override suspend fun putPreloadNextBookEnabled(enabled: Boolean) {
     }
 
     override fun getShowPreloadNotification(): Flow<Boolean> = flowOf(false)

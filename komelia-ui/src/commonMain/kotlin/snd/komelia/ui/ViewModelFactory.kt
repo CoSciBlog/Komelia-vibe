@@ -272,6 +272,7 @@ class ViewModelFactory(
                     downloadManager = offline.downloadManager,
                     isOffline = dependencies.isOffline,
                     notifications = dependencies.appNotifications,
+                    logJournalRepository = offline.repositories.logJournalRepository,
                 )
             },
         )

@@ -56,6 +56,7 @@ import snd.komelia.komga.api.KomgaBookApi
 import snd.komelia.offline.OfflineDependencies
 import snd.komelia.offline.OfflineModule
 import snd.komelia.offline.OfflineRepositories
+import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komelia.onnxruntime.OnnxRuntime
 import snd.komelia.settings.ImageReaderSettingsRepository
 import snd.komelia.ui.DependencyContainer
@@ -240,7 +241,8 @@ abstract class AppModule {
             bookImageLoader = createReaderImageLoader(
                 bookApi = komgaNoRemoteCacheApi.map { it.bookApi }.stateIn(initScope),
                 imageFactory = readerImageFactory,
-                imageDecoder = createImageDecoder()
+                imageDecoder = createImageDecoder(),
+                logJournalRepository = offlineModule?.repositories?.logJournalRepository,
             ),
             readerImageFactory = readerImageFactory,
             windowState = createWindowState(),
@@ -272,6 +274,7 @@ abstract class AppModule {
             offlineBookApi = offlineDependencies?.komgaApi?.bookApi,
             offlineSettingsRepository = offlineDependencies?.repositories?.offlineSettingsRepository,
             offlineTaskEmitter = offlineDependencies?.taskEmitter,
+            logJournalRepository = offlineDependencies?.repositories?.logJournalRepository,
         ),
         collectionsApi = RemoteCollectionsApi(komgaClientFactory.collectionClient(), komfMangaBaka),
         fileSystemApi = RemoteFileSystemApi(komgaClientFactory.fileSystemClient()),
@@ -324,7 +327,8 @@ abstract class AppModule {
     protected fun createReaderImageLoader(
         bookApi: StateFlow<KomgaBookApi>,
         imageFactory: ReaderImageFactory,
-        imageDecoder: KomeliaImageDecoder
+        imageDecoder: KomeliaImageDecoder,
+        logJournalRepository: LogJournalRepository?,
     ): BookImageLoader {
         val diskCache = getReaderCacheDirectory()?.let { kotlinxPath ->
             DiskCache.Builder()
@@ -335,7 +339,8 @@ abstract class AppModule {
             bookClient = bookApi,
             readerImageFactory = imageFactory,
             imageDecoder = imageDecoder,
-            diskCache = diskCache
+            diskCache = diskCache,
+            logJournalRepository = logJournalRepository,
         )
     }
 
