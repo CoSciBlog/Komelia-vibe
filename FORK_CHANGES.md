@@ -190,6 +190,11 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
   files, already-local skips, local/offline reader loads, and Komga server loads.
   Persisted download tasks without provenance must continue to decode as manual
   downloads so upgrades do not lose queued work.
+- Transient channel, socket, timeout, reset, and premature-stream failures retry a
+  book transfer up to three times with bounded backoff. Every failed attempt removes
+  its partial file before reopening the destination, and only the final failure is
+  recorded as an error. Each offline log entry exposes a copy action for its complete
+  message and stack trace.
 - Advancing from an image book records completed progress, allowing the existing
   delete-after-reading policy to remove it only after Komga confirms that progress.
 - Offline settings migration `V3__reader_preload_settings.sql` and its persisted

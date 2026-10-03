@@ -633,6 +633,7 @@
     <string name="settings_offline_mode_logs_nothing_to_show">Nothing to show</string>
     <string name="settings_offline_mode_logs_erros">Errors</string>
     <string name="settings_offline_mode_logs_info">Info</string>
+    <string name="settings_offline_mode_logs_copy">Copy log entry</string>
     <string name="settings_offline_mode_logs_delete">Delete all</string>
     <string name="settings_offline_mode_logs_delete_confirm">Delete job history?</string>
     <string name="settings_offline_mode_users_user">user: %1$s</string>

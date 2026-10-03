@@ -4,6 +4,18 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.12 - 2026-10-03
+
+- Retry interrupted book transfers up to three times with bounded backoff when
+  Android reports a transient closed channel, socket abort, timeout, reset, or
+  premature end of stream; discard partial files before every retry.
+- Add a copy button to every offline log entry so its complete message and stack
+  trace can be copied independently.
+- Include the Android local PDF rendering and downloaded-reader progress fixes
+  prepared for 0.20.11.
+- These fixes, tests, release build, and documentation were prepared with
+  assistance from OpenAI Codex.
+
 ## 0.20.11 - 2026-10-03
 
 - Render downloaded PDF pages locally on Android instead of hitting the

@@ -11,9 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_logs_delete
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_logs_delete_confirm
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_logs_copy
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_logs_erros
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_logs_info
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_logs_nothing_to_show
@@ -144,6 +151,9 @@ private fun LogsContent(logs: List<OfflineLogEntry>) {
 
 @Composable
 private fun LogEntryContent(logEntry: OfflineLogEntry) {
+    val clipboardManager = LocalClipboardManager.current
+    val copyDescription = stringResource(Res.string.settings_offline_mode_logs_copy)
+
     Row(
         modifier = Modifier.padding(horizontal = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -166,6 +176,15 @@ private fun LogEntryContent(logEntry: OfflineLogEntry) {
         }
 
         Text(logEntry.timestamp.toSystemTimeString())
+
+        IconButton(
+            onClick = { clipboardManager.setText(AnnotatedString(logEntry.message)) },
+        ) {
+            Icon(
+                imageVector = Icons.Default.ContentCopy,
+                contentDescription = copyDescription,
+            )
+        }
 
     }
 }

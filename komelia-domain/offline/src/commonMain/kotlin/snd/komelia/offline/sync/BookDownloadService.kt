@@ -6,7 +6,9 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -34,6 +36,8 @@ import snd.komga.client.user.KomgaUserClient
 
 private val logger = KotlinLogging.logger { }
 private const val DEFAULT_BUFFER_SIZE: Int = 64 * 1024
+internal const val DOWNLOAD_MAX_ATTEMPTS = 3
+private const val DOWNLOAD_RETRY_DELAY_MILLIS = 750L
 
 class BookDownloadService(
     private val libraryDownloadPath: Flow<PlatformFile>,
@@ -95,41 +99,106 @@ class BookDownloadService(
         book: KomgaBook,
     ): PlatformFile {
         val url = URLBuilder(onlineServerUrl.value).build()
-        val (file, output) = prepareOutput(
-            downloadRoot = libraryDownloadPath.first(),
-            serverName = buildString {
-                append(url.host)
-                if (url.specifiedPort != 0) append("_${url.specifiedPort}")
-                url.segments.forEach { append("_$it") }
-            },
-            libraryName = library.name,
-            seriesName = series.name,
-            bookFileName = Path(book.url).name,
-        )
-
-        try {
-            bookClient.getBookFile(book.id) { response ->
-                val length = response.headers["Content-Length"]?.toLong() ?: 0L
-                emit(BookDownloadProgress(book, length, 0))
-                val channel = response.bodyAsChannel().counted()
-
-                while (!channel.isClosedForRead) {
-                    output.writePacket(channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong()))
-                    emit(BookDownloadProgress(book, length, channel.totalBytesRead))
+        return retryTransientDownload(
+            onRetry = { attempt, error ->
+                logger.warn(error) {
+                    "Book ${book.id.value} download attempt $attempt failed; retrying"
                 }
             }
-        } catch (e: Exception) {
-            deleteFile(file)
-            throw e
-        } finally {
-            output.close()
+        ) {
+            val (file, output) = prepareOutput(
+                downloadRoot = libraryDownloadPath.first(),
+                serverName = buildString {
+                    append(url.host)
+                    if (url.specifiedPort != 0) append("_${url.specifiedPort}")
+                    url.segments.forEach { append("_$it") }
+                },
+                libraryName = library.name,
+                seriesName = series.name,
+                bookFileName = Path(book.url).name,
+            )
+
+            try {
+                bookClient.getBookFile(book.id) { response ->
+                    val length = response.headers["Content-Length"]?.toLong() ?: 0L
+                    emit(BookDownloadProgress(book, length, 0))
+                    val channel = response.bodyAsChannel().counted()
+
+                    while (!channel.isClosedForRead) {
+                        output.writePacket(channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong()))
+                        emit(BookDownloadProgress(book, length, channel.totalBytesRead))
+                    }
+                }
+                output.close()
+            } catch (error: Exception) {
+                runCatching { output.close() }
+                runCatching { deleteFile(file) }.onFailure(error::addSuppressed)
+                throw error
+            }
+
+            emit(DownloadEvent.BookDownloadCompleted(book))
+            file
+        }
+    }
+}
+
+internal suspend fun <T> retryTransientDownload(
+    maxAttempts: Int = DOWNLOAD_MAX_ATTEMPTS,
+    retryDelayMillis: Long = DOWNLOAD_RETRY_DELAY_MILLIS,
+    onRetry: suspend (attempt: Int, error: Throwable) -> Unit = { _, _ -> },
+    block: suspend (attempt: Int) -> T,
+): T {
+    require(maxAttempts > 0) { "maxAttempts must be positive" }
+    require(retryDelayMillis >= 0) { "retryDelayMillis must not be negative" }
+
+    var attempt = 1
+    while (true) {
+        try {
+            return block(attempt)
+        } catch (error: Exception) {
+            currentCoroutineContext().ensureActive()
+            if (attempt >= maxAttempts || !error.isTransientDownloadFailure()) throw error
+
+            onRetry(attempt, error)
+            if (retryDelayMillis > 0) {
+                delay(retryDelayMillis * attempt)
+            }
+            attempt++
+        }
+    }
+}
+
+internal fun Throwable.isTransientDownloadFailure(): Boolean {
+    var error: Throwable? = this
+    while (error != null) {
+        if (error is ClosedByteChannelException) return true
+        if (error is CancellationException) return false
+
+        val errorName = error::class.simpleName.orEmpty()
+        if (
+            errorName == "SocketException" ||
+            errorName == "SocketTimeoutException" ||
+            errorName == "ConnectTimeoutException" ||
+            errorName == "HttpRequestTimeoutException" ||
+            errorName == "EOFException"
+        ) {
+            return true
         }
 
-        val event = DownloadEvent.BookDownloadCompleted(book)
-        emit(event)
-
-        return file
+        val message = error.message.orEmpty().lowercase()
+        if (
+            message.contains("software caused connection abort") ||
+            message.contains("connection reset") ||
+            message.contains("connection closed") ||
+            message.contains("broken pipe") ||
+            message.contains("unexpected end of stream") ||
+            message.contains("stream was reset")
+        ) {
+            return true
+        }
+        error = error.cause
     }
+    return false
 }
 
 internal expect suspend fun prepareOutput(
