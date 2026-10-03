@@ -37,6 +37,9 @@ The offline log also keeps a per-book download history. Entries identify manual
 downloads, complete-series downloads, and reader preloads, and state whether the
 book was freshly downloaded or already available locally. Opening a book records
 whether the reader used the local download or loaded it from the Komga server.
+Each entry has its own copy button for copying the complete message and stack trace.
+Interrupted transfers caused by transient socket or channel failures are retried
+up to three times after removing the incomplete file.
 
 All controls are disabled by default. They use the existing Komga models and the
 fork's offline task layer without changing protocol payloads or internal Kotlin package
@@ -53,7 +56,7 @@ Development and maintenance changes in this fork may be made with the assistance
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.11 is an Android-only bug-fix release;
+- Release assets vary by version. Version 0.20.12 is an Android-only bug-fix release;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
