@@ -8,6 +8,7 @@ import snd.komelia.offline.action.OfflineAction
 import snd.komelia.offline.book.repository.OfflineBookMetadataRepository
 import snd.komelia.offline.readprogress.OfflineReadProgress
 import snd.komelia.offline.readprogress.OfflineReadProgressRepository
+import snd.komelia.offline.readprogress.toOfflineReadProgress
 import snd.komelia.offline.server.repository.OfflineMediaServerRepository
 import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.errorLogEntry
@@ -86,6 +87,21 @@ class SyncReadProgressAction(
                 )
                 localProgress.completed
             } else {
+                val locator = if (
+                    remoteBook.media.mediaProfile == EPUB &&
+                    !remoteBook.media.epubDivinaCompatible
+                ) {
+                    bookClient.getReadiumProgression(remoteBook.id)?.locator
+                } else {
+                    null
+                }
+                readProgressRepository.save(
+                    remoteProgress.toOfflineReadProgress(
+                        bookId = remoteBook.id,
+                        userId = localProgress.userId,
+                        locator = locator,
+                    )
+                )
                 remoteProgress.completed
             }
 

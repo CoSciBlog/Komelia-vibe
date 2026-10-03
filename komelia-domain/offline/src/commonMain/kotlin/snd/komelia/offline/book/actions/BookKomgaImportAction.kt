@@ -19,6 +19,7 @@ import snd.komelia.offline.media.model.OfflineMedia
 import snd.komelia.offline.media.repository.OfflineMediaRepository
 import snd.komelia.offline.readprogress.OfflineReadProgress
 import snd.komelia.offline.readprogress.OfflineReadProgressRepository
+import snd.komelia.offline.readprogress.toOfflineReadProgress
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logError
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logInfo
 import snd.komelia.offline.sync.repository.LogJournalRepository
@@ -28,7 +29,6 @@ import snd.komga.client.book.KomgaBookClient
 import snd.komga.client.book.KomgaBookId
 import snd.komga.client.book.KomgaBookPage
 import snd.komga.client.book.MediaProfile
-import snd.komga.client.book.ReadProgress
 import snd.komga.client.book.WPLink
 import snd.komga.client.sse.KomgaEvent
 import snd.komga.client.user.KomgaUserId
@@ -161,18 +161,10 @@ class BookKomgaImportAction(
 
     private suspend fun getEpubReadProgress(book: KomgaBook, userId: KomgaUserId): OfflineReadProgress? {
         val readProgress = book.readProgress ?: return null
-        val locator = bookClient.getReadiumProgression(book.id)?.locator ?: return null
-        return OfflineReadProgress(
+        return readProgress.toOfflineReadProgress(
             bookId = book.id,
             userId = userId,
-            page = readProgress.page,
-            completed = readProgress.completed,
-            readDate = readProgress.readDate,
-            deviceId = readProgress.deviceId,
-            deviceName = readProgress.deviceName,
-            locator = locator,
-            createdDate = readProgress.created,
-            lastModifiedDate = readProgress.lastModified
+            locator = bookClient.getReadiumProgression(book.id)?.locator,
         )
     }
 
@@ -183,20 +175,6 @@ class BookKomgaImportAction(
             children = this.children.map { it.toTocEntry() }
         )
     }
-
-    private fun ReadProgress.toOfflineReadProgress(bookId: KomgaBookId, userId: KomgaUserId) =
-        OfflineReadProgress(
-            bookId = bookId,
-            userId = userId,
-            page = this.page,
-            completed = this.completed,
-            readDate = this.readDate,
-            deviceId = this.deviceId,
-            deviceName = this.deviceName,
-            locator = null,
-            createdDate = this.created,
-            lastModifiedDate = this.lastModified
-        )
 
     private fun KomgaBookPage.toOfflineBookPage(id: KomgaBookId): OfflineBookPage {
         return OfflineBookPage(

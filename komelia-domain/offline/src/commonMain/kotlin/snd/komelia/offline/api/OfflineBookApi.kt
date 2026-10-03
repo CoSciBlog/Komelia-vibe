@@ -220,7 +220,14 @@ class OfflineBookApi(
         bookId: KomgaBookId,
         thumbnailId: KomgaThumbnailId
     ): ByteArray {
-        TODO("Not yet implemented")
+        val thumbnail = thumbnailBookRepository.find(thumbnailId)
+            ?: error("Book thumbnail ${thumbnailId.value} was not found locally")
+        require(thumbnail.bookId == bookId) {
+            "Thumbnail ${thumbnailId.value} does not belong to book ${bookId.value}"
+        }
+        return requireNotNull(thumbnail.thumbnail) {
+            "Book thumbnail ${thumbnailId.value} has no local content"
+        }
     }
 
     override suspend fun getThumbnails(bookId: KomgaBookId): List<KomgaBookThumbnail> {

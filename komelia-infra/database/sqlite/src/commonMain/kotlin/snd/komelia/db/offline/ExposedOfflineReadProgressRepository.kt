@@ -52,7 +52,7 @@ class ExposedOfflineReadProgressRepository(
                 it[progressTable.deviceName] = readProgress.deviceName
                 it[progressTable.locator] = readProgress.locator
                 it[progressTable.createdDate] = readProgress.createdDate.epochSeconds
-                it[progressTable.lastModifiedDate] = readProgress.createdDate.epochSeconds
+                it[progressTable.lastModifiedDate] = readProgress.lastModifiedDate.epochSeconds
             }
             aggregateSeriesProgress(listOf(readProgress.bookId), readProgress.userId)
         }
@@ -70,7 +70,7 @@ class ExposedOfflineReadProgressRepository(
                 this[progressTable.deviceName] = progress.deviceName
                 this[progressTable.locator] = progress.locator
                 this[progressTable.createdDate] = progress.createdDate.epochSeconds
-                this[progressTable.lastModifiedDate] = progress.createdDate.epochSeconds
+                this[progressTable.lastModifiedDate] = progress.lastModifiedDate.epochSeconds
             }
 
             readProgress.groupBy { it.userId }

@@ -167,6 +167,14 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
   downloaded file instead of being fetched again from Komga. A failed connection
   must not require the user to switch manually into offline mode before opening
   local content.
+- Downloaded books reconcile local and Komga read progress by modification time
+  before the reader chooses its initial page. Successful online progress updates,
+  EPUB progression changes, and progress deletion are written through to the local
+  database, while synchronization pulls a newer Komga value back into that database.
+  SQLite must preserve the true progress modification timestamp. Leaving the image
+  reader after changing pages persists the final page independently of reader-scope
+  cancellation, and progress writes remain serialized so an older request cannot
+  finish last and move the reader backwards.
 - Next-book preloading has an explicit opt-in checkbox and a discrete threshold
   slider accepting `1` through `20` remaining pages. Preloading requires a validated
   Wi-Fi or mobile-data connection and skips a book already downloaded or requested.
@@ -206,6 +214,7 @@ Primary areas:
 Regression test:
 
 - `komelia-domain/offline/src/commonTest/kotlin/snd/komelia/offline/sync/DownloadRetentionPolicyTest.kt`
+- `komelia-domain/core/src/commonTest/kotlin/snd/komelia/api/RemoteBookApiTest.kt`
 
 An upstream implementation may replace this code only after confirming equivalent
 defaults, cross-device cleanup, sync-before-delete safety, and migration continuity.
