@@ -22,6 +22,7 @@ import snd.komga.client.book.KomgaBookSearch
 import snd.komga.client.book.KomgaBookThumbnail
 import snd.komga.client.book.R2Positions
 import snd.komga.client.book.R2Progression
+import snd.komga.client.book.ReadProgress
 import snd.komga.client.book.WPPublication
 import snd.komga.client.common.KomgaPageRequest
 import snd.komga.client.common.KomgaThumbnailId
@@ -39,10 +40,26 @@ class RemoteBookApi(
     private val logJournalRepository: LogJournalRepository?,
 ) : KomgaBookApi {
     override suspend fun getOne(bookId: KomgaBookId): KomeliaBook {
-        localApiFor(bookId)?.let { return it.getOne(bookId) }
-        val book = bookClient.getOne(bookId)
-        return getKomeliaBook(book).also { loadedBook ->
-            logBookLoaded(loadedBook, local = false)
+        val localApi = localApiFor(bookId)
+        if (localApi == null) {
+            val book = bookClient.getOne(bookId)
+            return getKomeliaBook(book).also { loadedBook ->
+                logBookLoaded(loadedBook, local = false)
+            }
+        }
+
+        val localBook = localApi.getOne(bookId)
+        return try {
+            val remoteBook = getKomeliaBook(bookClient.getOne(bookId))
+            remoteBook.copy(
+                readProgress = freshestReadProgress(
+                    local = localBook.readProgress,
+                    remote = remoteBook.readProgress,
+                )
+            )
+        } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
+            localBook
         }
     }
 
@@ -128,11 +145,17 @@ class RemoteBookApi(
     ) {
         try {
             bookClient.markReadProgress(bookId, request)
-            cleanupReadDownload(bookId, request.completed == true)
         } catch (e: Exception) {
             currentCoroutineContext().ensureActive()
             localApiFor(bookId)?.markReadProgress(bookId, request) ?: throw e
+            return
         }
+
+        // Downloaded books are read from the local API even while the app is online.
+        // Keep that copy in sync after a successful server update so reopening the
+        // reader does not restore stale progress (commonly page 1).
+        localApiFor(bookId)?.markReadProgress(bookId, request)
+        cleanupReadDownload(bookId, request.completed == true)
     }
 
     override suspend fun deleteReadProgress(bookId: KomgaBookId) {
@@ -141,7 +164,10 @@ class RemoteBookApi(
         } catch (e: Exception) {
             currentCoroutineContext().ensureActive()
             localApiFor(bookId)?.deleteReadProgress(bookId) ?: throw e
+            return
         }
+
+        localApiFor(bookId)?.deleteReadProgress(bookId)
     }
 
     override suspend fun deleteBook(bookId: KomgaBookId) {
@@ -233,14 +259,17 @@ class RemoteBookApi(
     ) {
         try {
             bookClient.updateReadiumProgression(bookId, progression)
-            val deleteReadBooks = offlineSettingsRepository?.getDeleteReadBooks()?.first() == true
-            if (deleteReadBooks) {
-                val completed = bookClient.getOne(bookId).readProgress?.completed == true
-                cleanupReadDownload(bookId, completed)
-            }
         } catch (e: Exception) {
             currentCoroutineContext().ensureActive()
             localApiFor(bookId)?.updateReadiumProgression(bookId, progression) ?: throw e
+            return
+        }
+
+        localApiFor(bookId)?.updateReadiumProgression(bookId, progression)
+        val deleteReadBooks = offlineSettingsRepository?.getDeleteReadBooks()?.first() == true
+        if (deleteReadBooks) {
+            val completed = bookClient.getOne(bookId).readProgress?.completed == true
+            cleanupReadDownload(bookId, completed)
         }
     }
 
@@ -338,6 +367,12 @@ class RemoteBookApi(
         }
         return bookPage.toKomeliaBookPage(komeliaBooks)
     }
+}
+
+internal fun freshestReadProgress(local: ReadProgress?, remote: ReadProgress?): ReadProgress? {
+    if (local == null) return remote
+    if (remote == null) return local
+    return if (local.lastModified > remote.lastModified) local else remote
 }
 
 fun Page<KomgaBook>.toKomeliaBookPage(books: List<KomeliaBook>): Page<KomeliaBook> {

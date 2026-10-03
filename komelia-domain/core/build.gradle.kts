@@ -81,6 +81,9 @@ kotlin {
             implementation(libs.reorderable)
             implementation(libs.richEditor.compose)
         }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+        }
         commonMain {
             kotlin.srcDir(generateAppVersionSource)
         }

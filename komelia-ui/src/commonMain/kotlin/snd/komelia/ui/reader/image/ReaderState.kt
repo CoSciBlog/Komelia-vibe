@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import snd.komelia.AppNotification
 import snd.komelia.AppNotifications
 import snd.komelia.color.repository.BookColorCorrectionRepository
@@ -66,6 +68,9 @@ class ReaderState(
     private val readerDownloadState: ReaderDownloadState?,
 ) {
     private val previewLoadScope = CoroutineScope(Dispatchers.Default.limitedParallelism(1) + SupervisorJob())
+    private val progressPersistenceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val progressUpdateMutex = Mutex()
+    private val progressChanged = MutableStateFlow(false)
     val state = MutableStateFlow<LoadState<Unit>>(LoadState.Uninitialized)
     val expandImageSettings = MutableStateFlow(false)
 
@@ -269,14 +274,12 @@ class ReaderState(
 
     suspend fun onProgressChange(page: Int) {
         readProgressPage.value = page
+        progressChanged.value = true
 
         if (markReadProgress) {
             appNotifications.runCatchingToNotifications {
                 val currentBook = requireNotNull(booksState.value?.currentBook)
-                bookApi.markReadProgress(
-                    currentBook.id,
-                    KomgaBookReadProgressUpdateRequest(page)
-                )
+                persistProgress(currentBook.id, page)
             }
         }
         val currentBooks = booksState.value
@@ -292,9 +295,20 @@ class ReaderState(
     private suspend fun markBookCompleted(bookId: KomgaBookId) {
         if (!markReadProgress) return
         appNotifications.runCatchingToNotifications {
+            progressUpdateMutex.withLock {
+                bookApi.markReadProgress(
+                    bookId,
+                    KomgaBookReadProgressUpdateRequest(completed = true),
+                )
+            }
+        }
+    }
+
+    private suspend fun persistProgress(bookId: KomgaBookId, page: Int) {
+        progressUpdateMutex.withLock {
             bookApi.markReadProgress(
                 bookId,
-                KomgaBookReadProgressUpdateRequest(completed = true),
+                KomgaBookReadProgressUpdateRequest(page),
             )
         }
     }
@@ -393,6 +407,19 @@ class ReaderState(
     }
 
     fun onDispose() {
+        val bookId = booksState.value?.currentBook?.id
+        val page = readProgressPage.value
+        if (markReadProgress && progressChanged.value && bookId != null) {
+            // Reader mode scopes are cancelled during disposal. Persist once more
+            // from an independent scope so a quick Back press cannot cancel the
+            // final page update. The mutex also ensures this write finishes after
+            // an older in-flight page update.
+            progressPersistenceScope.launch {
+                appNotifications.runCatchingToNotifications {
+                    persistProgress(bookId, page)
+                }
+            }
+        }
         currentBookId.value = null
         previewLoadScope.cancel()
     }

@@ -180,7 +180,14 @@ class OfflineSeriesApi(
         seriesId: KomgaSeriesId,
         thumbnailId: KomgaThumbnailId
     ): ByteArray {
-        TODO("Not yet implemented")
+        val thumbnail = seriesThumbnailRepository.find(thumbnailId)
+            ?: error("Series thumbnail ${thumbnailId.value} was not found locally")
+        require(thumbnail.seriesId == seriesId) {
+            "Thumbnail ${thumbnailId.value} does not belong to series ${seriesId.value}"
+        }
+        return requireNotNull(thumbnail.thumbnail) {
+            "Series thumbnail ${thumbnailId.value} has no local content"
+        }
     }
 
     override suspend fun getThumbnails(seriesId: KomgaSeriesId): List<KomgaSeriesThumbnail> {

@@ -4,9 +4,21 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.11 - 2026-10-03
+
 - Render downloaded PDF pages locally on Android instead of hitting the
   `NotImplementedError` fallback and loading them again from Komga.
-- This fix and its tests were prepared with assistance from OpenAI Codex.
+- Restore the newest local or Komga reading position when reopening a downloaded
+  book, write successful online progress changes through to the offline database,
+  and pull newer Komga progress during synchronization.
+- Serialize image-reader progress updates and persist the final changed page when
+  leaving the reader so a cancelled or out-of-order request cannot reset progress.
+- Preserve the actual read-progress modification timestamp in SQLite instead of
+  incorrectly replacing it with the creation timestamp.
+- Implement local book and series thumbnail reads, report Android SAF writes as
+  unsupported instead of throwing `NotImplementedError`, and safely convert conic
+  color-correction paths to quadratic segments.
+- These fixes and their tests were prepared with assistance from OpenAI Codex.
 
 ## 0.20.10 - 2026-10-01
 

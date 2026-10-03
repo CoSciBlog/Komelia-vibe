@@ -3,6 +3,7 @@ package snd.komelia.color
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathIterator
 import androidx.compose.ui.graphics.PathSegment
 import kotlin.math.abs
 
@@ -10,7 +11,9 @@ fun Path.denormalizeToCanvas(canvasSize: Size): Path {
     val newPath = Path()
     val normalX = 1f / canvasSize.width
     val normalY = 1f / canvasSize.height
-    for (segment in this) {
+    // Compose Path cannot append a conic directly. Ask the iterator to convert
+    // conics to supported quadratic segments instead of crashing on TODO().
+    for (segment in this.iterator(PathIterator.ConicEvaluation.AsQuadratics)) {
         when (segment.type) {
             PathSegment.Type.Move -> {
                 val x = segment.points[0].toCanvasX(normalX)
@@ -47,7 +50,7 @@ fun Path.denormalizeToCanvas(canvasSize: Size): Path {
 
             PathSegment.Type.Close -> newPath.close()
             PathSegment.Type.Done -> {}
-            PathSegment.Type.Conic -> TODO()
+            PathSegment.Type.Conic -> error("Conic path segment was not converted to quadratics")
         }
     }
     return newPath
