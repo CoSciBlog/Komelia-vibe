@@ -14,7 +14,12 @@
 - Create a feature request in `CoSciBlog/Komelia-vibe` for each new feature and link it from the pull request.
 - Test the change before opening a pull request. Open pull requests only against `CoSciBlog/Komelia-vibe:main`.
 - Merge a tested pull request into the fork's `main`; never target the upstream repository.
-- Update `CHANGELOG.md`, `README.md`, and version metadata for releases as appropriate.
+- After every change, run the relevant automated tests and platform compilation checks. Fix failures before merging or publishing; record the commands, results, and any checks that could not be performed. Do not describe an untested build as verified.
+- Treat delivery of a completed change as a release workflow: increment `app-version` and the Android version code monotonically, and update `README.md`, `CHANGELOG.md`, `CREDITS.md`, and release notes for the final shipped behavior.
+- Preserve the original authors' attribution, copyright, patent, trademark, license, and applicable NOTICE texts. Follow the repository's Apache-2.0 license and each bundled dependency's own license; identify fork modifications and include required license/notice material and corresponding-source information with distributions. Do not replace upstream credits with fork or AI credits.
+- Build the Android release APK from the tested release commit, using the existing Komelia-Vibe signing identity. Validate package identity, version name/code, signature/certificate continuity, all four ABIs and required native libraries, native dependency resolution, 16 KiB alignment, EPUB assets, and bundled license/credit material before export.
+- After merging the tested release pull request into `CoSciBlog/Komelia-vibe:main`, publish a new version tag and GitHub release in that fork with the verified signed universal APK, SHA-256 checksum, release notes, and required license/credit material. Confirm the published tag resolves to the shipped source and verify uploaded asset hashes. Unless the owner explicitly narrows or postpones delivery, do not stop after a source-only change or an unpublished APK.
+- Never publish a release when tests, signing, packaging, licensing requirements, or required release verification fail. Retain the work and explain the concrete blocker instead of silently skipping a required step.
 - Disclose material AI/OpenAI Codex assistance in release notes and relevant documentation.
 
 ## Compatibility

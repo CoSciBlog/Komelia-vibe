@@ -4,13 +4,20 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.13 - 2026-10-15
+
 - Prepare the next three comic-reader pages (or spreads) in the background,
   including decoding, image processing, panel detection where applicable, and
   initial rendering. Reuse in-flight loads when turning pages instead of cancelling
   and restarting them; keep the rendered image cache bounded.
 - Show "Loading" instead of "Downloading" while opening page data, including
   pages read from existing offline downloads.
-- This improvement and its regression tests were prepared with OpenAI Codex assistance.
+- Include project credits, the Apache-2.0 license, and bundled component notices
+  with the Android distribution. Retain attribution to the original projects.
+- Require tests, version/documentation/credit updates, verified signed Android
+  universal APKs, and publication of each completed release in `AGENTS.md`.
+- This improvement, its regression tests, release build, and documentation were
+  prepared with material OpenAI Codex assistance.
 
 ## 0.20.12 - 2026-10-03
 

@@ -30,6 +30,8 @@ These requirements must remain true after every upstream integration:
 6. Fork-specific settings retain their stored values and database migrations
    across upgrades. Existing migrations must never be renumbered or silently
    dropped.
+7. Distributions preserve upstream attribution and applicable component licenses
+   and notices; fork and AI credits must supplement the original authors' credits.
 
 ## Owner-requested change inventory
 
@@ -52,6 +54,13 @@ Introduced in 0.20.1.
   updates prefer the fork's `-android-universal.apk` release asset.
 - The root project and release metadata use Komelia-Vibe branding, while internal
   Kotlin packages intentionally remain `snd.komelia`.
+- Android distributions include project credits, the Apache-2.0 license, and
+  bundled source component license/notice files under `assets/legal/`. Keep the
+  original projects' attribution and component-specific license terms intact.
+- The reusable `cmake/verify-android-apk.py` release check inspects identity,
+  version, every ABI's ELF architecture and dependency resolution, 16 KiB ELF
+  alignment, EPUB reader assets, and legal material. Signature continuity and
+  ZIP alignment also remain mandatory before publication.
 
 Primary areas:
 
