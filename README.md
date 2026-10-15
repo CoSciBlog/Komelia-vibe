@@ -28,6 +28,15 @@ directly from downloaded PDF files. Preloading checks for a validated network
 connection, does not queue a book that is already local or already requested, and
 leaves the current reader usable when the device is offline.
 
+While reading comics, the next three pages are prepared in the background,
+including decoding, image processing, and initial rendering. Paged layouts prepare
+the next three spreads; panel mode also runs panel detection ahead of time. One
+preceding page or spread is prepared for backtracking. In-flight loads are reused
+across page turns, and the image cache stays bounded to ten pages. This page
+preparation works with local downloads and online pages automatically, independently
+of the opt-in **Preload next book** setting. The current page is prepared first,
+then upcoming pages are processed one at a time.
+
 If a locally stored page uses a format or storage operation that the local reader
 cannot decode, the online reader retries that page from Komga when connected. The
 offline log records the affected book, page, preload context, and full stack trace

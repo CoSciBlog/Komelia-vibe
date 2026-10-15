@@ -167,6 +167,17 @@ Introduced in 0.20.6. Both user-facing policies are opt-in and default to `false
   downloaded file instead of being fetched again from Komga. A failed connection
   must not require the user to switch manually into offline mode before opening
   local content.
+- Comic readers automatically prepare the next three pages (three spreads in paged
+  layouts) and one preceding page/spread, including decoding, image processing,
+  panel detection where applicable, and initial rasterization. This is separate
+  from the opt-in next-book download policy. Prepare the visible page first and
+  process offscreen pages sequentially, with a cache bounded to ten images.
+- A page turn cancels only obsolete navigation/preparation waiters; cached source
+  loads and processing are reused instead of being cancelled and restarted.
+  Concurrent requests for a cached page share one source load. Evicted images,
+  including pending loads that finish after eviction, must be closed.
+- The page-data loading indicator says "Loading" because it can represent local
+  archive extraction or disk-cache access as well as a network request.
 - Downloaded books reconcile local and Komga read progress by modification time
   before the reader chooses its initial page. Successful online progress updates,
   EPUB progression changes, and progress deletion are written through to the local
@@ -219,6 +230,8 @@ Primary areas:
 Regression test:
 
 - `komelia-domain/offline/src/commonTest/kotlin/snd/komelia/offline/sync/DownloadRetentionPolicyTest.kt`
+- `komelia-ui/src/commonTest/kotlin/snd/komelia/ui/reader/image/ReaderPageCacheTest.kt`
+- `komelia-ui/src/commonTest/kotlin/snd/komelia/ui/reader/image/ReaderImagePreparationTest.kt`
 - `komelia-domain/core/src/commonTest/kotlin/snd/komelia/api/RemoteBookApiTest.kt`
 
 An upstream implementation may replace this code only after confirming equivalent

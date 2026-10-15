@@ -5,13 +5,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
-import io.github.reactivecircus.cache4k.Cache
-import io.github.reactivecircus.cache4k.CacheEvent.Evicted
-import io.github.reactivecircus.cache4k.CacheEvent.Expired
-import io.github.reactivecircus.cache4k.CacheEvent.Removed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -44,6 +41,9 @@ import snd.komelia.settings.model.PagedReadingDirection.RIGHT_TO_LEFT
 import snd.komelia.ui.reader.image.BookState
 import snd.komelia.ui.reader.image.PageMetadata
 import snd.komelia.ui.reader.image.ReaderState
+import snd.komelia.ui.reader.image.ReaderPageCache
+import snd.komelia.ui.reader.image.awaitPrepared
+import snd.komelia.ui.reader.image.readerPreloadIndices
 import snd.komelia.ui.reader.image.ScreenScaleState
 import snd.komelia.ui.reader.image.SpreadIndex
 import snd.komelia.ui.reader.image.resolveSpreadIndex
@@ -64,20 +64,12 @@ class PagedReaderState(
 ) {
     private val stateScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val pageLoadScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val imageLoadScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private var preloadJob: Job? = null
 
-    private val imageCache = Cache.Builder<PageId, Deferred<Page>>()
-        .maximumCacheSize(10)
-        .eventListener {
-            val value = when (it) {
-                is Evicted -> it.value
-                is Expired -> it.value
-                is Removed -> it.value
-                else -> null
-            } ?: return@eventListener
-
-            cleanupScope.launch { value.await().imageResult?.image?.close() }
-        }
-        .build()
+    private val imageCache = ReaderPageCache<PageId, Page>(imageLoadScope, cleanupScope) {
+        it.imageResult?.image?.close()
+    }
 
     val pageSpreads = MutableStateFlow<List<List<PageMetadata>>>(emptyList())
     val currentSpreadIndex = MutableStateFlow(0)
@@ -133,7 +125,8 @@ class PagedReaderState(
 
     fun stop() {
         stateScope.coroutineContext.cancelChildren()
-        imageCache.invalidateAll()
+        pageLoadScope.coroutineContext.cancelChildren()
+        imageCache.clear()
     }
 
     private suspend fun updateSpreadImageState(
@@ -303,6 +296,7 @@ class PagedReaderState(
     }
 
     private fun loadPage(spreadIndex: Int) {
+        if (spreadIndex !in pageSpreads.value.indices) return
         if (spreadIndex != currentSpreadIndex.value) {
             val pageNumber = pageSpreads.value[spreadIndex].last().pageNumber
             stateScope.launch { readerState.onProgressChange(pageNumber) }
@@ -314,13 +308,9 @@ class PagedReaderState(
     }
 
     private suspend fun loadSpread(loadSpreadIndex: Int) {
-        val loadRange = getSpreadLoadRange(loadSpreadIndex)
-        val currentSpreadMetadata = pageSpreads.value[loadSpreadIndex]
+        val spreads = pageSpreads.value
+        val currentSpreadMetadata = spreads[loadSpreadIndex]
         val currentSpreadJob = launchSpreadLoadJob(currentSpreadMetadata)
-
-        loadRange.filter { it != loadSpreadIndex }.forEach { spreadIndex ->
-            enqueueSpreadLoadJob(pageSpreads.value[spreadIndex])
-        }
 
         if (currentSpreadJob.isActive) {
             delay(10)
@@ -338,6 +328,17 @@ class PagedReaderState(
 
         val newScale = completedPagesJob.scale
         screenScaleState.apply(newScale)
+
+        // Prepare only one offscreen spread at a time and prioritize the visible
+        // spread. The cached image loads survive cancellation on a page turn.
+        preloadJob?.cancel()
+        preloadJob = pageLoadScope.launch {
+            completedPagesJob.spread.pages.forEach { it.imageResult?.image?.awaitPrepared() }
+            for (index in readerPreloadIndices(loadSpreadIndex, spreads.size)) {
+                val prepared = launchSpreadLoadJob(spreads[index]).await()
+                prepared.spread.pages.forEach { it.imageResult?.image?.awaitPrepared() }
+            }
+        }
     }
 
     data class PagesLoadJob(
@@ -345,16 +346,12 @@ class PagedReaderState(
         val scale: ScreenScaleState
     )
 
-    private fun launchSpreadLoadJob(pagesMeta: List<PageMetadata>): Deferred<PagesLoadJob> {
+    private suspend fun launchSpreadLoadJob(pagesMeta: List<PageMetadata>): Deferred<PagesLoadJob> {
         val pages = pagesMeta.map { meta ->
-            val pageId = meta.toPageId()
-            val cached = imageCache.get(pageId)
-
-            if (cached != null && !cached.isCancelled) cached
-            else pageLoadScope.async {
+            imageCache.getOrLoad(meta.toPageId()) {
                 val imageResult = imageLoader.loadReaderImage(meta.bookId, meta.pageNumber)
                 Page(meta, imageResult)
-            }.also { imageCache.put(pageId, it) }
+            }
         }
 
         return pageLoadScope.async {
@@ -394,11 +391,6 @@ class PagedReaderState(
 
         return PagesLoadJob(spread, newScale)
 
-    }
-
-    @Suppress("DeferredResultUnused")
-    private fun enqueueSpreadLoadJob(pagesMeta: List<PageMetadata>) {
-        launchSpreadLoadJob(pagesMeta)
     }
 
     private fun getMaxPageSize(pages: List<PageMetadata>, containerSize: IntSize): IntSize {
@@ -483,11 +475,6 @@ class PagedReaderState(
         return pageSpreads.value.indexOfFirst { spread ->
             spread.any { it.pageNumber == page.pageNumber }
         }
-    }
-
-    private fun getSpreadLoadRange(spreadIndex: Int): IntRange {
-        val spreads = pageSpreads.value
-        return (spreadIndex - 1).coerceAtLeast(0)..(spreadIndex + 1).coerceAtMost(spreads.size - 1)
     }
 
     fun onLayoutChange(layout: PageDisplayLayout) {

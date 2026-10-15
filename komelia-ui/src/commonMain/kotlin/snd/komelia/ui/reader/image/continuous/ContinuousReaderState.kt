@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelChildren
@@ -43,6 +44,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import snd.komelia.AppNotifications
 import snd.komelia.image.BookImageLoader
 import snd.komelia.image.ReaderImage
@@ -58,6 +61,8 @@ import snd.komelia.settings.model.ContinuousReadingDirection.TOP_TO_BOTTOM
 import snd.komelia.ui.reader.image.PageMetadata
 import snd.komelia.ui.reader.image.ReaderState
 import snd.komelia.ui.reader.image.ScreenScaleState
+import snd.komelia.ui.reader.image.awaitPrepared
+import snd.komelia.ui.reader.image.readerPreloadIndices
 import snd.komga.client.book.KomgaBookId
 import snd.komga.client.common.KomgaReadingDirection
 import kotlin.math.roundToInt
@@ -77,6 +82,8 @@ class ContinuousReaderState(
     private val stateScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val imageLoadScope = CoroutineScope(SupervisorJob() + Dispatchers.Default.limitedParallelism(1))
+    private val imageLoadMutex = Mutex()
+    private var preloadJob: Job? = null
 
     val lazyListState = LazyListState(0, 0)
 
@@ -385,12 +392,15 @@ class ContinuousReaderState(
 
     suspend fun getImage(requestPage: PageMetadata): ReaderImageResult {
         val requestedPageJob = launchImageJob(requestPage)
-
-        val nextPage = getPagesFor(requestPage.bookId)?.getOrNull(requestPage.pageNumber)
-        if (nextPage != null) {
-            if (!imagesInUse.containsKey(nextPage.toPageId())) {
-                imageLoadScope.launch {
-                    val result = launchImageJob(nextPage).await()
+        val result = requestedPageJob.await()
+        val pages = getPagesFor(requestPage.bookId).orEmpty()
+        preloadJob?.cancel()
+        preloadJob = stateScope.launch {
+            result.image?.awaitPrepared()
+            for (index in readerPreloadIndices(requestPage.pageNumber - 1, pages.size)) {
+                val page = pages[index]
+                if (!imagesInUse.containsKey(page.toPageId())) {
+                    val result = launchImageJob(page).await()
                     result.image?.let {
                         val size = getImageDisplaySize(it)
                         it.requestUpdate(
@@ -398,16 +408,16 @@ class ContinuousReaderState(
                             zoomFactor = screenScaleState.transformation.value.scale,
                             visibleDisplaySize = screenScaleState.areaSize.value.toIntRect(),
                         )
+                        it.awaitPrepared()
                     }
-
                 }
             }
         }
 
-        return requestedPageJob.await()
+        return result
     }
 
-    private fun launchImageJob(requestPage: PageMetadata): Deferred<ReaderImageResult> {
+    private suspend fun launchImageJob(requestPage: PageMetadata): Deferred<ReaderImageResult> = imageLoadMutex.withLock {
         val pageId = requestPage.toPageId()
         val cached = imageCache.get(pageId)
 
@@ -416,7 +426,7 @@ class ContinuousReaderState(
             .also { imageCache.put(pageId, it) }
 
 
-        return job
+        job
     }
 
     private suspend fun updateVisibleImages() {
