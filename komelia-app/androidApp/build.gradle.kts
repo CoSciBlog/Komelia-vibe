@@ -10,9 +10,25 @@ plugins {
 group = "io.github.cosciblog.komelia.vibe"
 version = libs.versions.app.version.get()
 
+// Komelia-Vibe distribution changes: retain upstream and dependency attribution.
+val legalAssetsDirectory = layout.buildDirectory.dir("generated/legalAssets")
+val prepareAndroidLegalNotices = tasks.register<Sync>("prepareAndroidLegalNotices") {
+    from(rootProject.file("LICENSE"), rootProject.file("NOTICE"), rootProject.file("CREDITS.md"))
+    from(rootProject.fileTree("komelia-epub-reader") {
+        include("**/LICENSE", "**/NOTICE")
+        exclude("**/node_modules/**", "**/build/**", "**/dist/**")
+    }) { into("readers") }
+    from(rootProject.fileTree("third_party") {
+        include("**/LICENSE*", "**/COPYING*", "**/NOTICE*", "**/PATENTS*", "**/COPYRIGHT*")
+        exclude("**/build/**", "**/node_modules/**", "**/.git/**", "**/.gradle/**")
+    }) { into("third_party") }
+    into(legalAssetsDirectory.map { it.dir("legal") })
+}
+
 // Native dependencies are prepared separately; do not silently package a broken APK.
 tasks.named("preBuild") {
     dependsOn(rootProject.tasks.named("verifyAndroidPackagingInputs"))
+    dependsOn(prepareAndroidLegalNotices)
 }
 
 
@@ -69,6 +85,7 @@ android {
     }
     sourceSets["main"].manifest.srcFile("src/main/$manifestFile")
     sourceSets["main"].res.srcDirs("src/main/res")
+    sourceSets["main"].assets.srcDir(legalAssetsDirectory.get().asFile)
 
     buildFeatures {
         buildConfig = true

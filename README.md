@@ -62,14 +62,21 @@ paged, continuous, and panel reading modes.
 
 Development and maintenance changes in this fork may be made with the assistance of AI and OpenAI Codex. Such changes are still subject to the project's build and test workflow.
 
+See [CREDITS.md](CREDITS.md), [NOTICE](NOTICE), and the original [Apache-2.0
+license](LICENSE) for attribution and licensing. Android releases include these
+documents and bundled component license/notice texts under `assets/legal/`.
+
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.12 is an Android-only bug-fix release;
+- Release assets vary by version. Version 0.20.13 is an Android-only reader-performance release;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
+- Version 0.20.13 (Android version code 38) prepares the next three comic pages
+  or spreads, including processing and initial rendering, and reuses pending
+  loads across page turns. It includes the earlier offline-download and progress fixes.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots
@@ -214,6 +221,14 @@ cleanup cannot remove files from the host checkout.
 Name the aligned and signed release artifact
 `Komelia-Vibe-<version>-android-universal.apk` only after APK inspection confirms
 all four ABI directories and their required libraries.
+
+The reusable `cmake/verify-android-apk.py` checker verifies the universal APK's
+identity/version, every ABI's ELF machine and native dependencies against Android
+API 26 in the NDK, 16 KiB ELF alignment on 64-bit ABIs (4 KiB on 32-bit ABIs), EPUB assets, and packaged credits and
+license/notice files. Run it with `--help` for its required APK, NDK, and `aapt`
+paths. Signature/certificate continuity and ZIP alignment must also be verified
+with `apksigner` and `zipalign` before publishing. Keep the checksum and verification
+results with the release artifacts.
 
 
 ## Komf Wasm WebUI

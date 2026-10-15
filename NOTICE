@@ -1,0 +1,17 @@
+Komelia-Vibe
+
+This distribution is derived from Komelia by Snd-R and its contributors:
+https://github.com/Snd-R/Komelia
+
+Komelia-Vibe fork maintenance and modifications: CoSciBlog and contributors.
+https://github.com/CoSciBlog/Komelia-vibe
+
+The application source is licensed under the Apache License, Version 2.0.
+A copy is supplied as LICENSE. Third-party components retain their own licenses,
+copyright, and attribution notices. See CREDITS.md and the bundled component
+license/notice files for further information.
+
+This is a modified, independently distributed application. Fork behavior and
+changes are identified in FORK_CHANGES.md, CHANGELOG.md, and Git history.
+Release 0.20.13 includes reader page preparation and distribution improvements
+prepared with material assistance from OpenAI Codex.
