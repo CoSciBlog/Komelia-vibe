@@ -224,7 +224,7 @@ all four ABI directories and their required libraries.
 
 The reusable `cmake/verify-android-apk.py` checker verifies the universal APK's
 identity/version, every ABI's ELF machine and native dependencies against Android
-API 26 in the NDK, 16 KiB ELF alignment, EPUB assets, and packaged credits and
+API 26 in the NDK, 16 KiB ELF alignment on 64-bit ABIs (4 KiB on 32-bit ABIs), EPUB assets, and packaged credits and
 license/notice files. Run it with `--help` for its required APK, NDK, and `aapt`
 paths. Signature/certificate continuity and ZIP alignment must also be verified
 with `apksigner` and `zipalign` before publishing. Keep the checksum and verification

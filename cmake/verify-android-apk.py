@@ -40,8 +40,12 @@ def elf_dependencies(data, elf_class, machine, name):
         dynamic_format = "<iI"
     loads = [s for s in segments if s[0] == 1]
     assert loads, f"No load segments: {name}"
-    assert all(s[4] >= 16384 and s[4] & (s[4] - 1) == 0 for s in loads), f"Not 16 KiB aligned: {name}"
-    assert all((s[1] - s[2]) % 16384 == 0 for s in loads), f"Misaligned load segment: {name}"
+    # Android's 16 KiB requirement applies to arm64-v8a and x86_64;
+    # the 32-bit ABIs retain 4 KiB pages. See Android NDK's
+    # https://android.googlesource.com/platform/ndk/+/master/docs/BuildSystemMaintainers.md
+    alignment = 16384 if elf_class == 2 else 4096
+    assert all(s[4] >= alignment and s[4] & (s[4] - 1) == 0 for s in loads), f"Not {alignment}-byte aligned: {name}"
+    assert all((s[1] - s[2]) % alignment == 0 for s in loads), f"Misaligned load segment: {name}"
     dynamic = next((s for s in segments if s[0] == 2), None)
     if dynamic is None:
         return []
@@ -104,7 +108,8 @@ def verify(args):
         "package": package[1], "version": package[3], "versionCode": int(package[2]),
         "nativeLibraries": counts, "legalFiles": legal_count,
         "zipCrc": "PASS", "epubAssets": "PASS", "nativeDependencies": "PASS",
-        "elf16KiBAlignment": "PASS", "licensesAndCredits": "PASS",
+        "elf16KiBAlignment": {"arm64-v8a": "PASS", "x86_64": "PASS"},
+        "elf4KiBAlignment32Bit": "PASS", "licensesAndCredits": "PASS",
     }
 
 
