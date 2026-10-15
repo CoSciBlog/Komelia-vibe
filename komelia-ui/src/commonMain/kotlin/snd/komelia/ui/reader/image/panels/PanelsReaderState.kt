@@ -7,15 +7,11 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toIntSize
 import androidx.compose.ui.unit.toSize
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.github.reactivecircus.cache4k.Cache
-import io.github.reactivecircus.cache4k.CacheEvent.Evicted
-import io.github.reactivecircus.cache4k.CacheEvent.Expired
-import io.github.reactivecircus.cache4k.CacheEvent.Removed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -43,6 +39,9 @@ import snd.komelia.settings.model.PagedReadingDirection.RIGHT_TO_LEFT
 import snd.komelia.ui.reader.image.BookState
 import snd.komelia.ui.reader.image.PageMetadata
 import snd.komelia.ui.reader.image.ReaderState
+import snd.komelia.ui.reader.image.ReaderPageCache
+import snd.komelia.ui.reader.image.awaitPrepared
+import snd.komelia.ui.reader.image.readerPreloadIndices
 import snd.komelia.ui.reader.image.ScreenScaleState
 import snd.komelia.ui.reader.image.resolvePageIndex
 import snd.komelia.ui.reader.image.paged.PagedReaderState.TransitionPage
@@ -68,22 +67,11 @@ class PanelsReaderState(
 ) {
     private val stateScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val pageLoadScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val imageCache = Cache.Builder<PageId, Deferred<PanelsPage>>()
-        .maximumCacheSize(10)
-        .eventListener {
-            val value = when (it) {
-                is Evicted -> it.value
-                is Expired -> it.value
-                is Removed -> it.value
-                else -> null
-            } ?: return@eventListener
-
-            cleanupScope.launch {
-                if (value.isCancelled) return@launch
-                value.await().imageResult?.image?.close()
-            }
-        }
-        .build()
+    private val imageLoadScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private var preloadJob: Job? = null
+    private val imageCache = ReaderPageCache<PageId, PanelsPage>(imageLoadScope, cleanupScope) {
+        it.imageResult?.image?.close()
+    }
 
     val pageMetadata: MutableStateFlow<List<PageMetadata>> = MutableStateFlow(emptyList())
 
@@ -148,8 +136,9 @@ class PanelsReaderState(
 
     fun stop() {
         stateScope.coroutineContext.cancelChildren()
+        pageLoadScope.coroutineContext.cancelChildren()
         screenScaleState.enableOverscrollArea(false)
-        imageCache.invalidateAll()
+        imageCache.clear()
     }
 
     private suspend fun updateImageState(
@@ -355,6 +344,7 @@ class PanelsReaderState(
     }
 
     private fun launchPageLoad(pageIndex: Int) {
+        if (pageIndex !in pageMetadata.value.indices) return
         if (pageIndex != currentPageIndex.value.page) {
             val pageNumber = pageIndex + 1
             stateScope.launch { readerState.onProgressChange(pageNumber) }
@@ -367,7 +357,6 @@ class PanelsReaderState(
     private suspend fun doPageLoad(pageIndex: Int) {
         val pageMeta = pageMetadata.value[pageIndex]
         val downloadJob = launchDownload(pageMeta)
-        preloadImagesBetween(pageIndex)
 
         if (downloadJob.isActive) {
             currentPage.value = PanelsPage(
@@ -382,14 +371,7 @@ class PanelsReaderState(
         }
 
         val page = downloadJob.await()
-        val sortedPanelsPage = if (page.panelData != null) {
-            val sortedPanels = sortPanels(
-                page.panelData.panels,
-                page.panelData.originalImageSize,
-                readingDirection.value
-            )
-            page.copy(panelData = page.panelData.copy(panels = sortedPanels))
-        } else page
+        val sortedPanelsPage = sortPagePanels(page)
 
         val containerSize = screenScaleState.areaSize.value
         val scale = getScaleFor(sortedPanelsPage, containerSize)
@@ -400,38 +382,44 @@ class PanelsReaderState(
         currentPage.value = sortedPanelsPage
         screenScaleState.enableOverscrollArea(true)
         screenScaleState.apply(scale)
+        preloadImagesBetween(pageIndex)
     }
 
-    private fun preloadImagesBetween(pageIndex: Int) {
-        val previousPage = (pageIndex - 1).coerceAtLeast(0)
-        val nextPage = (pageIndex + 1).coerceAtMost(pageMetadata.value.size - 1)
-        val loadRange = (previousPage..nextPage).filter { it != pageIndex }
+    private fun sortPagePanels(page: PanelsPage): PanelsPage =
+        if (page.panelData != null) {
+            val sortedPanels = sortPanels(
+                page.panelData.panels,
+                page.panelData.originalImageSize,
+                readingDirection.value
+            )
+            page.copy(panelData = page.panelData.copy(panels = sortedPanels))
+        } else page
 
-        for (index in loadRange) {
-            val imageJob = launchDownload(pageMetadata.value[index])
-            pageLoadScope.launch {
-                val image = imageJob.await()
+    private fun preloadImagesBetween(pageIndex: Int) {
+        val pages = pageMetadata.value
+        preloadJob?.cancel()
+        preloadJob = pageLoadScope.launch {
+            currentPage.value?.imageResult?.image?.awaitPrepared()
+            for (index in readerPreloadIndices(pageIndex, pages.size)) {
+                val image = sortPagePanels(launchDownload(pages[index]).await())
                 val scale = getScaleFor(image, screenScaleState.areaSize.value)
                 updateImageState(image, scale)
+                image.imageResult?.image?.awaitPrepared()
             }
         }
     }
 
-    private fun launchDownload(meta: PageMetadata): Deferred<PanelsPage> {
-        val pageId = meta.toPageId()
-        val cached = imageCache.get(pageId)
-        if (cached != null && !cached.isCancelled) return cached
-
-        val loadJob: Deferred<PanelsPage> = pageLoadScope.async {
+    private suspend fun launchDownload(meta: PageMetadata): Deferred<PanelsPage> {
+        return imageCache.getOrLoad(meta.toPageId()) load@{
             val imageResult = imageLoader.loadReaderImage(meta.bookId, meta.pageNumber)
-            val image = imageResult.image ?: return@async PanelsPage(
+            val image = imageResult.image ?: return@load PanelsPage(
                 metadata = meta,
                 imageResult = imageResult,
                 panelData = null
             )
 
             val originalImage = image.getOriginalImage().getOrNull()
-                ?: return@async PanelsPage(
+                ?: return@load PanelsPage(
                     metadata = meta,
                     imageResult = imageResult,
                     panelData = null
@@ -443,7 +431,8 @@ class PanelsReaderState(
                     logger.info { "rf detr before run" }
                     onnxRuntimeRfDetr.detect(originalImage).map { it.boundingBox }
                 } catch (e: OnnxRuntimeException) {
-                    return@async PanelsPage(
+                    image.close()
+                    return@load PanelsPage(
                         metadata = meta,
                         imageResult = ReaderImageResult.Error(e),
                         panelData = null
@@ -474,14 +463,12 @@ class PanelsReaderState(
                 panelCoversMajorityOfImage = panelRatio > .8f
             )
 
-            return@async PanelsPage(
+            PanelsPage(
                 metadata = meta,
                 imageResult = imageResult,
                 panelData = panelData
             )
         }
-        imageCache.put(pageId, loadJob)
-        return loadJob
     }
 
     private suspend fun getScaleFor(

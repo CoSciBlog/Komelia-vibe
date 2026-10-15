@@ -4,6 +4,14 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+- Prepare the next three comic-reader pages (or spreads) in the background,
+  including decoding, image processing, panel detection where applicable, and
+  initial rendering. Reuse in-flight loads when turning pages instead of cancelling
+  and restarting them; keep the rendered image cache bounded.
+- Show "Loading" instead of "Downloading" while opening page data, including
+  pages read from existing offline downloads.
+- This improvement and its regression tests were prepared with OpenAI Codex assistance.
+
 ## 0.20.12 - 2026-10-03
 
 - Retry interrupted book transfers up to three times with bounded backoff when

@@ -40,7 +40,7 @@ fun ReaderImageContent(imageResult: ReaderImageResult?) {
             content = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(color = Color.Black)
-                    Text("Downloading...", color = Color.Black)
+                    Text("Loading...", color = Color.Black)
                 }
             }
         )
