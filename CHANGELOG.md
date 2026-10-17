@@ -4,6 +4,16 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.15 - 2026-10-17
+
+- Add a localized Download button directly beside the publication status, such
+  as Ongoing, on the standard series detail page. Controls wrap on narrow screens.
+- Reuse the existing series download action, notification permission request,
+  and confirmation. Online/offline availability and unread-only download policy
+  retain the behavior of the overflow-menu command.
+- This change and its release preparation were made with material assistance
+  from OpenAI Codex.
+
 ## 0.20.14 - 2026-10-17
 
 - Add direct "Mark read" and "Mark unread" buttons beside Read and Download on

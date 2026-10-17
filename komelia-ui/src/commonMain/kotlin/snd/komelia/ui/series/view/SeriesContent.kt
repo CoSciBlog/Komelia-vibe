@@ -75,6 +75,7 @@ import snd.komelia.ui.LocalKomfIntegration
 import snd.komelia.ui.LocalKomfMangaBakaIntegration
 import snd.komelia.ui.LocalKomgaState
 import snd.komelia.ui.LocalOfflineMode
+import snd.komelia.ui.LocalOfflineAvailable
 import snd.komelia.ui.LocalWindowWidth
 import snd.komelia.ui.collection.SeriesCollectionsContent
 import snd.komelia.ui.collection.SeriesCollectionsState
@@ -193,6 +194,7 @@ fun SeriesContent(
                                 library = library,
                                 onLibraryClick = onLibraryClick,
                                 onFilterClick = onFilterClick,
+                                onDownload = { seriesMenuActions.download(series) },
                             )
                         }
                     }
@@ -477,8 +479,11 @@ fun Series(
     library: KomgaLibrary,
     onLibraryClick: (KomgaLibrary) -> Unit,
     onFilterClick: (SeriesScreenFilter) -> Unit,
+    onDownload: () -> Unit,
 ) {
     val width = LocalWindowWidth.current
+    val offlineAvailable = LocalOfflineAvailable.current
+    val isOffline = LocalOfflineMode.current.collectAsState().value
     val animation: FiniteAnimationSpec<IntSize> = remember(series) {
         when (width) {
             COMPACT, MEDIUM -> spring(stiffness = Spring.StiffnessHigh)
@@ -513,6 +518,11 @@ fun Series(
                         alternateTitles = series.metadata.alternateTitles,
                         onFilterClick = onFilterClick,
                         modifier = Modifier,
+                        statusActions = {
+                            if (offlineAvailable && !isOffline) {
+                                SeriesDownloadButton(series, onDownload)
+                            }
+                        },
                     )
                     HorizontalDivider(Modifier.padding(vertical = 10.dp))
                     SeriesSummary(

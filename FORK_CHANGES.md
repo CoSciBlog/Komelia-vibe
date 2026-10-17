@@ -291,6 +291,24 @@ Primary areas:
 - book and oneshot detail content under `komelia-ui/src/commonMain/`
 - `BookActionsMenu.kt` and `OneshotActionsMenu.kt`
 
+### 8. Direct series download beside publication status
+
+Introduced in 0.20.15.
+
+- The standard series detail page exposes a localized Download button immediately
+  after its publication-status chip (including Ongoing), with wrapping and vertical
+  alignment on narrow displays. Other metadata filters remain usable.
+- The button has the same online/offline-platform availability as the series
+  overflow-menu download command and does not require administrator privileges.
+- It uses the existing notification permission and series-download confirmation,
+  then calls `SeriesMenuActions.download`. Series queuing, unread-only policy,
+  already-local skips, and download provenance remain unchanged.
+
+Primary areas:
+
+- `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/series/view/SeriesContent.kt`
+- `SeriesDescriptionRow.kt` and `SeriesDownloadButton.kt` in the same directory
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:
