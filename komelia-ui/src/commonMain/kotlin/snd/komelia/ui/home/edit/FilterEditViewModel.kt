@@ -4,6 +4,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_downloaded_series
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.Eagerly
@@ -20,6 +22,8 @@ import snd.komelia.komga.api.KomgaCollectionsApi
 import snd.komelia.komga.api.KomgaReadListApi
 import snd.komelia.komga.api.KomgaReferentialApi
 import snd.komelia.komga.api.KomgaSeriesApi
+import snd.komelia.komga.api.model.KomeliaSeries
+import org.jetbrains.compose.resources.getString
 import snd.komelia.ui.LoadState
 import snd.komelia.ui.LoadState.Uninitialized
 import snd.komelia.ui.common.cards.defaultCardWidth
@@ -40,6 +44,7 @@ class FilterEditViewModel(
     private val filterRepository: HomeScreenFilterRepository,
     private val libraries: Flow<List<KomgaLibrary>>,
     cardWidthFlow: Flow<Dp>,
+    private val loadDownloadedSeries: suspend (Int) -> List<KomeliaSeries>,
 ) : StateScreenModel<LoadState<Unit>>(Uninitialized) {
     private val filterSuggestionOptions = MutableStateFlow(
         FilterSuggestionOptions(
@@ -71,6 +76,7 @@ class FilterEditViewModel(
                 )
 
                 is SeriesFilterData -> SeriesFilterEditState(
+                    loadDownloadedSeries = loadDownloadedSeries,
                     seriesApi = seriesApi,
                     collectionApi = collectionApi,
                     appNotifications = appNotifications,
@@ -104,6 +110,7 @@ class FilterEditViewModel(
                         )
 
                         is SeriesHomeScreenFilter -> SeriesFilterEditState(
+                            loadDownloadedSeries = loadDownloadedSeries,
                             seriesApi = seriesApi,
                             collectionApi = collectionApi,
                             appNotifications = appNotifications,
@@ -145,31 +152,49 @@ class FilterEditViewModel(
     }
 
     fun onFilterAdd(type: FilterType) {
-        val newFilter = when (type) {
-            FilterType.Series -> SeriesFilterEditState(
-                seriesApi = seriesApi,
-                collectionApi = collectionApi,
-                appNotifications = appNotifications,
-                coroutineScope = screenModelScope,
-                options = filterSuggestionOptions,
-                cardWidth = cardWidth,
-                initialFilter = null,
-                initialSeries = null,
-            )
+        screenModelScope.launch {
+            val newFilter = when (type) {
+                FilterType.DownloadedSeries -> SeriesFilterEditState(
+                    loadDownloadedSeries = loadDownloadedSeries,
+                    seriesApi = seriesApi,
+                    collectionApi = collectionApi,
+                    appNotifications = appNotifications,
+                    coroutineScope = screenModelScope,
+                    options = filterSuggestionOptions,
+                    cardWidth = cardWidth,
+                    initialFilter = SeriesHomeScreenFilter.Downloaded(
+                        order = 0,
+                        label = getString(Res.string.home_filter_downloaded_series),
+                    ),
+                    initialSeries = null,
+                )
 
-            FilterType.Book -> BookFilterEditState(
-                seriesApi = seriesApi,
-                bookApi = bookApi,
-                readListApi = readListApi,
-                appNotifications = appNotifications,
-                coroutineScope = screenModelScope,
-                options = filterSuggestionOptions,
-                cardWidth = cardWidth,
-                initialFilter = null,
-                initialBooks = null,
-            )
+                FilterType.Series -> SeriesFilterEditState(
+                    loadDownloadedSeries = loadDownloadedSeries,
+                    seriesApi = seriesApi,
+                    collectionApi = collectionApi,
+                    appNotifications = appNotifications,
+                    coroutineScope = screenModelScope,
+                    options = filterSuggestionOptions,
+                    cardWidth = cardWidth,
+                    initialFilter = null,
+                    initialSeries = null,
+                )
+
+                FilterType.Book -> BookFilterEditState(
+                    seriesApi = seriesApi,
+                    bookApi = bookApi,
+                    readListApi = readListApi,
+                    appNotifications = appNotifications,
+                    coroutineScope = screenModelScope,
+                    options = filterSuggestionOptions,
+                    cardWidth = cardWidth,
+                    initialFilter = null,
+                    initialBooks = null,
+                )
+            }
+            filters.update { current -> current.plus(newFilter) }
         }
-        filters.update { current -> current.plus(newFilter) }
     }
 
     fun onFilterRemove(filter: FilterEditState) {
@@ -195,6 +220,7 @@ class FilterEditViewModel(
                     )
 
                     is SeriesHomeScreenFilter -> SeriesFilterEditState(
+                        loadDownloadedSeries = loadDownloadedSeries,
                         seriesApi = seriesApi,
                         collectionApi = collectionApi,
                         appNotifications = appNotifications,
@@ -217,6 +243,6 @@ class FilterEditViewModel(
     }
 
     enum class FilterType {
-        Series, Book
+        Series, Book, DownloadedSeries
     }
 }

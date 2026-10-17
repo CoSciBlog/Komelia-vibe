@@ -32,6 +32,9 @@ kotlin {
             languageSettings.optIn("kotlin.time.ExperimentalTime")
             languageSettings.optIn("kotlin.uuid.ExperimentalUuidApi")
         }
+        jvmTest.dependencies {
+            implementation(kotlin("test"))
+        }
         commonMain.dependencies {
             implementation(projects.komeliaDomain.core)
             implementation(projects.komeliaDomain.offline)

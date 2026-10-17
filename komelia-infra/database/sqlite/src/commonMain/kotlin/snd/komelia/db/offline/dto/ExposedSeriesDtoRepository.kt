@@ -11,6 +11,7 @@ import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.countDistinct
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.inList
+import org.jetbrains.exposed.v1.core.inSubQuery
 import org.jetbrains.exposed.v1.core.like
 import org.jetbrains.exposed.v1.core.neq
 import org.jetbrains.exposed.v1.jdbc.Database
@@ -26,6 +27,7 @@ import snd.komelia.db.offline.page
 import snd.komelia.db.offline.tables.OfflineBookMetadataAggregationAuthorTable
 import snd.komelia.db.offline.tables.OfflineBookMetadataAggregationTable
 import snd.komelia.db.offline.tables.OfflineBookMetadataAggregationTagTable
+import snd.komelia.db.offline.tables.OfflineBookTable
 import snd.komelia.db.offline.tables.OfflineReadProgressSeriesTable
 import snd.komelia.db.offline.tables.OfflineSeriesMetadataAlternateTitleTable
 import snd.komelia.db.offline.tables.OfflineSeriesMetadataGenreTable
@@ -115,6 +117,15 @@ class ExposedSeriesDtoRepository(
             pageRequest = pageRequest
         )
     }
+
+    override suspend fun findAllDownloaded(
+        userId: KomgaUserId,
+        pageRequest: KomgaPageRequest,
+    ): Page<KomgaSeries> = findAll(
+        conditions = downloadedSeriesCondition(),
+        userId = userId,
+        pageRequest = pageRequest,
+    )
 
     override suspend fun findAll(
         search: KomgaSeriesSearch,
@@ -451,3 +462,6 @@ class ExposedSeriesDtoRepository(
         lastModified = Instant.fromEpochSeconds(this[bookMetaAggregation.lastModifiedDate]),
     )
 }
+
+internal fun downloadedSeriesCondition(): Op<Boolean> =
+    OfflineSeriesTable.id inSubQuery OfflineBookTable.select(OfflineBookTable.seriesId)

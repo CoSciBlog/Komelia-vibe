@@ -62,6 +62,7 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_del
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_edit
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_edit_done
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_label
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_downloaded_series
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_reset_to_default
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_reset_to_default_confirm
 import org.jetbrains.compose.resources.stringResource
@@ -69,6 +70,7 @@ import sh.calvin.reorderable.ReorderableCollectionItemScope
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import snd.komelia.ui.LocalPlatform
+import snd.komelia.ui.LocalOfflineAvailable
 import snd.komelia.ui.common.cards.BookImageCard
 import snd.komelia.ui.common.cards.SeriesImageCard
 import snd.komelia.ui.common.components.DropdownChoiceMenu
@@ -80,6 +82,7 @@ import snd.komelia.ui.home.edit.BookOnDeckFilterState
 import snd.komelia.ui.home.edit.FilterEditState
 import snd.komelia.ui.home.edit.FilterEditViewModel
 import snd.komelia.ui.home.edit.SeriesCustomFilterState
+import snd.komelia.ui.home.edit.SeriesDownloadedFilterState
 import snd.komelia.ui.home.edit.SeriesFilterEditState
 import snd.komelia.ui.home.edit.SeriesRecentlyAddedFilterState
 import snd.komelia.ui.home.edit.SeriesRecentlyUpdatedFilterState
@@ -197,6 +200,7 @@ fun AddConditionButton(
     modifier: Modifier = Modifier
 ) {
     var dropDownExpanded by remember { mutableStateOf(false) }
+    val offlineAvailable = LocalOfflineAvailable.current
     ExposedDropdownMenuBox(
         expanded = dropDownExpanded,
         onExpandedChange = { dropDownExpanded = it },
@@ -216,9 +220,16 @@ fun AddConditionButton(
             onDismissRequest = { dropDownExpanded = false },
             modifier = Modifier.widthIn(min = 200.dp)
         ) {
-            FilterEditViewModel.FilterType.entries.forEach {
+            FilterEditViewModel.FilterType.entries.filter {
+                it != FilterEditViewModel.FilterType.DownloadedSeries || offlineAvailable
+            }.forEach {
                 DropdownMenuItem(
-                    text = { Text(it.name) },
+                    text = {
+                        Text(
+                            if (it == FilterEditViewModel.FilterType.DownloadedSeries)
+                                stringResource(Res.string.home_filter_downloaded_series) else it.name
+                        )
+                    },
                     onClick = {
                         dropDownExpanded = false
                         onConditionAdd(it)
@@ -380,13 +391,25 @@ private fun SeriesFilterEditContent(state: SeriesFilterEditState) {
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         val filter = state.filter.collectAsState().value
         val type = state.type.collectAsState().value
+        val downloadedLabel = stringResource(Res.string.home_filter_downloaded_series)
+        val offlineAvailable = LocalOfflineAvailable.current
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(type, type.name),
-            options = remember { SeriesFilterEditState.FilterType.entries.map { LabeledEntry(it, it.name) } },
+            selectedOption = LabeledEntry(
+                type, if (type == SeriesFilterEditState.FilterType.Downloaded) downloadedLabel else type.name
+            ),
+            options = SeriesFilterEditState.FilterType.entries.filter {
+                it != SeriesFilterEditState.FilterType.Downloaded || offlineAvailable || it == type
+            }.map {
+                LabeledEntry(it, if (it == SeriesFilterEditState.FilterType.Downloaded) downloadedLabel else it.name)
+            },
             onOptionChange = { state.onTypeChange(it.value) },
         )
 
         when (filter) {
+            is SeriesDownloadedFilterState -> PageSizeSettingsContent(
+                pageSize = filter.pageSize.collectAsState().value,
+                onPageSizeChange = filter::onPageSizeChange,
+            )
             is SeriesCustomFilterState -> SeriesConditionContent(filter)
             is SeriesRecentlyAddedFilterState -> PageSizeSettingsContent(
                 pageSize = filter.pageSize.collectAsState().value,

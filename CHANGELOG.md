@@ -4,6 +4,19 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.16 - 2026-10-17
+
+- Add a Downloaded series Home filter, available directly from Add filter or as
+  a series filter type. It lists series with at least one fully downloaded book,
+  alphabetically, online and offline; metadata-only series are excluded.
+- Persist its label, order and display limit using the existing Home-filter
+  storage. Existing customizations remain intact; fresh/reset defaults include
+  the filter. English and German labels are provided.
+- Filter in SQLite before pagination and avoid duplicate series for multiple
+  downloaded books. Existing book events refresh Home after downloads or deletion.
+- This feature, regression coverage and release preparation received material
+  assistance from OpenAI Codex.
+
 ## 0.20.15 - 2026-10-17
 
 - Add a localized Download button directly beside the publication status, such

@@ -84,6 +84,8 @@ import snd.komf.api.MediaServer.KOMGA
 import snd.komga.client.book.KomgaBookId
 import snd.komga.client.collection.KomgaCollection
 import snd.komga.client.collection.KomgaCollectionId
+import snd.komga.client.common.KomgaPageRequest
+import snd.komga.client.common.KomgaSort
 import snd.komga.client.library.KomgaLibrary
 import snd.komga.client.library.KomgaLibraryId
 import snd.komga.client.readlist.KomgaReadList
@@ -145,6 +147,7 @@ class ViewModelFactory(
             komgaEvents = dependencies.komgaEvents.events,
             filterRepository = appRepositories.homeScreenFilterRepository,
             taskEmitter = dependencies.offlineDependencies?.taskEmitter,
+            loadDownloadedSeries = ::getDownloadedSeries,
             cardWidthFlow = getGridCardWidth(),
         )
     }
@@ -160,9 +163,18 @@ class ViewModelFactory(
             referentialApi = komgaApi.referentialApi,
             filterRepository = appRepositories.homeScreenFilterRepository,
             libraries = getLibraries(),
+            loadDownloadedSeries = ::getDownloadedSeries,
             cardWidthFlow = getGridCardWidth(),
         )
     }
+
+    private suspend fun getDownloadedSeries(pageSize: Int): List<KomeliaSeries> =
+        dependencies.offlineDependencies?.komgaApi?.seriesApi?.getDownloadedSeries(
+            KomgaPageRequest(
+                size = pageSize.coerceAtLeast(1),
+                sort = KomgaSort.KomgaSeriesSort.byTitle(KomgaSort.Direction.ASC),
+            )
+        )?.content.orEmpty()
 
     fun getNavigationViewModel(): MainScreenViewModel {
         return MainScreenViewModel(

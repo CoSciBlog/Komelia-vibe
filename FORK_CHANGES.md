@@ -309,6 +309,34 @@ Primary areas:
 - `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/series/view/SeriesContent.kt`
 - `SeriesDescriptionRow.kt` and `SeriesDownloadButton.kt` in the same directory
 
+### 9. Downloaded-series Home filter
+
+Introduced in 0.20.16.
+
+- Home can display a persisted Downloaded series filter, added directly from
+  Add filter or selected as a series filter type. Label, order and display limit
+  remain editable; existing saved filters are not overwritten. Fresh/reset
+  defaults include the new filter.
+- Query the local offline database even while online. A series qualifies when
+  at least one complete book download is present; exclude metadata-only series
+  and remove a series when its last local book is deleted. Partially downloaded
+  series are included, and multiple local books must not duplicate a series.
+- Apply download membership before sorting/pagination, with title-ascending
+  ordering and a positive display limit. Existing book events refresh Home
+  after local downloads and deletions. No Komga protocol payload changes or new
+  remote download-status conditions are introduced.
+- Preserve serialized type names of existing filters. The additive Downloaded
+  type uses existing JSON storage without changing database migrations. Platforms
+  without offline downloads hide its add/type option and safely load no results.
+
+Primary areas and regression tests:
+
+- `komelia-domain/core/src/commonMain/kotlin/snd/komelia/homefilters/HomeFilters.kt`
+- `OfflineSeriesApi` / `OfflineSeriesDtoRepository` and SQLite downloaded-series query
+- Home and filter editor code under `komelia-ui/src/commonMain/`
+- `DownloadedSeriesFilterTest.kt`, `SeriesDownloadedFilterStateTest.kt`, and
+  `DownloadedSeriesQueryTest.kt`
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:

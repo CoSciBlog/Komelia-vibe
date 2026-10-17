@@ -725,6 +725,11 @@ class NoopOfflineReferentialRepository : OfflineReferentialRepository {
 }
 
 class NoopOfflineSeriesDtoRepository : OfflineSeriesDtoRepository {
+    override suspend fun findAllDownloaded(
+        userId: KomgaUserId,
+        pageRequest: KomgaPageRequest,
+    ): Page<KomgaSeries> = error("Offline downloads are unavailable on this platform")
+
     override suspend fun get(
         seriesId: KomgaSeriesId,
         userId: KomgaUserId
