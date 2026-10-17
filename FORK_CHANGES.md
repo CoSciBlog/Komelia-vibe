@@ -272,6 +272,25 @@ An upstream replacement is acceptable only if it preserves all display choices,
 stored values, migration continuity, all image-reader modes, and graceful behavior
 on platforms where battery information is unavailable.
 
+### 7. Direct read-status actions on comic details
+
+Introduced in 0.20.14.
+
+- Book and oneshot detail pages expose localized Mark read and Mark unread
+  buttons beside Read and Download without requiring the overflow menu.
+- Unread books offer Mark read, completed books offer Mark unread, and books
+  with incomplete progress offer both actions. Visibility follows current
+  progress after updates, including in the overflow menus.
+- Action rows wrap on narrow displays. The buttons reuse `BookMenuActions` so
+  Komga synchronization, offline progress, and download cleanup retain the
+  behavior of the existing menu commands.
+
+Primary areas:
+
+- `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/common/BookReadStatusButtons.kt`
+- book and oneshot detail content under `komelia-ui/src/commonMain/`
+- `BookActionsMenu.kt` and `OneshotActionsMenu.kt`
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:

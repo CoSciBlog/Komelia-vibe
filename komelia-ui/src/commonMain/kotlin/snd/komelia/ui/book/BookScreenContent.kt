@@ -58,6 +58,7 @@ import snd.komelia.ui.LocalOfflineAvailable
 import snd.komelia.ui.LocalOfflineMode
 import snd.komelia.ui.LocalWindowWidth
 import snd.komelia.ui.common.BookReadButton
+import snd.komelia.ui.common.BookReadStatusButtons
 import snd.komelia.ui.common.components.ExpandableText
 import snd.komelia.ui.common.images.BookThumbnail
 import snd.komelia.ui.common.menus.BookActionsMenu
@@ -126,6 +127,7 @@ fun BookScreenContent(
                     BookMainInfo(
                         book = book,
                         library = library,
+                        bookMenuActions = bookMenuActions,
                         onBookReadPress = onBookReadPress,
                         onSeriesParentSeriesPress = onParentSeriesPress,
                         onDownload = onBookDownload,
@@ -216,6 +218,7 @@ private fun ToolbarBookActions(
 private fun FlowRowScope.BookMainInfo(
     book: KomeliaBook,
     library: KomgaLibrary,
+    bookMenuActions: BookMenuActions,
     onBookReadPress: (markReadProgress: Boolean) -> Unit,
     onSeriesParentSeriesPress: () -> Unit,
     onDownload: () -> Unit,
@@ -235,9 +238,9 @@ private fun FlowRowScope.BookMainInfo(
             onSeriesButtonClick = onSeriesParentSeriesPress,
         )
 
-        Row(
+        FlowRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             val offlineAvailable = LocalOfflineAvailable.current
 
@@ -252,6 +255,7 @@ private fun FlowRowScope.BookMainInfo(
                     DownloadButton(book, onDownload)
                 }
             }
+            BookReadStatusButtons(book, bookMenuActions)
             if (offlineAvailable && book.downloaded) {
                 ElevatedButton(
                     onClick = onDownloadDelete,

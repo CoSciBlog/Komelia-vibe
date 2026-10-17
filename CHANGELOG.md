@@ -4,6 +4,16 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.14 - 2026-10-17
+
+- Add direct "Mark read" and "Mark unread" buttons beside Read and Download on
+  book and oneshot detail pages. In-progress books offer both actions; buttons
+  wrap onto another line when the screen is narrow.
+- Keep the direct buttons and overflow menus in sync with updated read progress,
+  using the existing online/offline progress actions.
+- This change and its release preparation were made with material assistance
+  from OpenAI Codex.
+
 ## 0.20.13 - 2026-10-15
 
 - Prepare the next three comic-reader pages (or spreads) in the background,
