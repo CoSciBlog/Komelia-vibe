@@ -48,6 +48,7 @@ import snd.komelia.ui.book.BookInfoRow
 import snd.komelia.ui.book.DownloadButton
 import snd.komelia.ui.collection.SeriesCollectionsContent
 import snd.komelia.ui.common.BookReadButton
+import snd.komelia.ui.common.BookReadStatusButtons
 import snd.komelia.ui.common.components.ExpandableText
 import snd.komelia.ui.common.images.BookThumbnail
 import snd.komelia.ui.common.menus.BookMenuActions
@@ -121,6 +122,7 @@ fun OneshotScreenContent(
                         series = series,
                         book = book,
                         library = library,
+                        bookMenuActions = oneshotMenuActions,
                         onLibraryClick = onLibraryClick,
                         onBookReadClick = onBookReadClick,
                         onDownload = onBookDownload,
@@ -220,6 +222,7 @@ private fun FlowRowScope.OneshotMainInfo(
     series: KomeliaSeries,
     book: KomeliaBook,
     library: KomgaLibrary,
+    bookMenuActions: BookMenuActions,
     onLibraryClick: (KomgaLibrary) -> Unit,
     onBookReadClick: (markReadProgress: Boolean) -> Unit,
     onDownload: () -> Unit,
@@ -248,9 +251,9 @@ private fun FlowRowScope.OneshotMainInfo(
             onSeriesButtonClick = null,
         )
 
-        Row(
+        FlowRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             if (readIsSupported(book) && !isDeleted) {
                 BookReadButton(
@@ -262,6 +265,7 @@ private fun FlowRowScope.OneshotMainInfo(
                 }
             }
 
+            BookReadStatusButtons(book, bookMenuActions)
             if (book.downloaded) {
                 ElevatedButton(
                     onClick = onDownloadDelete,
