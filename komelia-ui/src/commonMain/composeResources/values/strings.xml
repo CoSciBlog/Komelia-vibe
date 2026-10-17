@@ -2,6 +2,7 @@
     <string name="screen_error">Error %1$s</string>
 
     <string name="home_filter_all">All</string>
+    <string name="home_filter_downloaded_series">Downloaded series</string>
     <string name="home_filter_default_keep_reading">Keep reading</string>
     <string name="home_filter_default_on_deck">On deck</string>
     <string name="home_filter_default_recently_realeased_books">Recently released books</string>

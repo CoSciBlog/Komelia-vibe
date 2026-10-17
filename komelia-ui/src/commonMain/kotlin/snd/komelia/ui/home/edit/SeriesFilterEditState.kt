@@ -38,13 +38,18 @@ class SeriesFilterEditState(
     private val options: StateFlow<FilterSuggestionOptions>,
     val cardWidth: StateFlow<Dp>,
     initialFilter: SeriesHomeScreenFilter?,
-    initialSeries: List<KomeliaSeries>?
+    initialSeries: List<KomeliaSeries>?,
+    private val loadDownloadedSeries: suspend (Int) -> List<KomeliaSeries>,
 ) : FilterEditState {
     override val label = MutableStateFlow(initialFilter?.label ?: "Series Filter")
 
     val filter: MutableStateFlow<SeriesFilterStateType> = MutableStateFlow(
         initialFilter?.let { initial ->
             when (initial) {
+                is SeriesHomeScreenFilter.Downloaded -> SeriesDownloadedFilterState(
+                    loadDownloadedSeries, appNotifications, coroutineScope, initial, initialSeries
+                )
+
                 is SeriesHomeScreenFilter.CustomFilter -> SeriesCustomFilterState(
                     seriesApi = seriesApi,
                     collectionApi = collectionApi,
@@ -90,6 +95,7 @@ class SeriesFilterEditState(
 
     val type = filter.map {
         when (it) {
+            is SeriesDownloadedFilterState -> FilterType.Downloaded
             is SeriesCustomFilterState -> FilterType.Custom
             is SeriesRecentlyAddedFilterState -> FilterType.RecentlyAdded
             is SeriesRecentlyUpdatedFilterState -> FilterType.RecentlyUpdated
@@ -98,6 +104,12 @@ class SeriesFilterEditState(
 
     override fun toFilter(order: Int): HomeScreenFilter {
         return when (val editState = filter.value) {
+            is SeriesDownloadedFilterState -> SeriesHomeScreenFilter.Downloaded(
+                order = order,
+                label = label.value,
+                pageSize = editState.pageSize.value,
+            )
+
             is SeriesCustomFilterState -> SeriesHomeScreenFilter.CustomFilter(
                 order = order,
                 label = label.value,
@@ -125,6 +137,10 @@ class SeriesFilterEditState(
 
     fun onTypeChange(type: FilterType) {
         filter.value = when (type) {
+            FilterType.Downloaded -> SeriesDownloadedFilterState(
+                loadDownloadedSeries, appNotifications, coroutineScope, null, null
+            )
+
             FilterType.Custom -> SeriesCustomFilterState(
                 seriesApi = seriesApi,
                 collectionApi = collectionApi,
@@ -147,7 +163,7 @@ class SeriesFilterEditState(
     }
 
 
-    enum class FilterType { Custom, RecentlyAdded, RecentlyUpdated }
+    enum class FilterType { Custom, RecentlyAdded, RecentlyUpdated, Downloaded }
 }
 
 sealed interface SeriesFilterStateType {

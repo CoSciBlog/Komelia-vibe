@@ -26,6 +26,7 @@ import snd.komelia.homefilters.HomeScreenFilterRepository
 import snd.komelia.homefilters.SeriesHomeScreenFilter
 import snd.komelia.komga.api.KomgaBookApi
 import snd.komelia.komga.api.KomgaSeriesApi
+import snd.komelia.komga.api.model.KomeliaSeries
 import snd.komelia.offline.tasks.OfflineTaskEmitter
 import snd.komelia.ui.LoadState
 import snd.komelia.ui.LoadState.Uninitialized
@@ -51,6 +52,7 @@ class HomeViewModel(
     private val filterRepository: HomeScreenFilterRepository,
     private val taskEmitter: OfflineTaskEmitter?,
     cardWidthFlow: Flow<Dp>,
+    private val loadDownloadedSeries: suspend (Int) -> List<KomeliaSeries>,
 ) : StateScreenModel<LoadState<Unit>>(Uninitialized) {
     val cardWidth = cardWidthFlow.stateIn(screenModelScope, Eagerly, defaultCardWidth.dp)
 
@@ -92,6 +94,11 @@ class HomeViewModel(
 
     private suspend fun fetchFilterData(filter: HomeScreenFilter): HomeFilterData? {
         return when (filter) {
+            is SeriesHomeScreenFilter.Downloaded -> SeriesFilterData(
+                series = loadDownloadedSeries(filter.pageSize),
+                filter = filter,
+            )
+
             is BooksHomeScreenFilter.CustomFilter -> {
                 val books = bookApi.getBookList(
                     search = KomgaBookSearch(filter.filter, filter.textSearch),

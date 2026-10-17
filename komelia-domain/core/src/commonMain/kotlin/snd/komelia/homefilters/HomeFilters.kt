@@ -23,6 +23,16 @@ sealed interface SeriesHomeScreenFilter : HomeScreenFilter {
     override fun withOrder(newOrder: Int): SeriesHomeScreenFilter
 
     @Serializable
+    @SerialName("io.github.cosciblog.komelia.vibe.home.SeriesHomeScreenFilter.Downloaded")
+    data class Downloaded(
+        override val order: Int,
+        override val label: String,
+        val pageSize: Int = 20,
+    ) : SeriesHomeScreenFilter {
+        override fun withOrder(newOrder: Int) = copy(order = newOrder)
+    }
+
+    @Serializable
     @SerialName("io.github.snd_r.komelia.ui.home.SeriesHomeScreenFilter.RecentlyAdded")
     data class RecentlyAdded(
         override val order: Int,

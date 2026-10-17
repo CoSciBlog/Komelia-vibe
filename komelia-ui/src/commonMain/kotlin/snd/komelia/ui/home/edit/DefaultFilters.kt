@@ -1,6 +1,7 @@
 package snd.komelia.ui.home.edit
 
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_downloaded_series
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_default_keep_reading
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_default_on_deck
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_default_recently_added_books
@@ -65,6 +66,11 @@ suspend fun getDefaultFilters(): List<HomeScreenFilter> {
                 readStatus { isEqualTo(KomgaReadStatus.READ) }
             }.toBookCondition(),
             pageRequest = KomgaPageRequest(sort = KomgaSort.KomgaBooksSort.byReadDateDesc())
+        ),
+        SeriesHomeScreenFilter.Downloaded(
+            order = 8,
+            label = getString(Res.string.home_filter_downloaded_series),
+            pageSize = 20,
         ),
     ).sortedBy { it.order }
 }

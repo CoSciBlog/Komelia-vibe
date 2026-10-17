@@ -8,6 +8,11 @@ import snd.komga.client.series.KomgaSeriesSearch
 import snd.komga.client.user.KomgaUserId
 
 interface OfflineSeriesDtoRepository {
+    suspend fun findAllDownloaded(
+        userId: KomgaUserId,
+        pageRequest: KomgaPageRequest,
+    ): Page<KomgaSeries>
+
     suspend fun get(
         seriesId: KomgaSeriesId,
         userId: KomgaUserId,
