@@ -13,5 +13,5 @@ license/notice files for further information.
 
 This is a modified, independently distributed application. Fork behavior and
 changes are identified in FORK_CHANGES.md, CHANGELOG.md, and Git history.
-Release 0.20.14 adds direct comic read-status actions and distribution updates
+Release 0.20.15 adds a direct series download button and distribution updates
 prepared with material assistance from OpenAI Codex.

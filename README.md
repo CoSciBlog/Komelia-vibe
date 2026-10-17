@@ -65,6 +65,11 @@ beside **Read** and **Download**. Unread books offer Mark read, completed books
 offer Mark unread, and in-progress books offer both. The buttons wrap on narrow
 screens and use the same online/offline progress actions as the overflow menu.
 
+The standard series detail page also provides **Download** directly beside the
+publication status (such as **Ongoing**). It uses the existing series-download
+confirmation and unread-only policy and is available online on platforms that
+support offline downloads.
+
 Development and maintenance changes in this fork may be made with the assistance of AI and OpenAI Codex. Such changes are still subject to the project's build and test workflow.
 
 See [CREDITS.md](CREDITS.md), [NOTICE](NOTICE), and the original [Apache-2.0
@@ -74,14 +79,14 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.14 is an Android-only detail-page update;
+- Release assets vary by version. Version 0.20.15 is an Android-only detail-page update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- Version 0.20.14 (Android version code 39) adds direct read-status buttons to
-  comic details. It includes the earlier page preparation, offline-download,
-  and reading-progress improvements.
+- Version 0.20.15 (Android version code 40) adds a direct series download button
+  beside the publication status. It includes the earlier direct read-status
+  buttons, page preparation, offline-download, and reading-progress improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots

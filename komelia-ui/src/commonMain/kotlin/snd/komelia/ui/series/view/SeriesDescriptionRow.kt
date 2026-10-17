@@ -57,7 +57,8 @@ fun SeriesDescriptionRow(
     deleted: Boolean,
     alternateTitles: List<KomgaAlternativeTitle>,
     onFilterClick: (SeriesScreenFilter) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    statusActions: @Composable () -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -68,7 +69,11 @@ fun SeriesDescriptionRow(
         if (releaseDate != null)
             Text(stringResource(Res.string.series_release_year, releaseDate.year.toString()), fontSize = 10.sp)
 
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
+            itemVerticalAlignment = Alignment.CenterVertically,
+        ) {
             ElevatedButton(
                 onClick = { onLibraryClick(library) },
                 modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
@@ -107,6 +112,8 @@ fun SeriesDescriptionRow(
                         },
                 )
             }
+
+            statusActions()
 
             ageRating?.let { age ->
                 SuggestionChip(
