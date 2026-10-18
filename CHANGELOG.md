@@ -4,6 +4,21 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.18 - 2026-10-18
+
+- Add Delete downloaded and Delete read downloads to the series overflow menu
+  on platforms supporting local downloads, both online and offline.
+- Remove all local books of the series, or only fully read books; retain unread
+  and in-progress books in the latter mode. Server media is never deleted.
+- Confirm existing progress with Komga before removing it. Retain downloads when
+  progress cannot be confirmed, another account has progress, or progress changes
+  during deletion. Offline deletion can remove books without stored progress;
+  reconnect to remove protected downloads. Report removed and retained counts.
+- Translate both actions, confirmations and results into all seven supported
+  languages, and use existing translations for read/unread, Edit and Download
+  in the series menu. Refresh read-status visibility when the series changes.
+- This feature, tests and release preparation received material OpenAI Codex assistance.
+
 ## 0.20.17 - 2026-10-18
 
 - Add an opt-in checkbox to Downloaded series in the Home filter editor to show

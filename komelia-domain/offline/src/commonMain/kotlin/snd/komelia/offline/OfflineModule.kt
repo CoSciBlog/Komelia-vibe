@@ -68,6 +68,7 @@ import snd.komelia.offline.readprogress.actions.ProgressMarkProgressionAction
 import snd.komelia.offline.series.actions.SeriesAddThumbnailAction
 import snd.komelia.offline.series.actions.SeriesAggregateBookMetadataAction
 import snd.komelia.offline.series.actions.SeriesAnalyzeAction
+import snd.komelia.offline.series.SeriesDownloadDeletion
 import snd.komelia.offline.series.actions.SeriesDeleteAction
 import snd.komelia.offline.series.actions.SeriesDeleteManyAction
 import snd.komelia.offline.series.actions.SeriesDeleteThumbnailAction
@@ -279,6 +280,32 @@ abstract class OfflineModule(
 
         return OfflineDependencies(
             actions = actions,
+            seriesDownloadDeletion = SeriesDownloadDeletion(
+                localBookIds = repositories.bookRepository::findAllIdsBySeriesId,
+                progressForBook = repositories.readProgressRepository::findAllByBookId,
+                canContactServer = { userId -> !isOffline.value && authenticatedUser.value?.id == userId },
+                synchronizeProgress = actions.get<SyncReadProgressAction>()::synchronizeForDownloadDeletion,
+                remotelyCompleted = { komgaClientFactory.bookClient().getOne(it).readProgress?.completed == true },
+                deleteIfUnchanged = { bookId, expected, userId ->
+                    repositories.transactionTemplate.execute {
+                        val activeUser = if (isOffline.value) offlineUserId.value else authenticatedUser.value?.id
+                        val current = repositories.readProgressRepository.findAllByBookId(bookId)
+                        if (activeUser != userId || current.toSet() != expected.toSet() ||
+                            repositories.bookRepository.find(bookId) == null) false
+                        else {
+                            actions.get<BookDeleteAction>().execute(bookId)
+                            true
+                        }
+                    }
+                },
+                onError = { bookId, error ->
+                    repositories.logJournalRepository.save(
+                        snd.komelia.offline.sync.model.OfflineLogEntry.errorLogEntry(error) {
+                            "Local series download deletion failed for book $bookId; download retained"
+                        }
+                    )
+                },
+            ),
             taskEmitter = taskEmitter,
             komgaEvents = komgaEvents,
             bookDownloadEvents = bookDownloadEvents,

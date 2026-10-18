@@ -343,6 +343,34 @@ Primary areas and regression tests:
 - `DownloadedSeriesFilterTest.kt`, `SeriesDownloadedFilterStateTest.kt`, and
   `DownloadedSeriesQueryTest.kt`
 
+### 10. Manual series download deletion
+
+Introduced in 0.20.18.
+
+- Series overflow menus expose Delete downloaded and Delete read downloads on
+  offline-capable platforms, online and offline, with localized confirmations
+  and removed/retained counts in English, German, Spanish, French, Japanese,
+  Russian and Simplified Chinese. Existing read/unread, Edit and Download menu
+  labels use string resources; read-status visibility follows current series data.
+- Operate on every local book of the requested series, independent of display
+  pagination and automatic cleanup settings. Read-only deletion keeps unread and
+  in-progress books. Never call Komga media deletion endpoints.
+- Confirm local reading progress with Komga before deleting its download.
+  Keep downloads when offline progress cannot be confirmed, another account has
+  stored progress, synchronization fails, or the progress/account changes before
+  deletion. Books without stored progress can be removed offline in all-downloads
+  mode. Reconnect and retry for protected downloads.
+- Check all accounts' progress and recheck the confirmed persisted snapshot in the
+  same transaction as deletion. Do not overwrite newer local progress when pulling
+  remote progress. Cancellation must stop deletion. Reuse existing local book/file
+  deletion and events; preserve existing Home filters and database migrations.
+
+Primary areas and regression tests:
+
+- `SeriesDownloadDeletion.kt`, `SeriesDownloadDeletionTest.kt`, `OfflineModule.kt`
+- `SyncReadProgressAction.kt` and `OfflineReadProgressRepository`
+- `SeriesActionsMenu.kt`, `ViewModelFactory.kt`, and localized Compose resources
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:

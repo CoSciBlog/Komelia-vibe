@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="series_delete_downloaded_all">ダウンロードした本を削除</string>
+    <string name="series_delete_downloaded_read">読了済みのダウンロードを削除</string>
+    <string name="series_delete_downloaded_all_confirm">「%1$s」のダウンロード済みの本をすべてこの端末から削除しますか？サーバー上の本は保持されます。読書の進捗をKomgaと確認できない本は保持されます。削除するにはKomgaに接続して再試行してください。</string>
+    <string name="series_delete_downloaded_read_confirm">「%1$s」の読了済みのダウンロードだけをこの端末から削除しますか？未読・読書中の本とサーバー上の本は保持されます。未確認の読書進捗がある本はKomgaに接続できるまで保持されます。</string>
+    <string name="series_delete_downloaded_result">削除したダウンロード：%1$d。保持：%2$d。</string>
+    <string name="book_mark_read">既読にする</string>
+    <string name="book_mark_unread">未読にする</string>
+    <string name="book_download">ダウンロード</string>
+    <string name="series_edit">編集</string>
 </resources>

@@ -26,6 +26,7 @@ import snd.komga.client.book.R2Device
 import snd.komga.client.book.R2Progression
 import snd.komga.client.user.KomgaUser
 import kotlin.time.Clock
+import kotlin.coroutines.cancellation.CancellationException
 
 class SyncReadProgressAction(
     private val settingsRepository: OfflineSettingsRepository,
@@ -57,7 +58,7 @@ class SyncReadProgressAction(
 
 
             for (localProgress in readProgresses) {
-                if (deleteReadBooks && syncReadProgress(localProgress)) {
+                if (deleteReadBooks && synchronizeForDownloadDeletion(localProgress)?.completed == true) {
                     booksToDelete += localProgress.bookId
                 }
 
@@ -68,7 +69,7 @@ class SyncReadProgressAction(
         booksToDelete.forEach { taskEmitter.deleteBook(it) }
     }
 
-    private suspend fun syncReadProgress(localProgress: OfflineReadProgress): Boolean {
+    suspend fun synchronizeForDownloadDeletion(localProgress: OfflineReadProgress): OfflineReadProgress? {
         return try {
             val remoteBook = bookClient.getOne(localProgress.bookId)
             val remoteProgress = remoteBook.readProgress
@@ -79,13 +80,17 @@ class SyncReadProgressAction(
                     mediaProfile == DIVINA || mediaProfile == PDF || remoteBook.media.epubDivinaCompatible ->
                         updateDivinaProgress(remoteBook.id, localProgress)
 
-                    mediaProfile == EPUB -> updateEpubProgress(remoteBook.id, localProgress)
+                    mediaProfile == EPUB -> {
+                        if (!localProgress.completed && localProgress.locator == null) return null
+                        updateEpubProgress(remoteBook.id, localProgress)
+                    }
+                    else -> return null
                 }
 
                 logJournalRepository.save(
                     infoLogEntry { "Read progress sync ${remoteBook.metadata.title}" }
                 )
-                localProgress.completed
+                localProgress
             } else {
                 val locator = if (
                     remoteBook.media.mediaProfile == EPUB &&
@@ -95,16 +100,22 @@ class SyncReadProgressAction(
                 } else {
                     null
                 }
-                readProgressRepository.save(
-                    remoteProgress.toOfflineReadProgress(
-                        bookId = remoteBook.id,
-                        userId = localProgress.userId,
-                        locator = locator,
-                    )
+                val confirmed = remoteProgress.toOfflineReadProgress(
+                    bookId = remoteBook.id,
+                    userId = localProgress.userId,
+                    locator = locator,
                 )
-                remoteProgress.completed
+                transactionTemplate.execute {
+                    if (readProgressRepository.find(localProgress.bookId, localProgress.userId) != localProgress) null
+                    else {
+                        readProgressRepository.save(confirmed)
+                        readProgressRepository.find(confirmed.bookId, confirmed.userId)
+                    }
+                }
             }
 
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             val localMetadata = bookMetadataRepository.get(localProgress.bookId)
             logJournalRepository.save(errorLogEntry(e) {
@@ -112,7 +123,7 @@ class SyncReadProgressAction(
             })
 
             currentCoroutineContext().ensureActive()
-            false
+            null
         }
     }
 

@@ -65,4 +65,13 @@
     <string name="library_auto_identify">Автоопределение (Komf)</string>
     <string name="library_reset_metadata">Сбросить метаданные (Komf)</string>
     <string name="library_all_libraries">Все библиотеки</string>
+    <string name="series_delete_downloaded_all">Удалить загруженные книги</string>
+    <string name="series_delete_downloaded_read">Удалить прочитанные загрузки</string>
+    <string name="series_delete_downloaded_all_confirm">Удалить с этого устройства все загруженные книги серии «%1$s»? Книги на сервере сохранятся. Загрузки с прогрессом чтения, который нельзя подтвердить через Komga, сохранятся. Подключитесь к Komga и повторите попытку, чтобы удалить их.</string>
+    <string name="series_delete_downloaded_read_confirm">Удалить с этого устройства только полностью прочитанные загрузки серии «%1$s»? Непрочитанные книги, книги в процессе чтения и книги на сервере сохранятся. Загрузки с неподтверждённым прогрессом сохранятся до подключения к Komga.</string>
+    <string name="series_delete_downloaded_result">Удалено загрузок: %1$d. Сохранено: %2$d.</string>
+    <string name="book_mark_read">Отметить прочитанным</string>
+    <string name="book_mark_unread">Отметить непрочитанным</string>
+    <string name="book_download">Скачать</string>
+    <string name="series_edit">Изменить</string>
 </resources>

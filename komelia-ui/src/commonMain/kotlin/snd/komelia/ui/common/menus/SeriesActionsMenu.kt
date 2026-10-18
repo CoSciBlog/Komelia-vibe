@@ -1,9 +1,5 @@
 package snd.komelia.ui.common.menus
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.hoverable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -25,12 +21,21 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_download
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_refresh_metadata
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.book_mark_read
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.book_mark_unread
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.book_download
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_edit
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_delete_downloaded_all
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_delete_downloaded_read
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_delete_downloaded_all_confirm
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_delete_downloaded_read_confirm
 import org.jetbrains.compose.resources.stringResource
 import snd.komelia.AppNotification
 import snd.komelia.AppNotifications
 import snd.komelia.komga.api.KomgaSeriesApi
 import snd.komelia.komga.api.model.KomeliaSeries
 import snd.komelia.offline.tasks.OfflineTaskEmitter
+import snd.komelia.ui.LocalViewModelFactory
 import snd.komelia.ui.LocalKomfIntegration
 import snd.komelia.ui.LocalKomgaState
 import snd.komelia.ui.LocalOfflineAvailable
@@ -54,21 +59,25 @@ fun SeriesActionsMenu(
     val isAdmin = LocalKomgaState.current.authenticatedUser.collectAsState().value?.roleAdmin() ?: true
     val isOffline = LocalOfflineMode.current.collectAsState().value
 
-    var showDeleteDownloadedDialog by remember { mutableStateOf(false) }
-    if (showDeleteDownloadedDialog) {
+    val factory = LocalViewModelFactory.current
+    var deleteOnlyRead by remember(series.id) { mutableStateOf<Boolean?>(null) }
+    deleteOnlyRead?.let { onlyRead ->
         ConfirmationDialog(
-            title = stringResource(Res.string.series_delete_confirm_title),
-            body = stringResource(Res.string.series_delete_confirm_body, series.metadata.title),
+            title = stringResource(if (onlyRead) Res.string.series_delete_downloaded_read else Res.string.series_delete_downloaded_all),
+            body = stringResource(
+                if (onlyRead) Res.string.series_delete_downloaded_read_confirm else Res.string.series_delete_downloaded_all_confirm,
+                series.metadata.title,
+            ),
             onDialogConfirm = {
-                actions.deleteDownloaded(series)
+                deleteOnlyRead = null
+                factory.deleteSeriesDownloads(series.id, onlyRead)
                 onDismissRequest()
-
             },
             onDialogDismiss = {
-                showDeleteDownloadedDialog = false
+                deleteOnlyRead = null
                 onDismissRequest()
             },
-            buttonConfirmColor = MaterialTheme.colorScheme.errorContainer
+            buttonConfirmColor = MaterialTheme.colorScheme.errorContainer,
         )
     }
 
@@ -106,7 +115,8 @@ fun SeriesActionsMenu(
     val showDropdown = derivedStateOf {
         expanded &&
                 !showEditDialog &&
-                !showAddToCollectionDialog
+                !showAddToCollectionDialog &&
+                deleteOnlyRead == null
     }
     DropdownMenu(
         expanded = showDropdown.value,
@@ -135,11 +145,11 @@ fun SeriesActionsMenu(
             )
         }
 
-        val isRead = remember { series.booksReadCount == series.booksCount }
-        val isUnread = remember { series.booksUnreadCount == series.booksCount }
+        val isRead = series.booksReadCount == series.booksCount
+        val isUnread = series.booksUnreadCount == series.booksCount
         if (!isRead) {
             DropdownMenuItem(
-                text = { Text("Mark as read") },
+                text = { Text(stringResource(Res.string.book_mark_read)) },
                 onClick = {
                     actions.markAsRead(series)
                     onDismissRequest()
@@ -149,7 +159,7 @@ fun SeriesActionsMenu(
 
         if (!isUnread) {
             DropdownMenuItem(
-                text = { Text("Mark as unread") },
+                text = { Text(stringResource(Res.string.book_mark_unread)) },
                 onClick = {
                     actions.markAsUnread(series)
                     onDismissRequest()
@@ -159,7 +169,7 @@ fun SeriesActionsMenu(
 
         if (isAdmin && !isOffline && showEditOption) {
             DropdownMenuItem(
-                text = { Text("Edit") },
+                text = { Text(stringResource(Res.string.series_edit)) },
                 onClick = { showEditDialog = true },
             )
         }
@@ -167,25 +177,20 @@ fun SeriesActionsMenu(
         val offlineAvailable = LocalOfflineAvailable.current
         if (!isOffline && showDownloadOption && offlineAvailable) {
             DropdownMenuItem(
-                text = { Text("Download") },
+                text = { Text(stringResource(Res.string.book_download)) },
                 onClick = { showDownloadDialog = true },
             )
         }
 
-        if (isOffline) {
-            val deleteInteractionSource = remember { MutableInteractionSource() }
-            val deleteIsHovered = deleteInteractionSource.collectIsHoveredAsState()
-            val deleteColor =
-                if (deleteIsHovered.value) Modifier.background(MaterialTheme.colorScheme.errorContainer)
-                else Modifier
+        if (offlineAvailable) {
             DropdownMenuItem(
-                text = { Text("Delete downloaded") },
-                onClick = { showDeleteDownloadedDialog = true },
-                modifier = Modifier
-                    .hoverable(deleteInteractionSource)
-                    .then(deleteColor)
+                text = { Text(stringResource(Res.string.series_delete_downloaded_all)) },
+                onClick = { deleteOnlyRead = false },
             )
-
+            DropdownMenuItem(
+                text = { Text(stringResource(Res.string.series_delete_downloaded_read)) },
+                onClick = { deleteOnlyRead = true },
+            )
         }
     }
 }

@@ -254,6 +254,8 @@ class NoopOfflineLibraryRepository : OfflineLibraryRepository {
 }
 
 class NoopOfflineReadProgressRepository : OfflineReadProgressRepository {
+    override suspend fun findAllByBookId(bookId: KomgaBookId): List<OfflineReadProgress> = emptyList()
+
     override suspend fun save(readProgress: OfflineReadProgress) {
         TODO("Not yet implemented")
     }

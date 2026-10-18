@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="series_delete_downloaded_all">Eliminar libros descargados</string>
+    <string name="series_delete_downloaded_read">Eliminar descargas leídas</string>
+    <string name="series_delete_downloaded_all_confirm">¿Eliminar de este dispositivo todos los libros descargados de «%1$s»? Los libros del servidor se conservan. Se conservan las descargas cuyo progreso de lectura no se pueda confirmar con Komga. Conéctate a Komga e inténtalo de nuevo para eliminarlas.</string>
+    <string name="series_delete_downloaded_read_confirm">¿Eliminar de este dispositivo solo los libros descargados de «%1$s» que se hayan leído por completo? Se conservan los libros sin leer, en curso y del servidor. Las descargas con progreso sin confirmar se conservan hasta que Komga esté disponible.</string>
+    <string name="series_delete_downloaded_result">Descargas eliminadas: %1$d. Conservadas: %2$d.</string>
+    <string name="book_mark_read">Marcar como leído</string>
+    <string name="book_mark_unread">Marcar como no leído</string>
+    <string name="book_download">Descargar</string>
+    <string name="series_edit">Editar</string>
 </resources>

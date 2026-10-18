@@ -93,10 +93,33 @@ import snd.komga.client.readlist.KomgaReadListId
 import snd.komga.client.series.KomgaSeriesId
 import snd.komga.client.user.KomgaUser
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_delete_downloaded_result
+import snd.komelia.AppNotification
+
 class ViewModelFactory(
     private val dependencies: DependencyContainer,
     private val platformType: PlatformType,
 ) {
+    private val downloadDeletionScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+
+    fun deleteSeriesDownloads(seriesId: KomgaSeriesId, onlyRead: Boolean) {
+        val offline = dependencies.offlineDependencies ?: return
+        dependencies.appNotifications.runCatchingToNotifications(downloadDeletionScope) {
+            val userId = if (dependencies.isOffline.value) offline.repositories.offlineSettingsRepository.getUserId().first()
+                else dependencies.komgaSharedState.authenticatedUser.value?.id ?: return@runCatchingToNotifications
+            val result = offline.seriesDownloadDeletion.execute(seriesId, userId, onlyRead)
+            dependencies.appNotifications.add(AppNotification.Normal(
+                getString(Res.string.series_delete_downloaded_result, result.deleted, result.retained)
+            ))
+        }
+    }
+
     private val appRepositories = dependencies.appRepositories
     private val komgaApi
         get() = dependencies.komgaApi.value

@@ -1,4 +1,13 @@
 <resources>
     <string name="home_filter_downloaded_series">Heruntergeladene Serien</string>
     <string name="home_filter_only_unread_series">Nur nicht vollständig gelesene Serien</string>
+    <string name="series_delete_downloaded_all">Heruntergeladene Bücher löschen</string>
+    <string name="series_delete_downloaded_read">Gelesene Downloads löschen</string>
+    <string name="series_delete_downloaded_all_confirm">Alle heruntergeladenen Bücher von „%1$s“ von diesem Gerät löschen? Bücher auf dem Server bleiben erhalten. Downloads mit Lesefortschritt, der nicht mit Komga bestätigt werden kann, bleiben erhalten. Verbinde dich mit Komga und versuche es erneut, um sie zu entfernen.</string>
+    <string name="series_delete_downloaded_read_confirm">Nur vollständig gelesene heruntergeladene Bücher von „%1$s“ von diesem Gerät löschen? Ungelesene und angefangene Bücher sowie Bücher auf dem Server bleiben erhalten. Downloads mit unbestätigtem Lesefortschritt bleiben erhalten, bis Komga erreichbar ist.</string>
+    <string name="series_delete_downloaded_result">Downloads entfernt: %1$d. Beibehalten: %2$d.</string>
+    <string name="book_mark_read">Als gelesen markieren</string>
+    <string name="book_mark_unread">Als ungelesen markieren</string>
+    <string name="book_download">Herunterladen</string>
+    <string name="series_edit">Bearbeiten</string>
 </resources>
