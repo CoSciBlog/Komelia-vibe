@@ -52,7 +52,7 @@ class HomeViewModel(
     private val filterRepository: HomeScreenFilterRepository,
     private val taskEmitter: OfflineTaskEmitter?,
     cardWidthFlow: Flow<Dp>,
-    private val loadDownloadedSeries: suspend (Int) -> List<KomeliaSeries>,
+    private val loadDownloadedSeries: suspend (Int, Boolean) -> List<KomeliaSeries>,
 ) : StateScreenModel<LoadState<Unit>>(Uninitialized) {
     val cardWidth = cardWidthFlow.stateIn(screenModelScope, Eagerly, defaultCardWidth.dp)
 
@@ -95,7 +95,7 @@ class HomeViewModel(
     private suspend fun fetchFilterData(filter: HomeScreenFilter): HomeFilterData? {
         return when (filter) {
             is SeriesHomeScreenFilter.Downloaded -> SeriesFilterData(
-                series = loadDownloadedSeries(filter.pageSize),
+                series = loadDownloadedSeries(filter.pageSize, filter.onlyUnread),
                 filter = filter,
             )
 

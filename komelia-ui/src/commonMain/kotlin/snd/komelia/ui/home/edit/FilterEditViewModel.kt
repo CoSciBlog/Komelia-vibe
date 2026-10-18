@@ -44,7 +44,7 @@ class FilterEditViewModel(
     private val filterRepository: HomeScreenFilterRepository,
     private val libraries: Flow<List<KomgaLibrary>>,
     cardWidthFlow: Flow<Dp>,
-    private val loadDownloadedSeries: suspend (Int) -> List<KomeliaSeries>,
+    private val loadDownloadedSeries: suspend (Int, Boolean) -> List<KomeliaSeries>,
 ) : StateScreenModel<LoadState<Unit>>(Uninitialized) {
     private val filterSuggestionOptions = MutableStateFlow(
         FilterSuggestionOptions(

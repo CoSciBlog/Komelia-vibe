@@ -4,6 +4,17 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.17 - 2026-10-18
+
+- Add an opt-in checkbox to Downloaded series in the Home filter editor to show
+  only series that are not fully read. Unread and in-progress series remain visible.
+- Save the selection per filter, refresh the preview when it changes, and apply
+  read-status filtering for the active offline user before the display limit.
+  Existing saved filters keep showing all downloaded series by default.
+- Provide English and German labels and retain existing JSON type names and migrations.
+- This feature, regression tests, and release preparation received material assistance
+  from OpenAI Codex.
+
 ## 0.20.16 - 2026-10-17
 
 - Add a Downloaded series Home filter, available directly from Add filter or as

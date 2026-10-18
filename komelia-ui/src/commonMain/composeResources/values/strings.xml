@@ -1070,4 +1070,5 @@
     <string name="reader_overlay_color_blue">Blue</string>
     <string name="reader_overlay_font_size">Font size: %1$d</string>
 
+    <string name="home_filter_only_unread_series">Only series not fully read</string>
 </resources>
