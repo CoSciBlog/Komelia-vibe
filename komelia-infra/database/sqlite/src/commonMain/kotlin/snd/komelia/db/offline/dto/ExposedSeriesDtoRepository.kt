@@ -12,8 +12,11 @@ import org.jetbrains.exposed.v1.core.countDistinct
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.inList
 import org.jetbrains.exposed.v1.core.inSubQuery
+import org.jetbrains.exposed.v1.core.isNull
 import org.jetbrains.exposed.v1.core.like
+import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.core.neq
+import org.jetbrains.exposed.v1.core.or
 import org.jetbrains.exposed.v1.jdbc.Database
 import org.jetbrains.exposed.v1.jdbc.Query
 import org.jetbrains.exposed.v1.jdbc.andWhere
@@ -121,8 +124,9 @@ class ExposedSeriesDtoRepository(
     override suspend fun findAllDownloaded(
         userId: KomgaUserId,
         pageRequest: KomgaPageRequest,
+        onlyUnread: Boolean,
     ): Page<KomgaSeries> = findAll(
-        conditions = downloadedSeriesCondition(),
+        conditions = downloadedSeriesCondition(onlyUnread),
         userId = userId,
         pageRequest = pageRequest,
     )
@@ -463,5 +467,10 @@ class ExposedSeriesDtoRepository(
     )
 }
 
-internal fun downloadedSeriesCondition(): Op<Boolean> =
-    OfflineSeriesTable.id inSubQuery OfflineBookTable.select(OfflineBookTable.seriesId)
+internal fun downloadedSeriesCondition(onlyUnread: Boolean = false): Op<Boolean> {
+    val downloaded = OfflineSeriesTable.id inSubQuery OfflineBookTable.select(OfflineBookTable.seriesId)
+    if (!onlyUnread) return downloaded
+    // The repository joins progress for the active user before applying this condition.
+    val readCount = OfflineReadProgressSeriesTable.readCount
+    return downloaded and (readCount.isNull() or (readCount less OfflineSeriesTable.booksCount))
+}

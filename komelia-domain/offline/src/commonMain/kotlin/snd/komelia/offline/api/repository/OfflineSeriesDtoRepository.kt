@@ -11,6 +11,7 @@ interface OfflineSeriesDtoRepository {
     suspend fun findAllDownloaded(
         userId: KomgaUserId,
         pageRequest: KomgaPageRequest,
+        onlyUnread: Boolean = false,
     ): Page<KomgaSeries>
 
     suspend fun get(

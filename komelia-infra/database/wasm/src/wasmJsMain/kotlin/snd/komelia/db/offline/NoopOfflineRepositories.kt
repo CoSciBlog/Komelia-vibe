@@ -728,6 +728,7 @@ class NoopOfflineSeriesDtoRepository : OfflineSeriesDtoRepository {
     override suspend fun findAllDownloaded(
         userId: KomgaUserId,
         pageRequest: KomgaPageRequest,
+        onlyUnread: Boolean,
     ): Page<KomgaSeries> = error("Offline downloads are unavailable on this platform")
 
     override suspend fun get(

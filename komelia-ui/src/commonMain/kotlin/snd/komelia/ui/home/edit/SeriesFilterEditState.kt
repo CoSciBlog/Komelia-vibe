@@ -39,7 +39,7 @@ class SeriesFilterEditState(
     val cardWidth: StateFlow<Dp>,
     initialFilter: SeriesHomeScreenFilter?,
     initialSeries: List<KomeliaSeries>?,
-    private val loadDownloadedSeries: suspend (Int) -> List<KomeliaSeries>,
+    private val loadDownloadedSeries: suspend (Int, Boolean) -> List<KomeliaSeries>,
 ) : FilterEditState {
     override val label = MutableStateFlow(initialFilter?.label ?: "Series Filter")
 
@@ -108,6 +108,7 @@ class SeriesFilterEditState(
                 order = order,
                 label = label.value,
                 pageSize = editState.pageSize.value,
+                onlyUnread = editState.onlyUnread.value,
             )
 
             is SeriesCustomFilterState -> SeriesHomeScreenFilter.CustomFilter(

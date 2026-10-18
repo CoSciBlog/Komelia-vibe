@@ -325,6 +325,12 @@ Introduced in 0.20.16.
   ordering and a positive display limit. Existing book events refresh Home
   after local downloads and deletions. No Komga protocol payload changes or new
   remote download-status conditions are introduced.
+- Since 0.20.17, a per-filter **Only series not fully read** checkbox hides
+  fully read series while retaining unread and in-progress series. It defaults
+  to false, including when decoding old saved filters. Persist the selection,
+  update the editor preview when toggled, and filter the active user's local
+  progress before the display limit. Progress belonging to another user must
+  not affect membership.
 - Preserve serialized type names of existing filters. The additive Downloaded
   type uses existing JSON storage without changing database migrations. Platforms
   without offline downloads hide its add/type option and safely load no results.

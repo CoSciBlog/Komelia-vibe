@@ -63,6 +63,7 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_edi
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_edit_done
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_label
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_downloaded_series
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_only_unread_series
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_reset_to_default
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_reset_to_default_confirm
 import org.jetbrains.compose.resources.stringResource
@@ -74,6 +75,7 @@ import snd.komelia.ui.LocalOfflineAvailable
 import snd.komelia.ui.common.cards.BookImageCard
 import snd.komelia.ui.common.cards.SeriesImageCard
 import snd.komelia.ui.common.components.DropdownChoiceMenu
+import snd.komelia.ui.common.components.CheckboxWithLabel
 import snd.komelia.ui.common.components.LabeledEntry
 import snd.komelia.ui.dialogs.ConfirmationDialog
 import snd.komelia.ui.home.edit.BookCustomFilterState
@@ -406,10 +408,17 @@ private fun SeriesFilterEditContent(state: SeriesFilterEditState) {
         )
 
         when (filter) {
-            is SeriesDownloadedFilterState -> PageSizeSettingsContent(
-                pageSize = filter.pageSize.collectAsState().value,
-                onPageSizeChange = filter::onPageSizeChange,
-            )
+            is SeriesDownloadedFilterState -> Column {
+                PageSizeSettingsContent(
+                    pageSize = filter.pageSize.collectAsState().value,
+                    onPageSizeChange = filter::onPageSizeChange,
+                )
+                CheckboxWithLabel(
+                    checked = filter.onlyUnread.collectAsState().value,
+                    onCheckedChange = filter::onOnlyUnreadChange,
+                    label = { Text(stringResource(Res.string.home_filter_only_unread_series)) },
+                )
+            }
             is SeriesCustomFilterState -> SeriesConditionContent(filter)
             is SeriesRecentlyAddedFilterState -> PageSizeSettingsContent(
                 pageSize = filter.pageSize.collectAsState().value,

@@ -28,6 +28,7 @@ sealed interface SeriesHomeScreenFilter : HomeScreenFilter {
         override val order: Int,
         override val label: String,
         val pageSize: Int = 20,
+        val onlyUnread: Boolean = false,
     ) : SeriesHomeScreenFilter {
         override fun withOrder(newOrder: Int) = copy(order = newOrder)
     }

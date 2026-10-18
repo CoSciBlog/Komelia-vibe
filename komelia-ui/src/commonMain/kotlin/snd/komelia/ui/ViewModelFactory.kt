@@ -168,12 +168,13 @@ class ViewModelFactory(
         )
     }
 
-    private suspend fun getDownloadedSeries(pageSize: Int): List<KomeliaSeries> =
+    private suspend fun getDownloadedSeries(pageSize: Int, onlyUnread: Boolean): List<KomeliaSeries> =
         dependencies.offlineDependencies?.komgaApi?.seriesApi?.getDownloadedSeries(
             KomgaPageRequest(
                 size = pageSize.coerceAtLeast(1),
                 sort = KomgaSort.KomgaSeriesSort.byTitle(KomgaSort.Direction.ASC),
-            )
+            ),
+            onlyUnread = onlyUnread,
         )?.content.orEmpty()
 
     fun getNavigationViewModel(): MainScreenViewModel {

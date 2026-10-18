@@ -50,8 +50,11 @@ class OfflineSeriesApi(
     private val userId
         get() = offlineUserId.value
 
-    suspend fun getDownloadedSeries(pageRequest: KomgaPageRequest): Page<KomeliaSeries> =
-        seriesDtoRepository.findAllDownloaded(userId, pageRequest).toKomeliaPage()
+    suspend fun getDownloadedSeries(
+        pageRequest: KomgaPageRequest,
+        onlyUnread: Boolean = false,
+    ): Page<KomeliaSeries> =
+        seriesDtoRepository.findAllDownloaded(userId, pageRequest, onlyUnread).toKomeliaPage()
 
     override suspend fun getOneSeries(seriesId: KomgaSeriesId): KomeliaSeries {
         return KomeliaSeries(seriesDtoRepository.get(seriesId, userId), null)

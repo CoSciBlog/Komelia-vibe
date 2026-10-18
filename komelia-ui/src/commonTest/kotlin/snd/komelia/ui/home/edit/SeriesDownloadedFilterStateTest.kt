@@ -14,7 +14,7 @@ class SeriesDownloadedFilterStateTest {
     fun savedFilterLoadsLocalPreviewImmediatelyAndUsesEditedLimit() = runTest {
         val requestedSizes = mutableListOf<Int>()
         val state = SeriesDownloadedFilterState(
-            loadSeries = { size -> requestedSizes += size; emptyList() },
+            loadSeries = { size, _ -> requestedSizes += size; emptyList() },
             notifications = AppNotifications(),
             coroutineScope = backgroundScope,
             initial = SeriesHomeScreenFilter.Downloaded(4, "My downloads", 40),
@@ -31,9 +31,30 @@ class SeriesDownloadedFilterStateTest {
     }
 
     @Test
+    fun savedUnreadSelectionReloadsPreviewWhenToggled() = runTest {
+        val requests = mutableListOf<Pair<Int, Boolean>>()
+        val state = SeriesDownloadedFilterState(
+            loadSeries = { size, unread -> requests += size to unread; emptyList() },
+            notifications = AppNotifications(),
+            coroutineScope = backgroundScope,
+            initial = SeriesHomeScreenFilter.Downloaded(0, "Downloads", 40, onlyUnread = true),
+            initialSeries = emptyList(),
+        )
+        runCurrent()
+        assertEquals(true, state.onlyUnread.value)
+        state.onOnlyUnreadChange(false)
+        runCurrent()
+        state.onPageSizeChange(10)
+        runCurrent()
+        state.onOnlyUnreadChange(true)
+        runCurrent()
+        assertEquals(listOf(40 to true, 40 to false, 10 to false, 10 to true), requests)
+    }
+
+    @Test
     fun unavailableLocalDownloadsGiveAnEmptyPreview() = runTest {
         val state = SeriesDownloadedFilterState(
-            loadSeries = { emptyList() },
+            loadSeries = { _, _ -> emptyList() },
             notifications = AppNotifications(),
             coroutineScope = backgroundScope,
             initial = null,
@@ -41,6 +62,7 @@ class SeriesDownloadedFilterStateTest {
         )
         runCurrent()
         assertEquals(20, state.pageSize.value)
+        assertEquals(false, state.onlyUnread.value)
         assertEquals(emptyList(), state.series.value)
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="home_filter_downloaded_series">Heruntergeladene Serien</string>
+    <string name="home_filter_only_unread_series">Nur nicht vollständig gelesene Serien</string>
 </resources>
