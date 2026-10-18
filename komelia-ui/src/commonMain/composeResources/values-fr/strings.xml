@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="series_delete_downloaded_all">Supprimer les livres téléchargés</string>
+    <string name="series_delete_downloaded_read">Supprimer les téléchargements lus</string>
+    <string name="series_delete_downloaded_all_confirm">Supprimer de cet appareil tous les livres téléchargés de « %1$s » ? Les livres du serveur sont conservés. Les téléchargements dont la progression ne peut pas être confirmée avec Komga sont conservés. Connectez-vous à Komga et réessayez pour les supprimer.</string>
+    <string name="series_delete_downloaded_read_confirm">Supprimer de cet appareil uniquement les livres téléchargés de « %1$s » entièrement lus ? Les livres non lus, en cours et du serveur sont conservés. Les téléchargements dont la progression reste non confirmée sont conservés tant que Komga est indisponible.</string>
+    <string name="series_delete_downloaded_result">Téléchargements supprimés : %1$d. Conservés : %2$d.</string>
+    <string name="book_mark_read">Marquer comme lu</string>
+    <string name="book_mark_unread">Marquer comme non lu</string>
+    <string name="book_download">Télécharger</string>
+    <string name="series_edit">Modifier</string>
 </resources>

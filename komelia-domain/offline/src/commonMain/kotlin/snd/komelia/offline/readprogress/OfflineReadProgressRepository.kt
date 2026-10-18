@@ -9,6 +9,7 @@ import kotlin.time.Instant
 interface OfflineReadProgressRepository {
     suspend fun save(readProgress: OfflineReadProgress)
     suspend fun saveAll(readProgress: List<OfflineReadProgress>)
+    suspend fun findAllByBookId(bookId: KomgaBookId): List<OfflineReadProgress>
     suspend fun find(bookId: KomgaBookId, userId: KomgaUserId): OfflineReadProgress?
 
     suspend fun findAllByBookIdsAndUserId(

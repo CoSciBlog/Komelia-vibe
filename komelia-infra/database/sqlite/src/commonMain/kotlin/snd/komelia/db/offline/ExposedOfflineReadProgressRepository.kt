@@ -80,6 +80,10 @@ class ExposedOfflineReadProgressRepository(
         }
     }
 
+    override suspend fun findAllByBookId(bookId: KomgaBookId): List<OfflineReadProgress> = transaction {
+        progressTable.selectAll().where { progressTable.bookId.eq(bookId.value) }.map { it.toModel() }
+    }
+
     override suspend fun find(bookId: KomgaBookId, userId: KomgaUserId): OfflineReadProgress? {
         return transaction {
             progressTable

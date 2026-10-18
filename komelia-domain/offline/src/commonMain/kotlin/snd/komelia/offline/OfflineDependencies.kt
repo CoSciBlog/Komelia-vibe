@@ -2,6 +2,7 @@ package snd.komelia.offline
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import snd.komelia.offline.series.SeriesDownloadDeletion
 import snd.komelia.offline.action.OfflineActions
 import snd.komelia.offline.api.OfflineKomgaApi
 import snd.komelia.offline.mediacontainer.BookContentExtractors
@@ -13,6 +14,7 @@ import snd.komga.client.sse.KomgaEvent
 
 data class OfflineDependencies(
     val actions: OfflineActions,
+    val seriesDownloadDeletion: SeriesDownloadDeletion,
     val taskEmitter: OfflineTaskEmitter,
     val komgaEvents: SharedFlow<KomgaEvent>,
     val bookDownloadEvents: MutableSharedFlow<DownloadEvent>,

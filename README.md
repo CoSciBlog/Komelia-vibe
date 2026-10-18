@@ -70,11 +70,21 @@ publication status (such as **Ongoing**). It uses the existing series-download
 confirmation and unread-only policy and is available online on platforms that
 support offline downloads.
 
+The series overflow menu provides **Delete downloaded** and **Delete read
+downloads**. Both remove files from this device only; the second keeps unread
+and in-progress books. Confirmations and result counts use the selected language.
+The actions work independently of automatic cleanup settings. Before deleting
+stored progress, Komga must confirm it. Downloads with unconfirmed progress,
+progress from another account, or concurrent reading changes are retained.
+Offline, books without stored progress can be removed; reconnect and retry for
+protected downloads. The menu is available online and offline on platforms with
+download support.
+
 Home supports a **Downloaded series** filter (**Heruntergeladene Serien** in
 German). Open Home's filter editor, choose **Add filter → Downloaded series**,
 then **Done**. It displays series with at least one fully downloaded book, sorted
 by title, both online and offline. Rename, reorder or change its display limit
-in the editor. Enable **Only series not fully read** (**Nur nicht vollst�ndig
+in the editor. Enable **Only series not fully read** (**Nur nicht vollständig
 gelesene Serien**) to hide completed series while keeping unread and in-progress
 series. The checkbox is off by default, is saved per filter, and applies before
 the display limit. A series disappears after its last downloaded book is deleted.
@@ -90,13 +100,13 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.17 is an Android-only Home-filter update;
+- Release assets vary by version. Version 0.20.18 is an Android-only series-menu update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- Version 0.20.17 (Android version code 42) adds an unread-only checkbox to the
-  Downloaded series Home filter.
+- Version 0.20.18 (Android version code 43) adds translated series download
+  deletion actions and preserves unconfirmed reading progress.
   It includes the earlier direct series-download and read-status buttons, page
   preparation, offline-download, and reading-progress improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
