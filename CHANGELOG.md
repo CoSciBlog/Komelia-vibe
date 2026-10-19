@@ -4,6 +4,16 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.19 - 2026-10-19
+
+- Accept GitHub release tags with a leading `v` in update checks while preserving
+  the existing stored version format.
+- End the update loading state on errors and empty release lists, and prevent
+  duplicate checks while a request is active.
+- Retry complete image/page reads and update metadata reads at most twice after
+  I/O failures, including interrupted response bodies. Cancellation remains immediate.
+- These fixes, tests and release preparation received material OpenAI Codex assistance.
+
 ## 0.20.18 - 2026-10-18
 
 - Add Delete downloaded and Delete read downloads to the series overflow menu

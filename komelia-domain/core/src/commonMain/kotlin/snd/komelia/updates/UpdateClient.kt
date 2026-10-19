@@ -6,6 +6,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import snd.komelia.http.retryNetworkRead
 import kotlin.time.Instant
 
 private const val komeliaBaseUrl = "https://api.github.com/repos/CoSciBlog/Komelia-vibe"
@@ -17,13 +18,15 @@ class UpdateClient(
 ) {
 
     suspend fun getKomeliaReleases(): List<GithubRelease> {
-        return ktor.get("$komeliaBaseUrl/releases") {
-            parameter("per_page", 5)
-        }.body()
+        return retryNetworkRead {
+            ktor.get("$komeliaBaseUrl/releases") {
+                parameter("per_page", 5)
+            }.body()
+        }
     }
 
     suspend fun getKomeliaLatestRelease(): GithubRelease {
-        return ktor.get("$komeliaBaseUrl/releases/latest").body()
+        return retryNetworkRead { ktor.get("$komeliaBaseUrl/releases/latest").body() }
     }
 
     suspend fun getOnnxRuntimeRelease(tagName: String): GithubRelease {

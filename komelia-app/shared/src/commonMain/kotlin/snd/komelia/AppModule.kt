@@ -311,6 +311,7 @@ abstract class AppModule {
 
             ImageLoader.Builder(context)
                 .components {
+                    add(snd.komelia.image.coil.NetworkReadRetryInterceptor())
                     add(FileMapper())
                     add(CoilDecoder.Factory(coilAwareDecoder))
                     add(KomeliaFetcherFactory(komgaApi, komfMangaBaka, coilAwareDecoder))

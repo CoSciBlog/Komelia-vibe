@@ -371,6 +371,23 @@ Primary areas and regression tests:
 - `SyncReadProgressAction.kt` and `OfflineReadProgressRepository`
 - `SeriesActionsMenu.kt`, `ViewModelFactory.kt`, and localized Compose resources
 
+### 11. Recoverable image reads and update checks
+
+Introduced in 0.20.19.
+
+- Update versions accept both numeric versions and GitHub's `v`-prefixed tags.
+  Persisted versions keep their numeric format and updates target this fork.
+- Update checks leave the loading state on errors or an empty release list and
+  ignore duplicate checks while one is active.
+- Coil image fetches, reader page fetches and update metadata reads retry the
+  complete read at most twice on I/O errors, including interrupted response bodies.
+  Successful local-first behavior remains unchanged, cancellation stops retries,
+  and application/HTTP errors are not retried.
+
+Primary areas: `http/RetryNetworkRead.kt`, `image/coil/NetworkReadRetryInterceptor.kt`,
+`image/BookImageLoader.kt`, `updates/AppVersion.kt`, `updates/UpdateClient.kt`, and
+`ui/settings/updates/AppUpdatesViewModel.kt`, plus their regression tests.
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:

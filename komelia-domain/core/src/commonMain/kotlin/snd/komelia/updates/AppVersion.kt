@@ -20,7 +20,7 @@ data class AppVersion(
         val current = fromString(GENERATED_APP_VERSION)
 
         fun fromString(value: String): AppVersion {
-            val version = value.split(".")
+            val version = value.trim().removePrefix("v").split(".")
             return when (version.size) {
                 3 -> AppVersion(version[0].toInt(), version[1].toInt(), version[2].toInt())
                 2 -> AppVersion(version[0].toInt(), version[1].toInt(), 0)

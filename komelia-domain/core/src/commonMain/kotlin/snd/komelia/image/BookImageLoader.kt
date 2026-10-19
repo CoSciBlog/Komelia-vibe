@@ -7,6 +7,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.StateFlow
 import okio.FileSystem
 import okio.Path.Companion.toPath
+import snd.komelia.http.retryNetworkRead
 import snd.komelia.komga.api.KomgaBookApi
 import snd.komelia.offline.sync.model.OfflineLogEntry
 import snd.komelia.offline.sync.repository.LogJournalRepository
@@ -77,7 +78,7 @@ class BookImageLoader(
     private suspend fun doLoad(bookId: KomgaBookId, page: Int): ImageSource {
         val pageId = ReaderImage.PageId(bookId.value, page)
         if (diskCache == null) {
-            val bytes: ByteArray = bookClient.value.getPage(bookId, page)
+            val bytes: ByteArray = retryNetworkRead { bookClient.value.getPage(bookId, page) }
             return ImageSource.MemorySource(bytes)
         }
 
@@ -87,7 +88,7 @@ class BookImageLoader(
             return ImageSource.FilePathSource(existingSnapshot)
         }
 
-        val bytes = bookClient.value.getPage(bookId, page)
+        val bytes = retryNetworkRead { bookClient.value.getPage(bookId, page) }
         val newSnapshot = writeToDiskCache(
             fileSystem = fileSystem,
             cacheKey = pageId.toString(),

@@ -23,9 +23,9 @@ class AppUpdatesScreen : Screen {
 
         val state = vm.state.collectAsState().value
         SettingsScreenContainer(stringResource(Res.string.settings_updates_title)) {
-            when (state) {
-                is LoadState.Error -> Text("Error ${state.exception.message}")
-                LoadState.Loading, LoadState.Uninitialized, is LoadState.Success -> AppUpdatesContent(
+            when {
+                state is LoadState.Error && vm.updater == null -> Text("Error ${state.exception.message}")
+                else -> AppUpdatesContent(
                     checkForUpdates = vm.checkForUpdatesOnStartup.collectAsState().value,
                     onCheckForUpdatesChange = vm::onCheckForUpdatesOnStartupChange,
                     currentVersion = AppVersion.current,
