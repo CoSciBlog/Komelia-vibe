@@ -50,21 +50,23 @@ class AppUpdatesViewModel(
 
     fun checkForUpdates() {
         val updater = requireNotNull(updater)
-        notifications.runCatchingToNotifications(screenModelScope) {
-            mutableState.value = LoadState.Loading
-
+        if (state.value == LoadState.Loading) return
+        mutableState.value = LoadState.Loading
+        notifications.runCatchingToNotifications<Unit>(
+            screenModelScope,
+            onFailure = { mutableState.value = LoadState.Error(it) },
+        ) {
             val releases = updater.getReleases()
             this.releases.value = releases
-            if (releases.isEmpty()) return@runCatchingToNotifications
-
-            val latestRelease = releases.first()
-            latestVersion.value = latestRelease.version
+            val latestRelease = releases.firstOrNull()
+            if (latestRelease != null) {
+                settings.putLastCheckedReleaseVersion(latestRelease.version)
+                latestVersion.value = latestRelease.version
+            }
 
             val now = Clock.System.now()
             settings.putLastUpdateCheckTimestamp(now)
             lastUpdateCheck.value = now
-
-            settings.putLastCheckedReleaseVersion(latestRelease.version)
 
             mutableState.value = LoadState.Success(Unit)
         }
