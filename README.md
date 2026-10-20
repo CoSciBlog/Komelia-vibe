@@ -104,18 +104,16 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.19 is an Android-only reliability update;
+- Release assets vary by version. Version 0.20.20 is an Android-only cover-preview update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- Version 0.20.19 (Android version code 44) fixes update checks for `v`-prefixed
-  release tags and stops the loading indicator after errors or empty results.
-  Interrupted image/page and update metadata reads are retried at most twice;
-  persistent connection failures are still reported and cancellation stops retries.
-  It retains translated series download deletion and protects unsent progress.
-  It includes the earlier direct series-download and read-status buttons, page
-  preparation, offline-download, and reading-progress improvements.
+- Version 0.20.20 (Android version code 45) opens a large cover preview when
+  clicking the cover on series, book and oneshot details. The complete cover fits
+  the available window; use **Close** or Back/Escape to return to the detail page.
+  It includes the earlier update-check and image-read fixes, series-download and
+  read-status buttons, page preparation, offline-download and progress improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots
