@@ -390,6 +390,8 @@ Primary areas: `http/RetryNetworkRead.kt`, `image/coil/NetworkReadRetryIntercept
 
 ### 12. Enlarged cover preview on detail pages
 
+Introduced in 0.20.20.
+
 - Clicking the cover on series, book and oneshot details opens a window-sized
   preview, fitting the complete image without cropping or distorting it.
 - A visible, localized Close button remains available above the image. Normal
