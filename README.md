@@ -60,6 +60,10 @@ to be toggled independently and configure the overlay's top/bottom and
 left/center/right position, text color, and font size. The same overlay works in
 paged, continuous, and panel reading modes.
 
+Click a cover on a series, book or oneshot detail page to open a larger preview.
+The cover fits the available window without cropping. Use **Close** or
+Back/Escape to return to the detail page.
+
 Book and oneshot detail pages provide **Mark read** and **Mark unread** directly
 beside **Read** and **Download**. Unread books offer Mark read, completed books
 offer Mark unread, and in-progress books offer both. The buttons wrap on narrow

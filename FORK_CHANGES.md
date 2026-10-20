@@ -388,6 +388,21 @@ Primary areas: `http/RetryNetworkRead.kt`, `image/coil/NetworkReadRetryIntercept
 `image/BookImageLoader.kt`, `updates/AppVersion.kt`, `updates/UpdateClient.kt`, and
 `ui/settings/updates/AppUpdatesViewModel.kt`, plus their regression tests.
 
+### 12. Enlarged cover preview on detail pages
+
+- Clicking the cover on series, book and oneshot details opens a window-sized
+  preview, fitting the complete image without cropping or distorting it.
+- A visible, localized Close button remains available above the image. Normal
+  Back/Escape dismissal returns to the same detail page without starting a reader.
+- Book/series thumbnail loading and offline support use the existing image pipeline.
+  Covers in library grids retain their existing navigation behavior.
+- Preview state resets when the displayed book or series changes.
+
+Primary areas:
+
+- `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/common/images/ExpandableCover.kt`
+- series, book and oneshot detail content and localized cover strings
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:

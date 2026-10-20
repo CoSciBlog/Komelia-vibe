@@ -51,7 +51,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
@@ -84,7 +83,7 @@ import snd.komelia.ui.common.components.AppFilterChipDefaults
 import snd.komelia.ui.common.components.DescriptionChips
 import snd.komelia.ui.common.components.LabeledEntry
 import snd.komelia.ui.common.components.LabeledEntry.Companion.stringEntry
-import snd.komelia.ui.common.images.SeriesThumbnail
+import snd.komelia.ui.common.images.ExpandableSeriesCover
 import snd.komelia.ui.common.menus.SeriesActionsMenu
 import snd.komelia.ui.common.menus.SeriesMenuActions
 import snd.komelia.ui.common.menus.bulk.BooksBulkActionsContent
@@ -496,13 +495,12 @@ fun Series(
     ) {
         Layout(
             content = {
-                SeriesThumbnail(
+                ExpandableSeriesCover(
                     seriesId = series.id,
                     modifier = Modifier
                         .animateContentSize(animationSpec = animation)
                         .heightIn(min = 100.dp, max = 400.dp)
-                        .widthIn(min = 300.dp, max = 500.dp),
-                    contentScale = ContentScale.Fit
+                        .widthIn(min = 300.dp, max = 500.dp)
                 )
 
                 Column(modifier = Modifier.fillMaxWidth()) {
