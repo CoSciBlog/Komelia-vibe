@@ -50,7 +50,7 @@ import snd.komelia.ui.collection.SeriesCollectionsContent
 import snd.komelia.ui.common.BookReadButton
 import snd.komelia.ui.common.BookReadStatusButtons
 import snd.komelia.ui.common.components.ExpandableText
-import snd.komelia.ui.common.images.BookThumbnail
+import snd.komelia.ui.common.images.ExpandableBookCover
 import snd.komelia.ui.common.menus.BookMenuActions
 import snd.komelia.ui.common.menus.OneshotActionsMenu
 import snd.komelia.ui.common.readIsSupported
@@ -111,7 +111,7 @@ fun OneshotScreenContent(
                 horizontalAlignment = Alignment.Start
             ) {
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
-                    BookThumbnail(
+                    ExpandableBookCover(
                         book.id,
                         modifier = Modifier
                             .heightIn(min = 100.dp, max = 400.dp)

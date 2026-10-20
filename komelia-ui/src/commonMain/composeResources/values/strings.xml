@@ -1076,4 +1076,6 @@
     <string name="series_delete_downloaded_all_confirm">Delete all downloaded books of “%1$s” from this device? Books on the server are kept. Downloads with reading progress that cannot be confirmed with Komga are kept. Connect to Komga and try again to remove them.</string>
     <string name="series_delete_downloaded_read_confirm">Delete only fully read downloaded books of “%1$s” from this device? Unread and in-progress books and books on the server are kept. Downloads with unconfirmed reading progress are kept until Komga is available.</string>
     <string name="series_delete_downloaded_result">Downloads removed: %1$d. Kept: %2$d.</string>
+    <string name="cover_open">Enlarge cover</string>
+    <string name="cover_close">Close</string>
 </resources>

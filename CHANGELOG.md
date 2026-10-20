@@ -4,6 +4,10 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+- Open a large, uncropped cover preview by clicking the cover on series, book and
+  oneshot detail pages. Close it with the visible Close button or Back/Escape.
+- This feature received material OpenAI Codex assistance.
+
 ## 0.20.19 - 2026-10-19
 
 - Accept GitHub release tags with a leading `v` in update checks while preserving

@@ -10,4 +10,6 @@
     <string name="book_mark_unread">Als ungelesen markieren</string>
     <string name="book_download">Herunterladen</string>
     <string name="series_edit">Bearbeiten</string>
+    <string name="cover_open">Cover vergrößern</string>
+    <string name="cover_close">Schließen</string>
 </resources>
