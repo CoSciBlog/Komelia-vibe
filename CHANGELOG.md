@@ -6,6 +6,11 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## 0.20.21 - 2026-10-22
 
+- **Android signing change:** this release starts a new signing identity at the
+  owner's request because the key for 0.20.20 is unavailable. Existing Android
+  installations cannot update in place. Synchronize offline reading progress and
+  preserve needed local data before uninstalling; a reinstall resets local settings
+  and downloads. Keep this new signing key for future updates.
 - Add a persistent 1–10 slider for simultaneous book downloads, defaulting to 2,
   shared by Android and desktop downloads. Limit changes apply to waiting books
   without interrupting active transfers.
