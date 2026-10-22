@@ -4,8 +4,12 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.22 - 2026-10-23
+
 - Add a manual GitHub release download link below the App Updates buttons, also
   available when update checks fail or the updater is unavailable.
+- Translate the link into all seven supported languages and retain the Android
+  signing identity from 0.20.21 for in-place updates.
 - This change was prepared with assistance from OpenAI Codex.
 
 ## 0.20.21 - 2026-10-22

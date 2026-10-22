@@ -114,18 +114,20 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.21 is an Android-only download-settings update;
+- Release assets vary by version. Version 0.20.22 is an Android-only update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- **Android 0.20.21 requires a fresh installation:** it uses a new signing key,
-  so Android cannot install it over 0.20.20 or earlier releases. Before uninstalling,
+- **Android 0.20.21 and later use the 2026 signing key:** version 0.20.22 can
+  update 0.20.21 in place. Android cannot install these versions over 0.20.20 or
+  earlier releases. Before uninstalling an older version,
   synchronize offline progress with Komga and preserve needed local data. Uninstalling
   removes app settings and downloads. See [RELEASE_SIGNING.md](RELEASE_SIGNING.md).
-- Version 0.20.21 (Android version code 46) adds a slider for 1–10 simultaneous
-  book downloads with a default of 2. The selection is saved and also applies to
-  series downloads and next-book preloads. It includes all earlier improvements.
+- Version 0.20.22 (Android version code 47) adds **Download manually from GitHub**
+  below the App Updates buttons, including when update checks fail or the updater
+  is unavailable. It includes the saved 1–10 simultaneous-download setting from
+  0.20.21 and all earlier improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots

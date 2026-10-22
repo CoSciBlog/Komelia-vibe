@@ -13,5 +13,5 @@ license/notice files for further information.
 
 This is a modified, independently distributed application. Fork behavior and
 changes are identified in FORK_CHANGES.md, CHANGELOG.md, and Git history.
-Release 0.20.16 adds a downloaded-series Home filter and distribution updates
+Release 0.20.22 adds a manual release-download link and distribution updates
 prepared with material assistance from OpenAI Codex.
