@@ -30,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_concurrent_downloads
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_concurrent_downloads_desc
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_canceled
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_download_complete
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offline_mode_delete_read_books
@@ -48,6 +50,8 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_offlin
 import io.github.vinceglb.filekit.PlatformFile
 import org.jetbrains.compose.resources.stringResource
 import snd.komelia.formatDecimal
+import snd.komelia.offline.settings.MIN_CONCURRENT_DOWNLOADS
+import snd.komelia.offline.settings.MAX_CONCURRENT_DOWNLOADS
 import snd.komelia.offline.settings.MAX_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.settings.MIN_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.sync.model.DownloadEvent
@@ -63,12 +67,14 @@ fun OfflineDownloadsContent(
     storageLocation: PlatformFile?,
     downloadOnlyUnreadSeriesBooks: Boolean,
     deleteReadBooks: Boolean,
+    concurrentDownloads: Int,
     preloadNextBookEnabled: Boolean,
     preloadNextBookPages: Int,
     showPreloadNotification: Boolean,
 
     onDownloadOnlyUnreadSeriesBooksChange: (Boolean) -> Unit,
     onDeleteReadBooksChange: (Boolean) -> Unit,
+    onConcurrentDownloadsChange: (Int) -> Unit,
     onPreloadNextBookEnabledChange: (Boolean) -> Unit,
     onPreloadNextBookPagesChange: (Int) -> Unit,
     onShowPreloadNotificationChange: (Boolean) -> Unit,
@@ -78,6 +84,24 @@ fun OfflineDownloadsContent(
     onDownloadCancel: (KomgaBookId) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        var concurrentDownloadsValue by remember { mutableFloatStateOf(concurrentDownloads.toFloat()) }
+        LaunchedEffect(concurrentDownloads) { concurrentDownloadsValue = concurrentDownloads.toFloat() }
+        Column(Modifier.padding(horizontal = 10.dp)) {
+            Text(stringResource(Res.string.settings_offline_mode_concurrent_downloads, concurrentDownloadsValue.roundToInt()))
+            Slider(
+                value = concurrentDownloadsValue,
+                onValueChange = { concurrentDownloadsValue = it.roundToInt().toFloat() },
+                onValueChangeFinished = { onConcurrentDownloadsChange(concurrentDownloadsValue.roundToInt()) },
+                valueRange = MIN_CONCURRENT_DOWNLOADS.toFloat()..MAX_CONCURRENT_DOWNLOADS.toFloat(),
+                steps = MAX_CONCURRENT_DOWNLOADS - MIN_CONCURRENT_DOWNLOADS - 1,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Text(
+                stringResource(Res.string.settings_offline_mode_concurrent_downloads_desc),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         SwitchWithLabel(
             checked = downloadOnlyUnreadSeriesBooks,
             onCheckedChange = onDownloadOnlyUnreadSeriesBooksChange,

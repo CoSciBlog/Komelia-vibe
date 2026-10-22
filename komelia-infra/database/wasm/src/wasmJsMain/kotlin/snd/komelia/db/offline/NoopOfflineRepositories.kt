@@ -34,6 +34,7 @@ import snd.komelia.offline.server.model.OfflineMediaServer
 import snd.komelia.offline.server.model.OfflineMediaServerId
 import snd.komelia.offline.server.repository.OfflineMediaServerRepository
 import snd.komelia.offline.settings.OfflineSettingsRepository
+import snd.komelia.offline.settings.DEFAULT_CONCURRENT_DOWNLOADS
 import snd.komelia.offline.settings.DEFAULT_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.sync.model.LogEntryId
 import snd.komelia.offline.sync.model.OfflineLogEntry
@@ -865,6 +866,11 @@ class NoopOfflineSettingsRepository : OfflineSettingsRepository {
     }
 
     override suspend fun putDownloadDirectory(path: PlatformFile) {
+    }
+
+    override fun getConcurrentDownloads(): Flow<Int> = flowOf(DEFAULT_CONCURRENT_DOWNLOADS)
+
+    override suspend fun putConcurrentDownloads(count: Int) {
     }
 
     override fun getDownloadOnlyUnreadSeriesBooks(): Flow<Boolean> = flowOf(false)

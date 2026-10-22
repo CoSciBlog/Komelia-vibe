@@ -9,6 +9,10 @@ const val MAX_PRELOAD_NEXT_BOOK_PAGES = 20
 const val MIN_PRELOAD_NEXT_BOOK_PAGES = 1
 const val DEFAULT_PRELOAD_NEXT_BOOK_PAGES = 3
 
+const val MIN_CONCURRENT_DOWNLOADS = 1
+const val MAX_CONCURRENT_DOWNLOADS = 10
+const val DEFAULT_CONCURRENT_DOWNLOADS = 2
+
 interface OfflineSettingsRepository {
     fun getOfflineMode(): Flow<Boolean>
     suspend fun putOfflineMode(offline: Boolean)
@@ -24,6 +28,9 @@ interface OfflineSettingsRepository {
 
     fun getDownloadDirectory(): Flow<PlatformFile>
     suspend fun putDownloadDirectory(path: PlatformFile)
+
+    fun getConcurrentDownloads(): Flow<Int>
+    suspend fun putConcurrentDownloads(count: Int)
 
     fun getDownloadOnlyUnreadSeriesBooks(): Flow<Boolean>
     suspend fun putDownloadOnlyUnreadSeriesBooks(enabled: Boolean)

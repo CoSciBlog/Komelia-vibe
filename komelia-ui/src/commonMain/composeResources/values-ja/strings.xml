@@ -9,4 +9,6 @@
     <string name="book_mark_unread">未読にする</string>
     <string name="book_download">ダウンロード</string>
     <string name="series_edit">編集</string>
+    <string name="settings_offline_mode_concurrent_downloads">同時にダウンロードする本の数: %1$d</string>
+    <string name="settings_offline_mode_concurrent_downloads_desc">1～10冊から選択します。初期値は2冊です。上限を下げても、実行中のダウンロードは完了まで続きます。</string>
 </resources>

@@ -1078,4 +1078,6 @@
     <string name="series_delete_downloaded_result">Downloads removed: %1$d. Kept: %2$d.</string>
     <string name="cover_open">Enlarge cover</string>
     <string name="cover_close">Close</string>
+    <string name="settings_offline_mode_concurrent_downloads">Simultaneous book downloads: %1$d</string>
+    <string name="settings_offline_mode_concurrent_downloads_desc">Choose 1–10 books. Default: 2. Active downloads finish before a lower limit takes effect.</string>
 </resources>

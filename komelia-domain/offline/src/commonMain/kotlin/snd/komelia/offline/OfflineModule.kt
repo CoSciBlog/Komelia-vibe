@@ -161,6 +161,7 @@ abstract class OfflineModule(
         )
         val downloadService = BookDownloadService(
             libraryDownloadPath = repositories.offlineSettingsRepository.getDownloadDirectory(),
+            concurrentDownloads = repositories.offlineSettingsRepository.getConcurrentDownloads(),
             bookClient = komgaClientFactory.bookClient(),
             seriesClient = komgaClientFactory.seriesClient(),
             libraryClient = komgaClientFactory.libraryClient(),

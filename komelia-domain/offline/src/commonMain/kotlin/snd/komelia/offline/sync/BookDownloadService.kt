@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.io.Sink
 import kotlinx.io.files.Path
@@ -41,6 +42,7 @@ private const val DOWNLOAD_RETRY_DELAY_MILLIS = 750L
 
 class BookDownloadService(
     private val libraryDownloadPath: Flow<PlatformFile>,
+    concurrentDownloads: Flow<Int>,
 
     private val bookClient: KomgaBookClient,
     private val seriesClient: KomgaSeriesClient,
@@ -56,7 +58,13 @@ class BookDownloadService(
     private val onlineServerUrl: StateFlow<String>,
 ) {
 
-    fun downloadBook(bookId: KomgaBookId): Flow<DownloadEvent> {
+    private val concurrencyLimiter = DownloadConcurrencyLimiter(concurrentDownloads)
+
+    fun downloadBook(bookId: KomgaBookId): Flow<DownloadEvent> = flow {
+        concurrencyLimiter.withPermit { emitAll(downloadBookWithPermit(bookId)) }
+    }
+
+    private fun downloadBookWithPermit(bookId: KomgaBookId): Flow<DownloadEvent> {
         return flow {
             var file: PlatformFile? = null
             val book = bookClient.getOne(bookId)

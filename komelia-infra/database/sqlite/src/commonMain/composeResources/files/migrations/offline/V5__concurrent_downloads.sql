@@ -1,0 +1,1 @@
+ALTER TABLE SETTINGS ADD COLUMN concurrent_downloads INTEGER NOT NULL DEFAULT 2 CHECK (concurrent_downloads BETWEEN 1 AND 10);

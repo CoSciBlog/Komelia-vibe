@@ -11,6 +11,7 @@ class OfflineMigrations : MigrationResourcesProvider() {
         "V2__download_cleanup_settings.sql",
         "V3__reader_preload_settings.sql",
         "V4__preload_enabled_setting.sql",
+        "V5__concurrent_downloads.sql",
     )
 
     override suspend fun getMigration(name: String): ByteArray? {

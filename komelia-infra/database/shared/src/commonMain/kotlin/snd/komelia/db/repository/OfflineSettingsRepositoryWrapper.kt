@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import snd.komelia.db.OfflineSettings
 import snd.komelia.db.SettingsStateWrapper
 import snd.komelia.offline.settings.OfflineSettingsRepository
+import snd.komelia.offline.settings.MIN_CONCURRENT_DOWNLOADS
+import snd.komelia.offline.settings.MAX_CONCURRENT_DOWNLOADS
 import snd.komelia.offline.settings.MAX_PRELOAD_NEXT_BOOK_PAGES
 import snd.komelia.offline.settings.MIN_PRELOAD_NEXT_BOOK_PAGES
 import snd.komga.client.user.KomgaUserId
@@ -52,6 +54,14 @@ class OfflineSettingsRepositoryWrapper(
 
     override suspend fun putDownloadDirectory(path: PlatformFile) {
         wrapper.transform { it.copy(downloadDirectory = path) }
+    }
+
+    override fun getConcurrentDownloads(): Flow<Int> {
+        return wrapper.mapState { it.concurrentDownloads.coerceIn(MIN_CONCURRENT_DOWNLOADS, MAX_CONCURRENT_DOWNLOADS) }
+    }
+
+    override suspend fun putConcurrentDownloads(count: Int) {
+        wrapper.transform { it.copy(concurrentDownloads = count.coerceIn(MIN_CONCURRENT_DOWNLOADS, MAX_CONCURRENT_DOWNLOADS)) }
     }
 
     override fun getDownloadOnlyUnreadSeriesBooks(): Flow<Boolean> {

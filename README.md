@@ -10,8 +10,12 @@ were explicitly downloaded, so it does not copy remote library or label restrict
 This follows the behavior planned for upstream Komelia and keeps the implementation
 easy to replace when the upstream fix is integrated.
 
-The offline download settings also provide opt-in storage and reader controls:
+The offline download settings provide these download, storage and reader controls:
 
+- **Simultaneous book downloads** uses a 1–10 slider and defaults to 2. The saved
+  limit applies to manual, series and reader-preload downloads on Android and
+  desktop. Raising it starts waiting downloads; lowering it lets active transfers
+  finish before starting more.
 - **Download only unread series books** skips completed books when a complete series
   is queued, while retaining unread and in-progress books.
 - **Delete downloaded books after reading** removes local book data only after the
@@ -50,7 +54,8 @@ Each entry has its own copy button for copying the complete message and stack tr
 Interrupted transfers caused by transient socket or channel failures are retried
 up to three times after removing the incomplete file.
 
-All controls are disabled by default. They use the existing Komga models and the
+The optional cleanup and preloading controls are disabled by default. They use
+the existing Komga models and the
 fork's offline task layer without changing protocol payloads or internal Kotlin package
 names, keeping future upstream integration straightforward.
 
@@ -104,16 +109,14 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.20 is an Android-only cover-preview update;
+- Release assets vary by version. Version 0.20.21 is an Android-only download-settings update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- Version 0.20.20 (Android version code 45) opens a large cover preview when
-  clicking the cover on series, book and oneshot details. The complete cover fits
-  the available window; use **Close** or Back/Escape to return to the detail page.
-  It includes the earlier update-check and image-read fixes, series-download and
-  read-status buttons, page preparation, offline-download and progress improvements.
+- Version 0.20.21 (Android version code 46) adds a slider for 1–10 simultaneous
+  book downloads with a default of 2. The selection is saved and also applies to
+  series downloads and next-book preloads. It includes all earlier improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots
