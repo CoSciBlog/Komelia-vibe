@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_manual_download">GitHubから手動でダウンロード</string>
     <string name="series_delete_downloaded_all">ダウンロードした本を削除</string>
     <string name="series_delete_downloaded_read">読了済みのダウンロードを削除</string>
     <string name="series_delete_downloaded_all_confirm">「%1$s」のダウンロード済みの本をすべてこの端末から削除しますか？サーバー上の本は保持されます。読書の進捗をKomgaと確認できない本は保持されます。削除するにはKomgaに接続して再試行してください。</string>

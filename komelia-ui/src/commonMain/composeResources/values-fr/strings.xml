@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_manual_download">Télécharger manuellement depuis GitHub</string>
     <string name="series_delete_downloaded_all">Supprimer les livres téléchargés</string>
     <string name="series_delete_downloaded_read">Supprimer les téléchargements lus</string>
     <string name="series_delete_downloaded_all_confirm">Supprimer de cet appareil tous les livres téléchargés de « %1$s » ? Les livres du serveur sont conservés. Les téléchargements dont la progression ne peut pas être confirmée avec Komga sont conservés. Connectez-vous à Komga et réessayez pour les supprimer.</string>

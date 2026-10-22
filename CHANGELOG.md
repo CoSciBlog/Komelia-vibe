@@ -4,6 +4,10 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+- Add a manual GitHub release download link below the App Updates buttons, also
+  available when update checks fail or the updater is unavailable.
+- This change was prepared with assistance from OpenAI Codex.
+
 ## 0.20.21 - 2026-10-22
 
 - **Android signing change:** this release starts a new signing identity at the
