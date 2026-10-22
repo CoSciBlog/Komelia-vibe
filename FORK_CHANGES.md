@@ -47,6 +47,10 @@ Introduced in 0.20.1.
   installation rather than an in-place update from older releases. Release notes
   must state the need to synchronize progress and preserve local data before
   uninstalling. Never silently regenerate or replace this new key.
+- The persistent 2026 key/password live outside disposable checkouts at
+  `C:/00data/codex/signing/komelia-vibe/`. `AGENTS.md` and `RELEASE_SIGNING.md`
+  record the paths, alias and certificate fingerprint; retain these pointers.
+  A secondary copy remains in the primary checkout's ignored private release folder.
 - Android preferences namespace: `io.github.cosciblog.komelia.vibe.preferences`.
 - Visible application and window name: `Komelia-Vibe`, including all Android
   distribution manifests so legacy installers show the correct name.

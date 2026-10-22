@@ -25,15 +25,27 @@ certificate without a verified Android signing lineage.
 
 ## Private release material
 
-The maintainer's persistent files are kept outside Git under
-`release-artifacts/private/` in the primary checkout:
+The canonical persistent location is outside every repository checkout and
+managed worktree:
+
+`C:/00data/codex/signing/komelia-vibe/`
 
 - `komelia-vibe-release-2026.p12`, PKCS12 alias `komelia-vibe-2026`.
 - `signing-password-2026.txt`, containing its generated password.
+- `signing-identity.json`, a non-secret manifest recording paths, alias, fingerprint
+  and the secondary copy's location.
 
-Keep a secure backup of both files. Never commit or upload them, print the password,
-or replace them silently. Worktrees must use this same private key rather than
-creating their own. Public release assets may include only the public certificate.
+Directory access is limited to the owner's Windows account, SYSTEM and local
+administrators. A byte-identical secondary key/password copy remains under
+`C:/00data/GIT/Komelia-vibe/release-artifacts/private/` with the same 2026 filenames.
+`ACTIVE_SIGNING_IDENTITY.json` there points to the canonical location. The older
+unversioned keystore has a different certificate and must not sign future releases.
+
+`AGENTS.md` records the canonical path so future release work can find it directly.
+Never remove the canonical directory when cleaning up worktrees. Keep an additional
+secure backup outside this computer to protect against disk loss. Never commit or
+upload the private files, print the password or silently replace this identity.
+Public release assets may include only the public certificate.
 
 Before publishing, verify the APK certificate against the fingerprint above, all
 four required ABIs and the complete packaging checks documented in README. Signing

@@ -29,6 +29,21 @@
 - Komelia-Vibe must remain independently installable and must not overwrite, update, or share mutable application data with upstream Komelia.
 - Export and publish Android builds only as verified universal APKs containing `arm64-v8a`, `armeabi-v7a`, `x86_64`, and `x86`; never publish an ABI-specific APK or relabel one as universal.
 
+## Android release signing key
+
+- Reuse the existing 2026 release key; never generate a replacement for a new version.
+- Canonical persistent key: `C:/00data/codex/signing/komelia-vibe/komelia-vibe-release-2026.p12`.
+- Password file: `C:/00data/codex/signing/komelia-vibe/signing-password-2026.txt`.
+- PKCS12 alias: `komelia-vibe-2026`. The non-secret `signing-identity.json` in that
+  directory records this identity and its backup location.
+- Required certificate SHA-256: `4f0735375fdf9ca3f7c6e75061e6a720f19f6b916b7145d87e0bdbdb7be19a41`.
+  Verify this fingerprint before publishing so updates from 0.20.21 retain data.
+- A secondary copy remains in `C:/00data/GIT/Komelia-vibe/release-artifacts/private/`
+  under the same 2026 filenames. The older unversioned key is a different identity;
+  do not use it. Consult `RELEASE_SIGNING.md` before signing.
+- Never commit or upload private key/password files or print password contents.
+  The canonical directory is outside Git/worktrees and must survive their cleanup.
+
 ## Fork change preservation
 
 - `FORK_CHANGES.md` is the authoritative register of owner-requested fork behavior and protected invariants. Read it completely before integrating, merging, or rebasing changes from `upstream`.
