@@ -1,4 +1,18 @@
 <resources>
+    <string name="settings_updates_title">App-Updates</string>
+    <string name="settings_updates_check_on_startup">Beim Start nach Updates suchen</string>
+    <string name="settings_updates_check">Nach Updates suchen</string>
+    <string name="settings_updates_update">Aktualisieren</string>
+    <string name="settings_updates_release_notes">Versionshinweise:</string>
+    <string name="settings_updates_release_date">Veröffentlicht am: %1$s</string>
+    <string name="settings_updates_current_version">Aktuelle Version:</string>
+    <string name="settings_updates_last_checked_version">Zuletzt geprüfte Version:</string>
+    <string name="settings_updates_last_checked_date">geprüft am %1$s</string>
+    <string name="app_updates_new_version_available">Eine neue Version ist verfügbar</string>
+    <string name="app_updates_dismiss">Später</string>
+    <string name="app_updates_update">Aktualisieren</string>
+    <string name="app_updates_updating">Aktualisierung läuft</string>
+    <string name="app_updates_cancel">Abbrechen</string>
     <string name="settings_updates_manual_download">Manuell von GitHub herunterladen</string>
     <string name="home_filter_downloaded_series">Heruntergeladene Serien</string>
     <string name="home_filter_only_unread_series">Nur nicht vollständig gelesene Serien</string>

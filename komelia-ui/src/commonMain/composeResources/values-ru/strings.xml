@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_title">Обновления приложения</string>
+    <string name="settings_updates_check_on_startup">Проверять обновления при запуске</string>
+    <string name="settings_updates_check">Проверить обновления</string>
+    <string name="settings_updates_update">Обновить</string>
+    <string name="settings_updates_release_notes">Примечания к выпуску:</string>
+    <string name="settings_updates_release_date">Дата выпуска: %1$s</string>
+    <string name="settings_updates_current_version">Текущая версия:</string>
+    <string name="settings_updates_last_checked_version">Последняя проверенная версия:</string>
+    <string name="settings_updates_last_checked_date">проверено %1$s</string>
+    <string name="app_updates_new_version_available">Доступна новая версия</string>
+    <string name="app_updates_dismiss">Позже</string>
+    <string name="app_updates_update">Обновить</string>
+    <string name="app_updates_updating">Обновление</string>
+    <string name="app_updates_cancel">Отмена</string>
     <string name="settings_updates_manual_download">Скачать вручную с GitHub</string>
     <string name="screen_error">Ошибка %1$s</string>
     <string name="home_filter_all">Все</string>

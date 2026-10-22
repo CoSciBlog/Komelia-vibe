@@ -600,7 +600,7 @@
     <string name="settings_updates_release_date">发布日期：%1$s</string>
     <string name="settings_updates_current_version">当前版本：</string>
     <string name="settings_updates_last_checked_version">最后检查版本：</string>
-    <string name="settings_updates_last_checked_date">在 %1$s 处检查</string>
+    <string name="settings_updates_last_checked_date">检查日期：%1$s</string>
     <string name="settings_users_title">用户</string>
     <string name="settings_users_add">添加用户</string>
     <string name="settings_users_roles">角色</string>
@@ -894,7 +894,7 @@
     <string name="komf_reset_remove_comicinfo">移除 ComicInfo.xml?</string>
     <string name="komf_reset_remove_comicinfo_desc">需要对文件拥有写入权限</string>
     <string name="app_updates_new_version_available">新版本现已推出</string>
-    <string name="app_updates_dismiss">解除</string>
+    <string name="app_updates_dismiss">稍后</string>
     <string name="app_updates_update">更新</string>
     <string name="app_updates_updating">正在更新</string>
     <string name="app_updates_cancel">取消</string>
