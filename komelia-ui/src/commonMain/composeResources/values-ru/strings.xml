@@ -74,4 +74,6 @@
     <string name="book_mark_unread">Отметить непрочитанным</string>
     <string name="book_download">Скачать</string>
     <string name="series_edit">Изменить</string>
+    <string name="settings_offline_mode_concurrent_downloads">Одновременные загрузки книг: %1$d</string>
+    <string name="settings_offline_mode_concurrent_downloads_desc">Выберите от 1 до 10 книг. По умолчанию: 2. При уменьшении лимита текущие загрузки сначала завершатся.</string>
 </resources>

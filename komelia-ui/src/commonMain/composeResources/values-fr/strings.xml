@@ -9,4 +9,6 @@
     <string name="book_mark_unread">Marquer comme non lu</string>
     <string name="book_download">Télécharger</string>
     <string name="series_edit">Modifier</string>
+    <string name="settings_offline_mode_concurrent_downloads">Téléchargements simultanés de livres : %1$d</string>
+    <string name="settings_offline_mode_concurrent_downloads_desc">Choisissez de 1 à 10 livres. Par défaut : 2. Les téléchargements en cours se terminent avant qu’une limite inférieure soit appliquée.</string>
 </resources>

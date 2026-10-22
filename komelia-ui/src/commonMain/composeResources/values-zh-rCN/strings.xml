@@ -981,4 +981,6 @@
     <string name="series_delete_downloaded_all_confirm">从此设备删除《%1$s》的所有已下载书籍？服务器上的书籍将被保留。无法通过 Komga 确认阅读进度的下载将被保留。请连接 Komga 后重试以删除这些下载。</string>
     <string name="series_delete_downloaded_read_confirm">仅从此设备删除《%1$s》中已读完的下载？未读、正在阅读的书籍和服务器上的书籍将被保留。阅读进度未确认的下载将被保留，直到可以连接 Komga。</string>
     <string name="series_delete_downloaded_result">已删除的下载：%1$d。已保留：%2$d。</string>
+    <string name="settings_offline_mode_concurrent_downloads">同时下载的书籍数：%1$d</string>
+    <string name="settings_offline_mode_concurrent_downloads_desc">可选择 1–10 本，默认为 2 本。降低上限时，正在进行的下载会先完成。</string>
 </resources>

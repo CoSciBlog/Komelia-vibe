@@ -4,6 +4,13 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.21 - 2026-10-22
+
+- Add a persistent 1–10 slider for simultaneous book downloads, defaulting to 2,
+  shared by Android and desktop downloads. Limit changes apply to waiting books
+  without interrupting active transfers.
+- This feature and its regression tests were prepared with assistance from OpenAI Codex.
+
 ## 0.20.20 - 2026-10-20
 
 - Open a large, uncropped cover preview by clicking the cover on series, book and

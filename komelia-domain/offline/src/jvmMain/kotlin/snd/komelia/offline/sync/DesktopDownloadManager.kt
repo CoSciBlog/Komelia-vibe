@@ -6,9 +6,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.job
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.sync.withPermit
 import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.offline.sync.model.BookDownloadLog
 import snd.komelia.offline.sync.model.BookDownloadSource
@@ -16,8 +14,6 @@ import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logError
 import snd.komelia.offline.sync.model.OfflineLogEntry.Companion.logInfo
 import snd.komelia.offline.sync.repository.LogJournalRepository
 import snd.komga.client.book.KomgaBookId
-
-private val downloadsSemaphore = Semaphore(4)
 
 /**
  *  Do all the work on caller coroutine
@@ -40,21 +36,19 @@ class DesktopDownloadManager(
                 bookJobs.put(bookId, currentCoroutineContext().job)
             }
 
-            downloadsSemaphore.withPermit {
-                bookDownloadService.downloadBook(bookId).collect {
-                    sharedEvents.emit(it)
-                    when (it) {
-                        is DownloadEvent.BookDownloadProgress -> {}
-                        is DownloadEvent.BookDownloadCompleted -> logsJournalRepository.logInfo {
-                            BookDownloadLog.downloaded(it.book.metadata.title, it.book.id, source)
-                        }
-                        is DownloadEvent.BookDownloadError -> logsJournalRepository.logError(it.error) {
-                            BookDownloadLog.downloadFailed(
-                                it.book?.metadata?.title ?: it.bookId.value,
-                                it.bookId,
-                                source,
-                            )
-                        }
+            bookDownloadService.downloadBook(bookId).collect {
+                sharedEvents.emit(it)
+                when (it) {
+                    is DownloadEvent.BookDownloadProgress -> {}
+                    is DownloadEvent.BookDownloadCompleted -> logsJournalRepository.logInfo {
+                        BookDownloadLog.downloaded(it.book.metadata.title, it.book.id, source)
+                    }
+                    is DownloadEvent.BookDownloadError -> logsJournalRepository.logError(it.error) {
+                        BookDownloadLog.downloadFailed(
+                            it.book?.metadata?.title ?: it.bookId.value,
+                            it.bookId,
+                            source,
+                        )
                     }
                 }
             }

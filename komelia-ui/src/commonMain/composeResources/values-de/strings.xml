@@ -12,4 +12,6 @@
     <string name="series_edit">Bearbeiten</string>
     <string name="cover_open">Cover vergrößern</string>
     <string name="cover_close">Schließen</string>
+    <string name="settings_offline_mode_concurrent_downloads">Gleichzeitige Buch-Downloads: %1$d</string>
+    <string name="settings_offline_mode_concurrent_downloads_desc">Wähle 1–10 Bücher. Standard: 2. Bei einem niedrigeren Limit werden laufende Downloads zuerst beendet.</string>
 </resources>

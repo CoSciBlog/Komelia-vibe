@@ -405,6 +405,23 @@ Primary areas:
 - `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/common/images/ExpandableCover.kt`
 - series, book and oneshot detail content and localized cover strings
 
+### 13. Configurable simultaneous book downloads
+
+- Offline Mode → Downloads provides a discrete 1–10 slider with default 2.
+- Persist the limit across restarts and upgrades, including existing installs via
+  offline migration `V5__concurrent_downloads.sql`. Keep earlier migrations intact.
+- One shared limiter in `BookDownloadService` covers manual, series and preload
+  downloads on Android and desktop. No fixed four-download cap may override it.
+- Raising the limit admits waiting books immediately. Lowering it never cancels
+  active transfers; new books wait until the active count falls below the limit.
+- Cancelled waiting downloads never consume a slot. Completed, failed and cancelled
+  active downloads always release their slot. Values are constrained to 1–10.
+- Labels and explanations are localized in all seven supported resource locales.
+
+Primary areas: offline settings models/repositories/migration, `BookDownloadService`,
+`DownloadConcurrencyLimiter`, Android/desktop download execution and offline settings UI.
+Regression tests cover concurrency, live changes, cancellation and settings persistence.
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import snd.komelia.offline.settings.OfflineSettingsRepository
 import snd.komelia.offline.settings.DEFAULT_PRELOAD_NEXT_BOOK_PAGES
+import snd.komelia.offline.settings.DEFAULT_CONCURRENT_DOWNLOADS
 import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadCompleted
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadError
@@ -37,6 +38,8 @@ class OfflineDownloadsState(
         .stateIn(coroutineScope, SharingStarted.Eagerly,null)
     val downloadOnlyUnreadSeriesBooks = settingsRepository.getDownloadOnlyUnreadSeriesBooks()
         .stateIn(coroutineScope, SharingStarted.Eagerly, false)
+    val concurrentDownloads = settingsRepository.getConcurrentDownloads()
+        .stateIn(coroutineScope, SharingStarted.Eagerly, DEFAULT_CONCURRENT_DOWNLOADS)
     val deleteReadBooks = settingsRepository.getDeleteReadBooks()
         .stateIn(coroutineScope, SharingStarted.Eagerly, false)
     val preloadNextBookPages = settingsRepository.getPreloadNextBookPages()
@@ -77,6 +80,10 @@ class OfflineDownloadsState(
 
     fun onDownloadOnlyUnreadSeriesBooksChange(enabled: Boolean) {
         coroutineScope.launch { settingsRepository.putDownloadOnlyUnreadSeriesBooks(enabled) }
+    }
+
+    fun onConcurrentDownloadsChange(count: Int) {
+        coroutineScope.launch { settingsRepository.putConcurrentDownloads(count) }
     }
 
     fun onDeleteReadBooksChange(enabled: Boolean) {

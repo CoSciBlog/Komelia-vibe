@@ -19,8 +19,6 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.sync.Semaphore
-import kotlinx.coroutines.sync.withPermit
 import snd.komelia.offline.sync.model.DownloadEvent
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadCompleted
 import snd.komelia.offline.sync.model.DownloadEvent.BookDownloadError
@@ -39,7 +37,6 @@ internal const val bookIdDataKey = "bookId"
 internal const val bookDownloadSourceDataKey = "bookDownloadSource"
 private val notificationIdCounter = AtomicInteger(1)
 const val downloadChannelId = "downloads_channel"
-private val jobLimit = Semaphore(4)
 
 private val logger = KotlinLogging.logger { }
 
@@ -67,18 +64,14 @@ class DownloadWorker(
     }
 
     override suspend fun doWork(): Result {
-        val result = jobLimit.withPermit {
-            val bookId = inputData.getString(bookIdDataKey)
-            val source = inputData.getString(bookDownloadSourceDataKey)
-                ?.let { runCatching { BookDownloadSource.valueOf(it) }.getOrNull() }
-                ?: BookDownloadSource.MANUAL_DOWNLOAD
-            when {
-                bookId != null -> downloadBook(KomgaBookId(bookId), source)
-                else -> Result.failure()
-            }
+        val bookId = inputData.getString(bookIdDataKey)
+        val source = inputData.getString(bookDownloadSourceDataKey)
+            ?.let { runCatching { BookDownloadSource.valueOf(it) }.getOrNull() }
+            ?: BookDownloadSource.MANUAL_DOWNLOAD
+        return when {
+            bookId != null -> downloadBook(KomgaBookId(bookId), source)
+            else -> Result.failure()
         }
-
-        return result
     }
 
 

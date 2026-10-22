@@ -35,6 +35,7 @@ class ExposedOfflineSettingsRepository(database: Database) : ExposedRepository(d
                 it[OfflineSettingsTable.dataSyncDate] = settings.dataSyncDate?.epochSeconds
                 it[OfflineSettingsTable.downloadOnlyUnreadSeriesBooks] = settings.downloadOnlyUnreadSeriesBooks
                 it[OfflineSettingsTable.deleteReadBooks] = settings.deleteReadBooks
+                it[OfflineSettingsTable.concurrentDownloads] = settings.concurrentDownloads
                 it[OfflineSettingsTable.preloadNextBookPages] = settings.preloadNextBookPages
                 it[OfflineSettingsTable.preloadNextBookEnabled] = settings.preloadNextBookEnabled
                 it[OfflineSettingsTable.showPreloadNotification] = settings.showPreloadNotification
@@ -52,6 +53,7 @@ class ExposedOfflineSettingsRepository(database: Database) : ExposedRepository(d
             dataSyncDate = this[OfflineSettingsTable.dataSyncDate]?.let { Instant.fromEpochSeconds(it) },
             downloadOnlyUnreadSeriesBooks = this[OfflineSettingsTable.downloadOnlyUnreadSeriesBooks],
             deleteReadBooks = this[OfflineSettingsTable.deleteReadBooks],
+            concurrentDownloads = this[OfflineSettingsTable.concurrentDownloads],
             preloadNextBookPages = this[OfflineSettingsTable.preloadNextBookPages],
             preloadNextBookEnabled = this[OfflineSettingsTable.preloadNextBookEnabled],
             showPreloadNotification = this[OfflineSettingsTable.showPreloadNotification],
