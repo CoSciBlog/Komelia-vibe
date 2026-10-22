@@ -114,6 +114,10 @@ documents and bundled component license/notice texts under `assets/legal/`.
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
+- **Android 0.20.21 requires a fresh installation:** it uses a new signing key,
+  so Android cannot install it over 0.20.20 or earlier releases. Before uninstalling,
+  synchronize offline progress with Komga and preserve needed local data. Uninstalling
+  removes app settings and downloads. See [RELEASE_SIGNING.md](RELEASE_SIGNING.md).
 - Version 0.20.21 (Android version code 46) adds a slider for 1–10 simultaneous
   book downloads with a default of 2. The selection is saved and also applies to
   series downloads and next-book preloads. It includes all earlier improvements.

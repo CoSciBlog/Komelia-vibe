@@ -40,6 +40,13 @@ These requirements must remain true after every upstream integration:
 Introduced in 0.20.1.
 
 - Android application ID and Gradle group: `io.github.cosciblog.komelia.vibe`.
+- Since 0.20.21, Android releases use the owner's replacement 2026 signing
+  certificate, SHA-256 `4f0735375fdf9ca3f7c6e75061e6a720f19f6b916b7145d87e0bdbdb7be19a41`. Preserve this
+  signing identity for future in-place updates. The earlier 0.20.20 key was
+  unavailable; the owner requested this replacement, so 0.20.21 requires a fresh
+  installation rather than an in-place update from older releases. Release notes
+  must state the need to synchronize progress and preserve local data before
+  uninstalling. Never silently regenerate or replace this new key.
 - Android preferences namespace: `io.github.cosciblog.komelia.vibe.preferences`.
 - Visible application and window name: `Komelia-Vibe`, including all Android
   distribution manifests so legacy installers show the correct name.
