@@ -24,7 +24,10 @@ class AppUpdatesScreen : Screen {
         val state = vm.state.collectAsState().value
         SettingsScreenContainer(stringResource(Res.string.settings_updates_title)) {
             when {
-                state is LoadState.Error && vm.updater == null -> Text("Error ${state.exception.message}")
+                state is LoadState.Error && vm.updater == null -> {
+                    Text("Error ${state.exception.message}")
+                    GithubReleasesLink()
+                }
                 else -> AppUpdatesContent(
                     checkForUpdates = vm.checkForUpdatesOnStartup.collectAsState().value,
                     onCheckForUpdatesChange = vm::onCheckForUpdatesOnStartupChange,

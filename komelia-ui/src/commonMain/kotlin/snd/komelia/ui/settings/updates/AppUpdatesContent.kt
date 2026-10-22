@@ -88,6 +88,8 @@ fun AppUpdatesContent(
             }
         }
 
+        GithubReleasesLink()
+
         if (releases.isNotEmpty()) {
             HorizontalDivider(Modifier.padding(vertical = 20.dp))
             Text(

@@ -656,6 +656,7 @@
     <string name="settings_updates_check_on_startup">Check for updates on startup</string>
     <string name="settings_updates_check">Check for updates</string>
     <string name="settings_updates_update">Update</string>
+    <string name="settings_updates_manual_download">Download manually from GitHub</string>
     <string name="settings_updates_release_notes">Release notes:</string>
     <string name="settings_updates_release_date">Release date: %1$s</string>
     <string name="settings_updates_current_version">Current version: </string>

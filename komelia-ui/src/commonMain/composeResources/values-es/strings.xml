@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_manual_download">Descargar manualmente desde GitHub</string>
     <string name="series_delete_downloaded_all">Eliminar libros descargados</string>
     <string name="series_delete_downloaded_read">Eliminar descargas leídas</string>
     <string name="series_delete_downloaded_all_confirm">¿Eliminar de este dispositivo todos los libros descargados de «%1$s»? Los libros del servidor se conservan. Se conservan las descargas cuyo progreso de lectura no se pueda confirmar con Komga. Conéctate a Komga e inténtalo de nuevo para eliminarlas.</string>

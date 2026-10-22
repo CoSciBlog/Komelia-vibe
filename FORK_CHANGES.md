@@ -60,6 +60,9 @@ Introduced in 0.20.1.
   fork-specific `Komelia-Vibe` or `komelia-vibe` identities.
 - In-app update discovery targets `CoSciBlog/Komelia-vibe`, never the upstream
   release feed.
+- App Updates provides a manual browser download link to the fork's GitHub
+  releases below the update buttons, even without cached releases or after a
+  failed update check. The link also remains available if no updater is initialized.
 - The in-app current-version value is generated from `app-version` in the Gradle
   version catalog; do not replace it with a hard-coded Kotlin version. Android
   updates prefer the fork's `-android-universal.apk` release asset.

@@ -4,6 +4,11 @@ Komelia-Vibe is an independently installable fork of [Komelia](https://github.co
 
 Fork releases and development take place only in [CoSciBlog/Komelia-vibe](https://github.com/CoSciBlog/Komelia-vibe). Upstream changes can still be integrated because the internal source packages are intentionally kept compatible.
 
+In **App Updates**, use **Download manually from GitHub** to open the fork's
+[release downloads](https://github.com/CoSciBlog/Komelia-vibe/releases) in your
+browser if an in-app update download fails. The link remains available when
+update checks fail or the updater is unavailable.
+
 Offline downloads work for restricted Komga accounts as well. Access restrictions
 are enforced by Komga while online; the offline database exposes only books that
 were explicitly downloaded, so it does not copy remote library or label restrictions.

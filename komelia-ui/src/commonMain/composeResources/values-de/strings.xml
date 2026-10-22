@@ -1,4 +1,5 @@
 <resources>
+    <string name="settings_updates_manual_download">Manuell von GitHub herunterladen</string>
     <string name="home_filter_downloaded_series">Heruntergeladene Serien</string>
     <string name="home_filter_only_unread_series">Nur nicht vollständig gelesene Serien</string>
     <string name="series_delete_downloaded_all">Heruntergeladene Bücher löschen</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_manual_download">从 GitHub 手动下载</string>
     <string name="screen_error">错误 %1$s</string>
     <string name="home_filter_all">全部</string>
     <string name="home_filter_default_keep_reading">继续阅读</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_manual_download">Скачать вручную с GitHub</string>
     <string name="screen_error">Ошибка %1$s</string>
     <string name="home_filter_all">Все</string>
     <string name="home_filter_default_keep_reading">Продолжить чтение</string>
