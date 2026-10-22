@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_title">アプリの更新</string>
+    <string name="settings_updates_check_on_startup">起動時に更新を確認</string>
+    <string name="settings_updates_check">更新を確認</string>
+    <string name="settings_updates_update">更新</string>
+    <string name="settings_updates_release_notes">リリースノート：</string>
+    <string name="settings_updates_release_date">公開日：%1$s</string>
+    <string name="settings_updates_current_version">現在のバージョン：</string>
+    <string name="settings_updates_last_checked_version">最後に確認したバージョン：</string>
+    <string name="settings_updates_last_checked_date">確認日：%1$s</string>
+    <string name="app_updates_new_version_available">新しいバージョンが利用可能です</string>
+    <string name="app_updates_dismiss">後で</string>
+    <string name="app_updates_update">更新</string>
+    <string name="app_updates_updating">更新中</string>
+    <string name="app_updates_cancel">キャンセル</string>
     <string name="settings_updates_manual_download">GitHubから手動でダウンロード</string>
     <string name="series_delete_downloaded_all">ダウンロードした本を削除</string>
     <string name="series_delete_downloaded_read">読了済みのダウンロードを削除</string>

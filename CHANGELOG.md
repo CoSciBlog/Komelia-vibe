@@ -4,6 +4,16 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.23 - 2026-10-23
+
+- Complete the App Updates screen, update notification and download-dialog
+  translations in German, Spanish, French, Japanese and Russian instead of
+  falling back to English. Refine two Chinese update labels.
+- Publish German and English release descriptions so German readers can also
+  read the GitHub-provided version notes inside the app.
+- This translation update and release preparation received material assistance
+  from OpenAI Codex.
+
 ## 0.20.22 - 2026-10-23
 
 - Add a manual GitHub release download link below the App Updates buttons, also

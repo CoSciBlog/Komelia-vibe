@@ -8,6 +8,9 @@ In **App Updates**, use **Download manually from GitHub** to open the fork's
 [release downloads](https://github.com/CoSciBlog/Komelia-vibe/releases) in your
 browser if an in-app update download fails. The link remains available when
 update checks fail or the updater is unavailable.
+The update screen, update notification and download dialog use the selected
+language in all seven supported locales. Release descriptions are loaded from
+GitHub; releases 0.20.22 and 0.20.23 provide German and English descriptions.
 
 Offline downloads work for restricted Komga accounts as well. Access restrictions
 are enforced by Komga while online; the offline database exposes only books that
@@ -114,20 +117,20 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.22 is an Android-only update;
+- Release assets vary by version. Version 0.20.23 is an Android-only update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- **Android 0.20.21 and later use the 2026 signing key:** version 0.20.22 can
+- **Android 0.20.21 and later use the 2026 signing key:** version 0.20.23 can
   update 0.20.21 in place. Android cannot install these versions over 0.20.20 or
   earlier releases. Before uninstalling an older version,
   synchronize offline progress with Komga and preserve needed local data. Uninstalling
   removes app settings and downloads. See [RELEASE_SIGNING.md](RELEASE_SIGNING.md).
-- Version 0.20.22 (Android version code 47) adds **Download manually from GitHub**
-  below the App Updates buttons, including when update checks fail or the updater
-  is unavailable. It includes the saved 1–10 simultaneous-download setting from
-  0.20.21 and all earlier improvements.
+- Version 0.20.23 (Android version code 48) completes translations for the update
+  screen, update notification and download dialog in all supported languages.
+  It includes the manual GitHub download link, saved 1–10 simultaneous-download
+  setting and all earlier improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
 ## Screenshots

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_updates_title">Mises à jour de l’application</string>
+    <string name="settings_updates_check_on_startup">Rechercher les mises à jour au démarrage</string>
+    <string name="settings_updates_check">Rechercher des mises à jour</string>
+    <string name="settings_updates_update">Mettre à jour</string>
+    <string name="settings_updates_release_notes">Notes de version :</string>
+    <string name="settings_updates_release_date">Date de publication : %1$s</string>
+    <string name="settings_updates_current_version">Version actuelle :</string>
+    <string name="settings_updates_last_checked_version">Dernière version vérifiée :</string>
+    <string name="settings_updates_last_checked_date">vérifiée le %1$s</string>
+    <string name="app_updates_new_version_available">Une nouvelle version est disponible</string>
+    <string name="app_updates_dismiss">Plus tard</string>
+    <string name="app_updates_update">Mettre à jour</string>
+    <string name="app_updates_updating">Mise à jour en cours</string>
+    <string name="app_updates_cancel">Annuler</string>
     <string name="settings_updates_manual_download">Télécharger manuellement depuis GitHub</string>
     <string name="series_delete_downloaded_all">Supprimer les livres téléchargés</string>
     <string name="series_delete_downloaded_read">Supprimer les téléchargements lus</string>

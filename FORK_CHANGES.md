@@ -63,6 +63,9 @@ Introduced in 0.20.1.
 - App Updates provides a manual browser download link to the fork's GitHub
   releases below the update buttons, even without cached releases or after a
   failed update check. The link also remains available if no updater is initialized.
+- Update settings, version/date labels, update notifications and download-dialog
+  actions have translations in every supported locale; missing translations must
+  not silently restore English for these existing update controls.
 - The in-app current-version value is generated from `app-version` in the Gradle
   version catalog; do not replace it with a hard-coded Kotlin version. Android
   updates prefer the fork's `-android-universal.apk` release asset.
