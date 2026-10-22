@@ -14,13 +14,23 @@
 - Create a feature request in `CoSciBlog/Komelia-vibe` for each new feature and link it from the pull request.
 - Test the change before opening a pull request. Open pull requests only against `CoSciBlog/Komelia-vibe:main`.
 - Merge a tested pull request into the fork's `main`; never target the upstream repository.
-- After every change, run the relevant automated tests and platform compilation checks. Fix failures before merging or publishing; record the commands, results, and any checks that could not be performed. Do not describe an untested build as verified.
-- Treat delivery of a completed change as a release workflow: increment `app-version` and the Android version code monotonically, and update `README.md`, `CHANGELOG.md`, `CREDITS.md`, and release notes for the final shipped behavior.
+- Validate changes using the focused validation policy below. Fix failures before merging or publishing; record the commands, results, and any checks that could not be performed. Do not describe an untested build as verified.
+- Treat delivery of completed application changes as a release workflow: increment `app-version` and the Android version code monotonically, and update `README.md`, `CHANGELOG.md`, `CREDITS.md`, and release notes for the final shipped behavior. Documentation-only and instruction-only changes follow the exception below.
 - Preserve the original authors' attribution, copyright, patent, trademark, license, and applicable NOTICE texts. Follow the repository's Apache-2.0 license and each bundled dependency's own license; identify fork modifications and include required license/notice material and corresponding-source information with distributions. Do not replace upstream credits with fork or AI credits.
 - Build the Android release APK from the tested release commit, using the existing Komelia-Vibe signing identity. Validate package identity, version name/code, signature/certificate continuity, all four ABIs and required native libraries, native dependency resolution, 16 KiB alignment, EPUB assets, and bundled license/credit material before export.
 - After merging the tested release pull request into `CoSciBlog/Komelia-vibe:main`, publish a new version tag and GitHub release in that fork with the verified signed universal APK, SHA-256 checksum, release notes, and required license/credit material. Confirm the published tag resolves to the shipped source and verify uploaded asset hashes. Unless the owner explicitly narrows or postpones delivery, do not stop after a source-only change or an unpublished APK.
 - Never publish a release when tests, signing, packaging, licensing requirements, or required release verification fail. Retain the work and explain the concrete blocker instead of silently skipping a required step.
 - Disclose material AI/OpenAI Codex assistance in release notes and relevant documentation.
+
+## Focused validation
+
+- Minimize execution time and credit usage by running only checks needed to validate the changed areas and functions, their directly affected integrations, and relevant protected invariants. Select the smallest sufficient scope before running commands.
+- Prefer existing tests for the changed behavior, filtered to the relevant test classes or methods where supported. Do not run unrelated modules or the full test suite by default. Add tests only when needed to cover meaningful changed behavior or a regression.
+- Compile only the platforms affected by the change. Shared-code changes may require checks on multiple affected targets; do not automatically compile Android, desktop, and WebAssembly for every edit.
+- Broaden validation only when the change has wider impact, a failure points outside the initial scope, or a concrete unresolved risk requires it. Broad dependency, build-system, database-migration, or upstream-integration changes can justify broader checks. Briefly record why extra checks were necessary.
+- Reuse successful checks for unchanged code and configuration. Do not repeat passing checks solely because a pull request is opened, merged, tagged, or published, or because only documentation/version metadata changed. Rerun checks when subsequent changes invalidate their results; release artifacts must still be built from the final release commit.
+- For documentation-only and instruction-only changes, including `AGENTS.md`, review the content and run `git diff --check`. Do not run application tests, compile the app, bump app versions, or build/publish binaries solely for these changes unless the owner explicitly requests it.
+- For actual releases, retain the required artifact-specific checks: package identity/version, signing continuity, universal ABIs and native dependencies, alignment, EPUB assets, licenses/credits, source/tag correspondence, and uploaded hashes. These checks do not require rerunning unrelated application tests. Never skip a necessary safety check merely to save time or credits.
 
 ## Compatibility
 
