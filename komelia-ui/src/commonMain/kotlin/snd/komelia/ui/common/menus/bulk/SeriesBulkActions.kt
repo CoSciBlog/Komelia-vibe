@@ -44,7 +44,6 @@ import snd.komelia.ui.LocalOfflineMode
 import snd.komelia.ui.LocalViewModelFactory
 import snd.komelia.ui.dialogs.ConfirmationDialog
 import snd.komelia.ui.dialogs.collectionadd.AddToCollectionDialog
-import snd.komelia.ui.dialogs.permissions.DownloadNotificationRequestDialog
 import snd.komelia.ui.dialogs.series.edit.SeriesEditDialog
 import snd.komelia.ui.dialogs.series.editbulk.SeriesBulkEditDialog
 import snd.komf.api.KomfServerLibraryId
@@ -113,24 +112,19 @@ fun SeriesBulkActionDialogs(
     }
 
     if (state.showDownloadDialog) {
-        var permissionRequested by remember { mutableStateOf(false) }
-        DownloadNotificationRequestDialog { permissionRequested = true }
-
         val bodyText = pluralStringResource(
             Res.plurals.series_bulk_download,
             state.series.size,
             if (state.series.size == 1) state.series.first().metadata.title
             else state.series.size
         )
-        if (permissionRequested) {
-            ConfirmationDialog(
-                body = bodyText,
-                onDialogConfirm = {
-                    coroutineScope.launch { state.actions.download(state.series) }
-                },
-                onDialogDismiss = { state.showDownloadDialog = false }
-            )
-        }
+        ConfirmationDialog(
+            body = bodyText,
+            onDialogConfirm = {
+                coroutineScope.launch { state.actions.download(state.series) }
+            },
+            onDialogDismiss = { state.showDownloadDialog = false }
+        )
     }
 
 }

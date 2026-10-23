@@ -39,7 +39,6 @@ import snd.komelia.ui.LocalViewModelFactory
 import snd.komelia.ui.dialogs.ConfirmationDialog
 import snd.komelia.ui.dialogs.book.edit.BookEditDialog
 import snd.komelia.ui.dialogs.book.editbulk.BookBulkEditDialog
-import snd.komelia.ui.dialogs.permissions.DownloadNotificationRequestDialog
 import snd.komelia.ui.dialogs.readlistadd.AddToReadListDialog
 import snd.komga.client.book.KomgaBookReadProgressUpdateRequest
 
@@ -93,9 +92,6 @@ fun BookBulkActionDialogs(state: BookBulkActionsState) {
         )
     }
     if (state.showDownloadDialog) {
-        var permissionRequested by remember { mutableStateOf(false) }
-        DownloadNotificationRequestDialog { permissionRequested = true }
-
         val bodyText = pluralStringResource(
             Res.plurals.book_bulk_download_confirm,
             state.books.size,
@@ -103,18 +99,15 @@ fun BookBulkActionDialogs(state: BookBulkActionsState) {
             else state.books.size
 
         )
-
-        if (permissionRequested) {
-            ConfirmationDialog(
-                body = bodyText,
-                onDialogConfirm = {
-                    coroutineScope.launch {
-                        state.actions.download(state.books)
-                    }
-                },
-                onDialogDismiss = { state.showDownloadDialog = false }
-            )
-        }
+        ConfirmationDialog(
+            body = bodyText,
+            onDialogConfirm = {
+                coroutineScope.launch {
+                    state.actions.download(state.books)
+                }
+            },
+            onDialogDismiss = { state.showDownloadDialog = false }
+        )
     }
 }
 

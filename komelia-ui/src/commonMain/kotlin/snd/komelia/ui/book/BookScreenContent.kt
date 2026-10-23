@@ -66,7 +66,6 @@ import snd.komelia.ui.common.menus.BookMenuActions
 import snd.komelia.ui.common.readIsSupported
 import snd.komelia.ui.dialogs.ConfirmationDialog
 import snd.komelia.ui.dialogs.book.edit.BookEditDialog
-import snd.komelia.ui.dialogs.permissions.DownloadNotificationRequestDialog
 import snd.komelia.ui.library.SeriesScreenFilter
 import snd.komelia.ui.platform.VerticalScrollbar
 import snd.komelia.ui.platform.WindowSizeClass.COMPACT
@@ -324,16 +323,11 @@ fun DownloadButton(
     }
 
     if (showDownloadConfirmation) {
-        var permissionRequested by remember { mutableStateOf(false) }
-        DownloadNotificationRequestDialog { permissionRequested = true }
-
-        if (permissionRequested) {
-            ConfirmationDialog(
-                body = stringResource(Res.string.book_download_confirm, book.name),
-                onDialogConfirm = onDownload,
-                onDialogDismiss = { showDownloadConfirmation = false }
-            )
-        }
+        ConfirmationDialog(
+            body = stringResource(Res.string.book_download_confirm, book.name),
+            onDialogConfirm = onDownload,
+            onDialogDismiss = { showDownloadConfirmation = false }
+        )
     }
 
 }

@@ -11,21 +11,6 @@ import androidx.compose.ui.platform.LocalContext
 import io.github.vinceglb.filekit.PlatformFile
 
 @Composable
-actual fun DownloadNotificationRequestDialog(onComplete: (granted: Boolean) -> Unit) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        val permissionRequester = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestPermission(),
-            onResult = { granted -> onComplete(granted) }
-        )
-        LaunchedEffect(Unit) {
-            permissionRequester.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    } else {
-        LaunchedEffect(Unit) { onComplete(true) }
-    }
-}
-
-@Composable
 actual fun StoragePermissionRequestDialog(onComplete: (directory: PlatformFile?) -> Unit) {
     val context = LocalContext.current
 

@@ -4,6 +4,16 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.26 - 2026-10-23
+
+- Fix book, series, overflow-menu and bulk Download actions opening a blank
+  Android screen while waiting for the notification-permission result.
+- Show the existing download confirmation immediately and allow downloads to be
+  queued when notifications are unavailable or denied. Foreground download work,
+  in-app progress and notification updates when permitted remain unchanged.
+- This fix, validation, documentation and release preparation received material
+  assistance from OpenAI Codex. Android version code: 51.
+
 ## 0.20.25 - 2026-10-23
 
 - Add a clear **Automatic (device language)** choice and explanation. Match

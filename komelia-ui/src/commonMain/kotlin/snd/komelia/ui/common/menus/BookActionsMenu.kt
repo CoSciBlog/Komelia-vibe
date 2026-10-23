@@ -45,7 +45,6 @@ import snd.komelia.ui.LocalOfflineAvailable
 import snd.komelia.ui.LocalOfflineMode
 import snd.komelia.ui.dialogs.ConfirmationDialog
 import snd.komelia.ui.dialogs.book.edit.BookEditDialog
-import snd.komelia.ui.dialogs.permissions.DownloadNotificationRequestDialog
 import snd.komelia.ui.dialogs.readlistadd.AddToReadListDialog
 import snd.komga.client.book.KomgaBookReadProgressUpdateRequest
 
@@ -97,16 +96,11 @@ fun BookActionsMenu(
     }
     var showDownloadDialog by remember { mutableStateOf(false) }
     if (showDownloadDialog) {
-        var permissionRequested by remember { mutableStateOf(false) }
-        DownloadNotificationRequestDialog { permissionRequested = true }
-
-        if (permissionRequested) {
-            ConfirmationDialog(
-                stringResource(Res.string.book_download_confirm, book.metadata.title),
-                onDialogConfirm = { actions.download(book) },
-                onDialogDismiss = { showDownloadDialog = false }
-            )
-        }
+        ConfirmationDialog(
+            stringResource(Res.string.book_download_confirm, book.metadata.title),
+            onDialogConfirm = { actions.download(book) },
+            onDialogDismiss = { showDownloadDialog = false }
+        )
     }
 
     val showDropdown = derivedStateOf { expanded && !showEditDialog }
