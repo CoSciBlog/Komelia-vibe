@@ -48,7 +48,6 @@ import snd.komelia.ui.dialogs.ConfirmationDialog
 import snd.komelia.ui.dialogs.collectionadd.AddToCollectionDialog
 import snd.komelia.ui.dialogs.komf.identify.KomfIdentifyDialog
 import snd.komelia.ui.dialogs.komf.reset.KomfResetSeriesMetadataDialog
-import snd.komelia.ui.dialogs.permissions.DownloadNotificationRequestDialog
 import snd.komelia.ui.dialogs.series.edit.SeriesEditDialog
 
 @Composable
@@ -104,16 +103,11 @@ fun SeriesActionsMenu(
     }
     var showDownloadDialog by remember { mutableStateOf(false) }
     if (showDownloadDialog) {
-        var permissionRequested by remember { mutableStateOf(false) }
-        DownloadNotificationRequestDialog { permissionRequested = true }
-
-        if (permissionRequested) {
-            ConfirmationDialog(
-                stringResource(Res.string.series_download_confirm, series.metadata.title),
-                onDialogConfirm = { actions.download(series) },
-                onDialogDismiss = { showDownloadDialog = false }
-            )
-        }
+        ConfirmationDialog(
+            stringResource(Res.string.series_download_confirm, series.metadata.title),
+            onDialogConfirm = { actions.download(series) },
+            onDialogDismiss = { showDownloadDialog = false }
+        )
     }
 
     val showDropdown = derivedStateOf {

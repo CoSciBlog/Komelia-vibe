@@ -20,7 +20,6 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_download
 import org.jetbrains.compose.resources.stringResource
 import snd.komelia.komga.api.model.KomeliaSeries
 import snd.komelia.ui.dialogs.ConfirmationDialog
-import snd.komelia.ui.dialogs.permissions.DownloadNotificationRequestDialog
 import snd.komelia.ui.platform.cursorForHand
 
 @Composable
@@ -36,14 +35,10 @@ fun SeriesDownloadButton(series: KomeliaSeries, onDownload: () -> Unit) {
     }
 
     if (showConfirmation) {
-        var permissionRequested by remember { mutableStateOf(false) }
-        DownloadNotificationRequestDialog { permissionRequested = true }
-        if (permissionRequested) {
-            ConfirmationDialog(
-                body = stringResource(Res.string.series_download_confirm, series.metadata.title),
-                onDialogConfirm = onDownload,
-                onDialogDismiss = { showConfirmation = false },
-            )
-        }
+        ConfirmationDialog(
+            body = stringResource(Res.string.series_download_confirm, series.metadata.title),
+            onDialogConfirm = onDownload,
+            onDialogDismiss = { showConfirmation = false },
+        )
     }
 }

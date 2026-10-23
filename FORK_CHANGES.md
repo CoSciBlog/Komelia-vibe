@@ -310,21 +310,26 @@ Primary areas:
 
 ### 8. Direct series download beside publication status
 
-Introduced in 0.20.15.
+Introduced in 0.20.15, with non-blocking download confirmation in 0.20.26.
 
 - The standard series detail page exposes a localized Download button immediately
   after its publication-status chip (including Ongoing), with wrapping and vertical
   alignment on narrow displays. Other metadata filters remain usable.
 - The button has the same online/offline-platform availability as the series
   overflow-menu download command and does not require administrator privileges.
-- It uses the existing notification permission and series-download confirmation,
-  then calls `SeriesMenuActions.download`. Series queuing, unread-only policy,
-  already-local skips, and download provenance remain unchanged.
+- It shows the existing series-download confirmation, then calls
+  `SeriesMenuActions.download`. Book, series, overflow-menu and bulk download
+  confirmations must never wait for Android's notification-permission result.
+  Downloads remain queueable when notifications are unavailable or denied; the
+  Android worker simply omits notification updates without changing foreground
+  work, in-app progress, series queuing, unread-only policy, already-local skips,
+  or download provenance.
 
 Primary areas:
 
 - `komelia-ui/src/commonMain/kotlin/snd/komelia/ui/series/view/SeriesContent.kt`
 - `SeriesDescriptionRow.kt` and `SeriesDownloadButton.kt` in the same directory
+- Book/series action menus and bulk actions under `komelia-ui/src/commonMain/`
 
 ### 9. Downloaded-series Home filter
 

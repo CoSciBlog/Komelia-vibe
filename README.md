@@ -132,19 +132,20 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.25 is an Android-only update;
+- Release assets vary by version. Version 0.20.26 is an Android-only update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- **Android 0.20.21 and later use the 2026 signing key:** version 0.20.25 can
-  update 0.20.21–0.20.24 in place. Android cannot install these versions over 0.20.20 or
+- **Android 0.20.21 and later use the 2026 signing key:** version 0.20.26 can
+  update 0.20.21–0.20.25 in place. Android cannot install these versions over 0.20.20 or
   earlier releases. Before uninstalling an older version,
   synchronize offline progress with Komga and preserve needed local data. Uninstalling
   removes app settings and downloads. See [RELEASE_SIGNING.md](RELEASE_SIGNING.md).
-- Version 0.20.25 (Android version code 50) clarifies automatic device-language
-  selection and completes the app resource catalog in all supported languages.
-  It includes the manual GitHub download link, saved 1–10 simultaneous-download
+- Version 0.20.26 (Android version code 51) fixes blank screens when confirming
+  book or series downloads. Downloads can be queued even if Android notification
+  permission is denied or unavailable. It includes the completed multilingual
+  resource catalog, manual GitHub download link, saved 1–10 simultaneous-download
   setting and all earlier improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads
 
