@@ -496,7 +496,7 @@
     <string name="settings_app_theme_dark">深色</string>
     <string name="settings_app_theme_light">浅色</string>
     <string name="settings_app_theme_darker">暗黑</string>
-    <string name="settings_app_image_card_size">网格视图中的图像卡片尺寸（最小显示尺寸）</string>
+    <string name="settings_app_image_card_size">网格视图中封面的最小宽度</string>
     <string name="settings_auth_activity_title">身份验证活动</string>
     <string name="settings_auth_activity_source">来源：%1$s</string>
     <string name="settings_auth_activity_ip">IP：</string>
@@ -984,4 +984,6 @@
     <string name="series_delete_downloaded_result">已删除的下载：%1$d。已保留：%2$d。</string>
     <string name="settings_offline_mode_concurrent_downloads">同时下载的书籍数：%1$d</string>
     <string name="settings_offline_mode_concurrent_downloads_desc">可选择 1–10 本，默认为 2 本。降低上限时，正在进行的下载会先完成。</string>
+    <string name="settings_app_language">应用语言</string>
+    <string name="settings_app_language_system">跟随系统</string>
 </resources>

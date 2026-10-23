@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.map
 import snd.komelia.db.AppSettings
 import snd.komelia.db.SettingsStateWrapper
 import snd.komelia.settings.CommonSettingsRepository
+import snd.komelia.settings.model.AppLanguage
 import snd.komelia.settings.model.AppTheme
 import snd.komelia.settings.model.BooksLayout
 import snd.komelia.updates.AppVersion
@@ -93,6 +94,13 @@ class SettingsRepositoryWrapper(
 
     override suspend fun putDismissedVersion(version: AppVersion) {
         wrapper.transform { it.copy(updateDismissedVersion = version) }
+    }
+
+    override fun getAppLanguage(): Flow<AppLanguage> =
+        wrapper.state.map { it.appLanguage }.distinctUntilChanged()
+
+    override suspend fun putAppLanguage(language: AppLanguage) {
+        wrapper.transform { it.copy(appLanguage = language) }
     }
 
     override fun getAppTheme(): Flow<AppTheme> {

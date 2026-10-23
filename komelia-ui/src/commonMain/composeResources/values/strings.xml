@@ -541,11 +541,11 @@
     <string name="settings_media_analysis_nothing_to_show">Nothing to show</string>
     <string name="settings_announcements_title">Announcements</string>
     <string name="settings_appearance_title">Appearance</string>
-    <string name="settings_app_theme">App Theme</string>
+    <string name="settings_app_theme">App theme</string>
     <string name="settings_app_theme_dark">Dark</string>
     <string name="settings_app_theme_light">Light</string>
     <string name="settings_app_theme_darker">Darker</string>
-    <string name="settings_app_image_card_size">Image card size in grid view (minimum display size)</string>
+    <string name="settings_app_image_card_size">Minimum cover width in grid view</string>
     <string name="settings_auth_activity_title">Authentication Activity</string>
     <string name="settings_auth_activity_source">Source: %1$s</string>
     <string name="settings_auth_activity_ip">IP: </string>
@@ -1081,4 +1081,6 @@
     <string name="cover_close">Close</string>
     <string name="settings_offline_mode_concurrent_downloads">Simultaneous book downloads: %1$d</string>
     <string name="settings_offline_mode_concurrent_downloads_desc">Choose 1–10 books. Default: 2. Active downloads finish before a lower limit takes effect.</string>
+    <string name="settings_app_language">App language</string>
+    <string name="settings_app_language_system">System default</string>
 </resources>

@@ -4,6 +4,20 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.24 - 2026-10-23
+
+- Add a persistent App language selector under Appearance: System default and
+  English, German, Spanish, French, Japanese, Russian and Simplified Chinese.
+  Apply changes immediately while keeping the current navigation state.
+- Fix the mixed-language Appearance page by translating all controls into the
+  existing locales. Clarify the English cover-width label and app-theme label.
+- Add app migration V15 with a system-language default; preserve existing
+  account, theme, update and display settings. Old browser settings remain valid.
+- Android version code 49; reuse the 2026 signing certificate for updates from
+  0.20.21 and later. Preserve original attribution and bundled notices.
+- Implementation, translations, tests, documentation and release preparation
+  received material assistance from OpenAI Codex.
+
 ## 0.20.23 - 2026-10-23
 
 - Complete the App Updates screen, update notification and download-dialog

@@ -91,4 +91,14 @@
     <string name="series_edit">Изменить</string>
     <string name="settings_offline_mode_concurrent_downloads">Одновременные загрузки книг: %1$d</string>
     <string name="settings_offline_mode_concurrent_downloads_desc">Выберите от 1 до 10 книг. По умолчанию: 2. При уменьшении лимита текущие загрузки сначала завершатся.</string>
+    <string name="settings_app_language">Язык приложения</string>
+    <string name="settings_app_language_system">Язык системы</string>
+    <string name="settings_appearance_title">Оформление</string>
+    <string name="settings_app_theme">Тема приложения</string>
+    <string name="settings_app_theme_dark">Тёмная</string>
+    <string name="settings_app_theme_light">Светлая</string>
+    <string name="settings_app_theme_darker">Более тёмная</string>
+    <string name="settings_app_image_card_size">Минимальная ширина обложек в сетке</string>
+    <string name="settings_navigation_app_settings">Настройки приложения</string>
+    <string name="settings_navigation_appearance">Оформление</string>
 </resources>
