@@ -20,7 +20,10 @@ import androidx.compose.ui.unit.dp
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_image_card_size
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_theme
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_language
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_language_system
 import org.jetbrains.compose.resources.stringResource
+import snd.komelia.settings.model.AppLanguage
 import snd.komelia.settings.model.AppTheme
 import snd.komelia.ui.common.components.AppSliderDefaults
 import snd.komelia.ui.common.components.DropdownChoiceMenu
@@ -34,12 +37,25 @@ import kotlin.math.roundToInt
 fun AppearanceSettingsContent(
     cardWidth: Dp,
     onCardWidthChange: (Dp) -> Unit,
+    currentLanguage: AppLanguage,
+    onLanguageChange: (AppLanguage) -> Unit,
     currentTheme: AppTheme,
     onThemeChange: (AppTheme) -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
+
+        val languages = AppLanguage.entries.map {
+            LabeledEntry(it, if (it == AppLanguage.SYSTEM) stringResource(Res.string.settings_app_language_system) else it.nativeName)
+        }
+        DropdownChoiceMenu(
+            label = { Text(stringResource(Res.string.settings_app_language)) },
+            selectedOption = languages.first { it.value == currentLanguage },
+            options = languages,
+            onOptionChange = { onLanguageChange(it.value) },
+            inputFieldModifier = Modifier.widthIn(min = 250.dp)
+        )
 
         DropdownChoiceMenu(
             label = { Text(stringResource(Res.string.settings_app_theme)) },

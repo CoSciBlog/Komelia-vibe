@@ -21,6 +21,7 @@ class AppMigrations : MigrationResourcesProvider() {
         "V12__offline_mode.sql",
         "V13__komf_mangabaka.sql",
         "V14__reader_status_overlay.sql",
+        "V15__app_language.sql",
     )
 
     override suspend fun getMigration(name: String): ByteArray? {

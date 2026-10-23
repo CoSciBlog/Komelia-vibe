@@ -1,6 +1,7 @@
 package snd.komelia.db
 
 import kotlinx.serialization.Serializable
+import snd.komelia.settings.model.AppLanguage
 import snd.komelia.settings.model.AppTheme
 import snd.komelia.settings.model.BooksLayout
 import snd.komelia.updates.AppVersion
@@ -15,6 +16,7 @@ data class AppSettings(
     val seriesPageLoadSize: Int = 20,
     val bookPageLoadSize: Int = 20,
     val bookListLayout: BooksLayout = BooksLayout.GRID,
+    val appLanguage: AppLanguage = AppLanguage.SYSTEM,
     val appTheme: AppTheme = AppTheme.DARK,
 
     val checkForUpdatesOnStartup: Boolean = true,

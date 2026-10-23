@@ -7,6 +7,7 @@ import org.jetbrains.exposed.v1.jdbc.upsert
 import snd.komelia.db.AppSettings
 import snd.komelia.db.ExposedRepository
 import snd.komelia.db.tables.AppSettingsTable
+import snd.komelia.settings.model.AppLanguage
 import snd.komelia.settings.model.AppTheme
 import snd.komelia.settings.model.BooksLayout
 import snd.komelia.updates.AppVersion
@@ -33,6 +34,7 @@ class ExposedSettingsRepository(database: Database) : ExposedRepository(database
                 it[seriesPageLoadSize] = settings.seriesPageLoadSize
                 it[bookPageLoadSize] = settings.bookPageLoadSize
                 it[bookListLayout] = settings.bookListLayout.name
+                it[appLanguage] = settings.appLanguage.tag
                 it[appTheme] = settings.appTheme.name
 
                 it[checkForUpdatesOnStartup] = settings.checkForUpdatesOnStartup
@@ -51,6 +53,7 @@ class ExposedSettingsRepository(database: Database) : ExposedRepository(database
             seriesPageLoadSize = get(AppSettingsTable.seriesPageLoadSize),
             bookPageLoadSize = get(AppSettingsTable.bookPageLoadSize),
             bookListLayout = BooksLayout.valueOf(get(AppSettingsTable.bookListLayout)),
+            appLanguage = AppLanguage.fromTag(get(AppSettingsTable.appLanguage)),
             appTheme = AppTheme.valueOf(get(AppSettingsTable.appTheme)),
             checkForUpdatesOnStartup = get(AppSettingsTable.checkForUpdatesOnStartup),
             updateLastCheckedTimestamp = get(AppSettingsTable.updateLastCheckedTimestamp)?.let {

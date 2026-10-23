@@ -29,4 +29,14 @@
     <string name="cover_close">Schließen</string>
     <string name="settings_offline_mode_concurrent_downloads">Gleichzeitige Buch-Downloads: %1$d</string>
     <string name="settings_offline_mode_concurrent_downloads_desc">Wähle 1–10 Bücher. Standard: 2. Bei einem niedrigeren Limit werden laufende Downloads zuerst beendet.</string>
+    <string name="settings_app_language">App-Sprache</string>
+    <string name="settings_app_language_system">Systemsprache</string>
+    <string name="settings_appearance_title">Darstellung</string>
+    <string name="settings_app_theme">App-Design</string>
+    <string name="settings_app_theme_dark">Dunkel</string>
+    <string name="settings_app_theme_light">Hell</string>
+    <string name="settings_app_theme_darker">Sehr dunkel</string>
+    <string name="settings_app_image_card_size">Mindestbreite der Cover in der Rasteransicht</string>
+    <string name="settings_navigation_app_settings">App-Einstellungen</string>
+    <string name="settings_navigation_appearance">Darstellung</string>
 </resources>

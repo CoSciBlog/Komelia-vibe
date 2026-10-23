@@ -26,4 +26,14 @@
     <string name="series_edit">Editar</string>
     <string name="settings_offline_mode_concurrent_downloads">Descargas simultáneas de libros: %1$d</string>
     <string name="settings_offline_mode_concurrent_downloads_desc">Elige entre 1 y 10 libros. Predeterminado: 2. Las descargas activas terminan antes de aplicar un límite inferior.</string>
+    <string name="settings_app_language">Idioma de la aplicación</string>
+    <string name="settings_app_language_system">Idioma del sistema</string>
+    <string name="settings_appearance_title">Apariencia</string>
+    <string name="settings_app_theme">Tema de la aplicación</string>
+    <string name="settings_app_theme_dark">Oscuro</string>
+    <string name="settings_app_theme_light">Claro</string>
+    <string name="settings_app_theme_darker">Más oscuro</string>
+    <string name="settings_app_image_card_size">Ancho mínimo de las portadas en la cuadrícula</string>
+    <string name="settings_navigation_app_settings">Ajustes de la aplicación</string>
+    <string name="settings_navigation_appearance">Apariencia</string>
 </resources>

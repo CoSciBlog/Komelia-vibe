@@ -35,6 +35,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import snd.komelia.settings.model.AppLanguage
+import snd.komelia.ui.platform.AppLanguageEnvironment
 import snd.komelia.AppNotifications
 import snd.komelia.KomgaAuthenticationState
 import snd.komelia.KomgaAuthenticationState.DataState.AuthenticationRequired
@@ -72,62 +74,67 @@ fun MainView(
         dependencies?.appRepositories?.settingsRepository?.getAppTheme()?.collect { theme = it.toTheme() }
     }
 
-    MaterialTheme(colorScheme = theme.colorScheme) {
-        ConfigurePlatformTheme(theme)
-        val focusManager = LocalFocusManager.current
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) }
-        ) {
-            if (dependencies == null) {
-                Column {
-                    PlatformTitleBar { }
-                    LoadingMaxSizeIndicator()
-                }
-                return@Surface
-            }
-
-            val viewModelFactory = vmFactory.collectAsState().value
-            LaunchedEffect(Unit) {
-                if (vmFactory.value == null) {
-                    vmFactory.value = ViewModelFactory(dependencies, platformType)
-                }
-            }
-
-            if (viewModelFactory == null) return@Surface
-
-            CompositionLocalProvider(
-                LocalViewModelFactory provides viewModelFactory,
-                LocalNotifications provides dependencies.appNotifications,
-                LocalKomgaEvents provides dependencies.komgaEvents.events,
-                LocalKomfIntegration provides dependencies.appRepositories.komfSettingsRepository.getKomfEnabled(),
-                LocalKomfMangaBakaIntegration provides dependencies.appRepositories.komfSettingsRepository.getMangaBakaEnabled(),
-                LocalKeyEvents provides keyEvents,
-                LocalPlatform provides platformType,
-                LocalTheme provides theme,
-                LocalWindowState provides dependencies.windowState,
-                LocalWindowWidth provides windowWidth,
-                LocalWindowHeight provides windowHeight,
-                LocalLibraries provides dependencies.komgaSharedState.libraries,
-                LocalReloadEvents provides viewModelFactory.screenReloadEvents,
-                LocalBookDownloadEvents provides dependencies.offlineDependencies?.bookDownloadEvents,
-                LocalOfflineMode provides dependencies.isOffline,
-                LocalKomgaState provides dependencies.komgaSharedState,
-                LocalOfflineAvailable provides (dependencies.offlineDependencies != null)
+    val languageFlow = remember(dependencies) { dependencies?.appRepositories?.settingsRepository?.getAppLanguage() }
+    val language = languageFlow?.collectAsState(AppLanguage.SYSTEM)?.value ?: AppLanguage.SYSTEM
+    AppLanguageEnvironment(language) {
+        MaterialTheme(colorScheme = theme.colorScheme) {
+            ConfigurePlatformTheme(theme)
+            val focusManager = LocalFocusManager.current
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) { detectTapGestures(onTap = { focusManager.clearFocus() }) }
             ) {
-                MainContent(platformType, dependencies.komgaSharedState)
-
-                AppNotifications(dependencies.appNotifications, theme)
-                val updateChecker = remember { viewModelFactory.getStartupUpdateChecker() }
-                if (updateChecker != null) {
-                    StartupUpdateChecker(updateChecker)
+                if (dependencies == null) {
+                    Column {
+                        PlatformTitleBar { }
+                        LoadingMaxSizeIndicator()
+                    }
+                    return@Surface
                 }
-            }
 
-            BackPressHandler {}
+                val viewModelFactory = vmFactory.collectAsState().value
+                LaunchedEffect(Unit) {
+                    if (vmFactory.value == null) {
+                        vmFactory.value = ViewModelFactory(dependencies, platformType)
+                    }
+                }
+
+                if (viewModelFactory == null) return@Surface
+
+                CompositionLocalProvider(
+                    LocalViewModelFactory provides viewModelFactory,
+                    LocalNotifications provides dependencies.appNotifications,
+                    LocalKomgaEvents provides dependencies.komgaEvents.events,
+                    LocalKomfIntegration provides dependencies.appRepositories.komfSettingsRepository.getKomfEnabled(),
+                    LocalKomfMangaBakaIntegration provides dependencies.appRepositories.komfSettingsRepository.getMangaBakaEnabled(),
+                    LocalKeyEvents provides keyEvents,
+                    LocalPlatform provides platformType,
+                    LocalTheme provides theme,
+                    LocalWindowState provides dependencies.windowState,
+                    LocalWindowWidth provides windowWidth,
+                    LocalWindowHeight provides windowHeight,
+                    LocalLibraries provides dependencies.komgaSharedState.libraries,
+                    LocalReloadEvents provides viewModelFactory.screenReloadEvents,
+                    LocalBookDownloadEvents provides dependencies.offlineDependencies?.bookDownloadEvents,
+                    LocalOfflineMode provides dependencies.isOffline,
+                    LocalKomgaState provides dependencies.komgaSharedState,
+                    LocalOfflineAvailable provides (dependencies.offlineDependencies != null)
+                ) {
+                    MainContent(platformType, dependencies.komgaSharedState)
+
+                    AppNotifications(dependencies.appNotifications, theme)
+                    val updateChecker = remember { viewModelFactory.getStartupUpdateChecker() }
+                    if (updateChecker != null) {
+                        StartupUpdateChecker(updateChecker)
+                    }
+                }
+
+                BackPressHandler {}
+            }
         }
     }
+
 }
 
 @Composable

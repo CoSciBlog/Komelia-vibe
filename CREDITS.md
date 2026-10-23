@@ -1,6 +1,6 @@
 # Komelia-Vibe credits
 
-Updated for Komelia-Vibe 0.20.23, 2026-10-23.
+Updated for Komelia-Vibe 0.20.24, 2026-10-23.
 
 Komelia-Vibe is an independently distributed fork of
 [Komelia by Snd-R and its contributors](https://github.com/Snd-R/Komelia).
@@ -14,9 +14,9 @@ preparation improvements. Fork modifications are documented in
 [FORK_CHANGES.md](FORK_CHANGES.md) and [CHANGELOG.md](CHANGELOG.md), with authorship
 and file-level changes recorded in Git history.
 
-The 0.20.23 update-screen translations, validation, release preparation, and
-documentation were prepared with material assistance from OpenAI Codex. This
-acknowledgment supplements the original project credits.
+The 0.20.24 app-language selection, Appearance translations, tests, validation,
+release preparation, and documentation were prepared with material assistance
+from OpenAI Codex. This acknowledgment supplements the original project credits.
 
 ## Bundled readers and components
 

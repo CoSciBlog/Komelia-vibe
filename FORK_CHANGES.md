@@ -439,6 +439,27 @@ Primary areas: offline settings models/repositories/migration, `BookDownloadServ
 `DownloadConcurrencyLimiter`, Android/desktop download execution and offline settings UI.
 Regression tests cover concurrency, live changes, cancellation and settings persistence.
 
+### 14. Persistent application language selection
+
+Introduced in 0.20.24.
+
+- Appearance offers System default and the seven existing resource locales:
+  English, German, Spanish, French, Japanese, Russian and Simplified Chinese.
+- Persist BCP 47 tags in SQLite app migration `V15__app_language.sql` and the
+  selection in shared serialized settings used by the browser. Existing installs default
+  to System without changing account, theme, display or update preferences.
+- Switching language updates existing resource consumers immediately without
+  clearing navigation or restarting readers. System default follows the device
+  locale; explicit English must work on a German device. Chinese selects `zh-CN`.
+- Translate all Appearance controls in every supported locale. Preserve English
+  as the resource fallback; this does not imply complete translations elsewhere.
+- Keep the choice independent of book metadata language and Komga protocol fields.
+
+Primary areas: `AppLanguage`, shared and SQLite app settings repositories,
+`AppLanguageEnvironment` on Android/JVM/WebAssembly, `MainView`, and Appearance UI.
+Regression checks: `AppLanguageSettingsTest`, `AppLanguageEnvironmentTest`, and
+`cmake/verify-app-language-resources.py`.
+
 ## Required upstream-integration procedure
 
 Before merging or rebasing upstream changes:
