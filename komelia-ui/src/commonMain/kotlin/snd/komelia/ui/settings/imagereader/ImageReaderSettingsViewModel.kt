@@ -1,5 +1,9 @@
 package snd.komelia.ui.settings.imagereader
 
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_cleared_image_cache
+
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import coil3.disk.DiskCache
@@ -92,7 +96,7 @@ class ImageReaderSettingsViewModel(
 
     fun onClearImageCache() {
         clearImageCache()
-        appNotifications.add(AppNotification.Success("Cleared image cache"))
+        screenModelScope.launch { appNotifications.add(AppNotification.Success(getString(Res.string.ui_notification_cleared_image_cache))) }
     }
 
     private fun clearImageCache() {

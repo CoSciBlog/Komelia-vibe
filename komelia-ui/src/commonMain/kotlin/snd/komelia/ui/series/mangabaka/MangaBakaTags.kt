@@ -1,5 +1,13 @@
 package snd.komelia.ui.series.mangabaka
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_providers_mangadex_inlcude_links_all
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_core
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_defining
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_incidental
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_recurrent
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -140,7 +148,7 @@ private fun TagWeightFilters(
         FilterChip(
             selected = tagsState.weight == UNWEIGHTED,
             onClick = { tagsState.onFilterChange(UNWEIGHTED) },
-            label = { Text("All", style = MaterialTheme.typography.labelLarge) },
+            label = { Text(stringResource(Res.string.komf_providers_mangadex_inlcude_links_all), style = MaterialTheme.typography.labelLarge) },
             colors = AppFilterChipDefaults.filterChipColors(),
             border = null,
         )
@@ -159,7 +167,7 @@ private fun TagWeightFilters(
                         contentDescription = null,
                         tint = if (incidentalSelected) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current
                     )
-                    if (showLabels) Text("Incidental", style = MaterialTheme.typography.labelLarge)
+                    if (showLabels) Text(stringResource(Res.string.ui_incidental), style = MaterialTheme.typography.labelLarge)
                 }
             },
             colors = AppFilterChipDefaults.filterChipColors(),
@@ -180,7 +188,7 @@ private fun TagWeightFilters(
                         contentDescription = null,
                         tint = if (recurrentSelected) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current
                     )
-                    if (showLabels) Text("Recurrent", style = MaterialTheme.typography.labelLarge)
+                    if (showLabels) Text(stringResource(Res.string.ui_recurrent), style = MaterialTheme.typography.labelLarge)
                 }
             },
             colors = AppFilterChipDefaults.filterChipColors(),
@@ -201,7 +209,7 @@ private fun TagWeightFilters(
                         contentDescription = null,
                         tint = if (definingSelected) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current
                     )
-                    if (showLabels) Text("Defining", style = MaterialTheme.typography.labelLarge)
+                    if (showLabels) Text(stringResource(Res.string.ui_defining), style = MaterialTheme.typography.labelLarge)
                 }
             },
             colors = AppFilterChipDefaults.filterChipColors(),
@@ -222,7 +230,7 @@ private fun TagWeightFilters(
                         contentDescription = null,
                         tint = if (coreSelected) MaterialTheme.colorScheme.onPrimary else LocalContentColor.current
                     )
-                    if (showLabels) Text("Core", style = MaterialTheme.typography.labelLarge)
+                    if (showLabels) Text(stringResource(Res.string.ui_core), style = MaterialTheme.typography.labelLarge)
                 }
             },
             colors = AppFilterChipDefaults.filterChipColors(),

@@ -1,5 +1,7 @@
 package snd.komelia.ui.home.edit.view
 
+import snd.komelia.ui.strings.localizedEnumLabel
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -229,7 +231,7 @@ fun AddConditionButton(
                     text = {
                         Text(
                             if (it == FilterEditViewModel.FilterType.DownloadedSeries)
-                                stringResource(Res.string.home_filter_downloaded_series) else it.name
+                                stringResource(Res.string.home_filter_downloaded_series) else localizedEnumLabel(it)
                         )
                     },
                     onClick = {
@@ -362,8 +364,8 @@ private fun BookFilterEditContent(state: BookFilterEditState) {
         val filter = state.filter.collectAsState().value
         val type = state.type.collectAsState().value
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(type, type.name),
-            options = remember { BookFilterEditState.FilterType.entries.map { LabeledEntry(it, it.name) } },
+            selectedOption = LabeledEntry(type, localizedEnumLabel(type)),
+            options = BookFilterEditState.FilterType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.onTypeChange(it.value) },
         )
 
@@ -397,12 +399,12 @@ private fun SeriesFilterEditContent(state: SeriesFilterEditState) {
         val offlineAvailable = LocalOfflineAvailable.current
         DropdownChoiceMenu(
             selectedOption = LabeledEntry(
-                type, if (type == SeriesFilterEditState.FilterType.Downloaded) downloadedLabel else type.name
+                type, if (type == SeriesFilterEditState.FilterType.Downloaded) downloadedLabel else localizedEnumLabel(type)
             ),
             options = SeriesFilterEditState.FilterType.entries.filter {
                 it != SeriesFilterEditState.FilterType.Downloaded || offlineAvailable || it == type
             }.map {
-                LabeledEntry(it, if (it == SeriesFilterEditState.FilterType.Downloaded) downloadedLabel else it.name)
+                LabeledEntry(it, if (it == SeriesFilterEditState.FilterType.Downloaded) downloadedLabel else localizedEnumLabel(it))
             },
             onOptionChange = { state.onTypeChange(it.value) },
         )

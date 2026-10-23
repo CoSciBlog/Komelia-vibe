@@ -1,5 +1,7 @@
 package snd.komelia.ui.color.view
 
+import snd.komelia.ui.strings.localizedEnumLabel
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -392,8 +394,8 @@ fun ChannelSelection(
         modifier = modifier
     ) {
         DropdownChoiceMenu(
-            selectedOption = remember(selectedChannel) { LabeledEntry(selectedChannel, selectedChannel.name) },
-            options = remember { ColorChannel.entries.map { LabeledEntry(it, it.name) } },
+            selectedOption = LabeledEntry(selectedChannel, localizedEnumLabel(selectedChannel)),
+            options = ColorChannel.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             label = { Text(stringResource(Res.string.color_correction_channel)) },
             onOptionChange = { onChannelChange(it.value) },
             inputFieldModifier = Modifier.widthIn(min = 150.dp)

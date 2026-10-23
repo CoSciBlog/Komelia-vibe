@@ -4,6 +4,27 @@ All notable changes to the Komelia-Vibe fork are documented here.
 
 ## Unreleased
 
+## 0.20.25 - 2026-10-23
+
+- Add a clear **Automatic (device language)** choice and explanation. Match
+  regional device tags to the seven supported locales; use Simplified Chinese
+  for Chinese variants and English for unsupported languages. Keep the saved
+  System/automatic choice and all explicit language selections compatible.
+- Complete the resource catalog in English, German, Spanish, French, Japanese,
+  Russian and Simplified Chinese: 1,203 strings and 16 plural resources per locale.
+  Review all plural forms, including Russian one/few/many/other categories.
+- Replace hardcoded English labels in menus, reader boundaries/loading, error
+  screens, server management, metadata settings and notifications. Localize
+  filter operators, sort/status choices, author roles and language suggestions
+  without changing enum identities or Komga protocol values.
+- Validate all resource keys, nonempty values, format placeholders, metadata
+  template variables and compiled APK resource contents. Retain original
+  attribution, existing reviewed translations and the 2026 signing identity.
+- Machine translation assisted the missing catalog entries; UI terminology and
+  plural forms received additional review. Implementation, translation review,
+  tests, documentation and release preparation received material assistance from
+  OpenAI Codex. Android version code: 50.
+
 ## 0.20.24 - 2026-10-23
 
 - Add a persistent App language selector under Appearance: System default and

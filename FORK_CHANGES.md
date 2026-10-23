@@ -451,14 +451,25 @@ Introduced in 0.20.24.
 - Switching language updates existing resource consumers immediately without
   clearing navigation or restarting readers. System default follows the device
   locale; explicit English must work on a German device. Chinese selects `zh-CN`.
-- Translate all Appearance controls in every supported locale. Preserve English
-  as the resource fallback; this does not imply complete translations elsewhere.
+- Since 0.20.25, label the default choice **Automatic (device language)** and
+  explain it. Match regional device tags to supported locales, including Chinese
+  variants to Simplified Chinese; use English for unsupported device languages.
+  Browser device-language changes refresh automatic selection.
+- Keep the complete app resource catalog in all seven locales: 1,203 strings
+  and 16 plurals per locale as of 0.20.25, with Russian few/many forms. Every new
+  resource must have a translation in each locale. Preserve positional format
+  tokens and metadata-template variables. Retain English as the fallback for
+  unsupported languages, not as a substitute for missing supported translations.
+- Translate UI labels, filter/sort/status operators and notifications using
+  resources; never translate serialized enum identities, user content, metadata
+  templates or Komga protocol fields. Keep user-edited labels intact.
 - Keep the choice independent of book metadata language and Komga protocol fields.
 
 Primary areas: `AppLanguage`, shared and SQLite app settings repositories,
 `AppLanguageEnvironment` on Android/JVM/WebAssembly, `MainView`, and Appearance UI.
 Regression checks: `AppLanguageSettingsTest`, `AppLanguageEnvironmentTest`, and
-`cmake/verify-app-language-resources.py`.
+`cmake/verify-app-language-resources.py`, `EnumStringsTest`, and
+`cmake/verify-translations.py` (source and compiled APK coverage).
 
 ## Required upstream-integration procedure
 

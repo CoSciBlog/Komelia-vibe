@@ -1,5 +1,7 @@
 package snd.komelia.ui.settings.komf.processing
 
+import snd.komelia.ui.strings.localizedEnumLabel
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.home_filter_any
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_processing_aggreation_settings
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_processing_aggregate
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_processing_aggregate_desc
@@ -91,8 +94,8 @@ private fun ProcessingConfigContent(
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         DropdownMultiChoiceMenu(
-            selectedOptions = state.updateModes.map { LabeledEntry(it, it.name) },
-            options = remember { KomfUpdateMode.entries.map { LabeledEntry(it, it.name) } },
+            selectedOptions = state.updateModes.map { LabeledEntry(it, localizedEnumLabel(it)) },
+            options = KomfUpdateMode.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionSelect = { state.onUpdateModeSelect(it.value) },
             label = { Text(stringResource(Res.string.komf_processing_update_modes)) },
             placeholder = stringResource(Res.string.komf_processing_none),
@@ -100,8 +103,8 @@ private fun ProcessingConfigContent(
         )
 
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(state.libraryType, state.libraryType.name),
-            options = remember { KomfMediaType.entries.map { LabeledEntry(it, it.name) } },
+            selectedOption = LabeledEntry(state.libraryType, localizedEnumLabel(state.libraryType)),
+            options = KomfMediaType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.onLibraryTypeChange(it.value) },
             label = { Text(stringResource(Res.string.komf_processing_library_type)) },
             inputFieldModifier = Modifier.fillMaxWidth(),
@@ -259,7 +262,7 @@ private fun ProcessingConfigContent(
             label = { Text(stringResource(Res.string.komf_processing_series_alt_title_language)) },
             values = state.alternativeSeriesTitleLanguages,
             onValuesChange = state::onAlternativeTitleLanguagesChange,
-            suggestions = komfLanguageTagsSuggestions
+            suggestions = komfLanguageTagsSuggestions()
         )
         HorizontalDivider()
         Text(
@@ -269,10 +272,10 @@ private fun ProcessingConfigContent(
         val noneString = stringResource(Res.string.komf_processing_none)
         if (serverType == KOMGA) {
             DropdownChoiceMenu(
-                selectedOption = LabeledEntry(state.readingDirectionValue, state.readingDirectionValue?.name ?: "None"),
-                options = remember {
+                selectedOption = LabeledEntry(state.readingDirectionValue, state.readingDirectionValue?.let { localizedEnumLabel(it) } ?: stringResource(Res.string.home_filter_any)),
+                options = run {
                     listOf(LabeledEntry<KomfReadingDirection?>(null, noneString)) +
-                            KomfReadingDirection.entries.map { LabeledEntry(it, it.name) }
+                            KomfReadingDirection.entries.map { LabeledEntry(it, localizedEnumLabel(it)) }
                 },
                 onOptionChange = { state.onReadingDirectionChange(it.value) },
                 label = { Text(stringResource(Res.string.komf_processing_default_reading_direction)) },

@@ -13,10 +13,12 @@ import androidx.compose.ui.unit.Density
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_appearance_title
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_updates_check
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.series_books_count
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.pluralStringResource
 import snd.komelia.settings.model.AppLanguage
 import java.util.Locale
 import kotlin.test.Test
@@ -46,12 +48,15 @@ class AppLanguageEnvironmentTest {
         var title = ""
         var checkUpdates = ""
         var remembered: Any? = null
+        var bookCount = ""
+        val count = mutableStateOf(2)
         try {
             composition.setContent {
                 CompositionLocalProvider(LocalDensity provides Density(1f)) {
                     AppLanguageEnvironment(language.value) {
                         title = stringResource(Res.string.settings_appearance_title)
                         checkUpdates = stringResource(Res.string.settings_updates_check)
+                        bookCount = pluralStringResource(Res.plurals.series_books_count, count.value, count.value)
                         remembered = remember { Any() }
                     }
                 }
@@ -74,6 +79,28 @@ class AppLanguageEnvironmentTest {
             Snapshot.sendApplyNotifications()
             runCurrent()
             assertEquals("外观", title)
+            val titles = mapOf(
+                AppLanguage.SPANISH to "Apariencia",
+                AppLanguage.FRENCH to "Apparence",
+                AppLanguage.JAPANESE to "外観",
+                AppLanguage.RUSSIAN to "Оформление",
+            )
+            for ((selected, expected) in titles) {
+                language.value = selected
+                Snapshot.sendApplyNotifications()
+                runCurrent()
+                assertEquals(expected, title)
+                assertSame(initialState, remembered)
+            }
+            assertEquals("2 книги", bookCount)
+            count.value = 5
+            Snapshot.sendApplyNotifications()
+            runCurrent()
+            assertEquals("5 книг", bookCount)
+            count.value = 21
+            Snapshot.sendApplyNotifications()
+            runCurrent()
+            assertEquals("21 книга", bookCount)
             language.value = AppLanguage.SYSTEM
             Snapshot.sendApplyNotifications()
             runCurrent()

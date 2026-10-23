@@ -1,5 +1,9 @@
 package snd.komelia.ui.common.menus
 
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_series_analysis
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_series_metadata_refresh
+
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -214,13 +218,13 @@ data class SeriesMenuActions(
         analyze = {
             notifications.runCatchingToNotifications(scope) {
                 seriesApi.analyze(it.id)
-                notifications.add(AppNotification.Normal("Launched series analysis"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_series_analysis)))
             }
         },
         refreshMetadata = {
             notifications.runCatchingToNotifications(scope) {
                 seriesApi.refreshMetadata(it.id)
-                notifications.add(AppNotification.Normal("Launched series metadata refresh"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_series_metadata_refresh)))
             }
         },
         addToCollection = { },

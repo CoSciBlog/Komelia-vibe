@@ -1,5 +1,13 @@
 package snd.komelia.ui.series.mangabaka
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_metadata
+
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_providers_book_links
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_providers_book_tags
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_description
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.Spring
@@ -136,25 +144,25 @@ private fun CompactSizeContent(
                 modifier = Modifier.heightIn(min = 40.dp).cursorForHand(),
                 selected = currentTab == META,
                 onClick = { mangaBakaState.onCompactTabSelect(META) },
-                content = { Text("Meta") }
+                content = { Text(stringResource(Res.string.ui_metadata)) }
             )
             Tab(
                 modifier = Modifier.heightIn(min = 40.dp).cursorForHand(),
                 selected = currentTab == DESCRIPTION,
                 onClick = { mangaBakaState.onCompactTabSelect(DESCRIPTION) },
-                content = { Text("Description") }
+                content = { Text(stringResource(Res.string.ui_description)) }
             )
             Tab(
                 modifier = Modifier.heightIn(min = 40.dp).cursorForHand(),
                 selected = currentTab == LINKS,
                 onClick = { mangaBakaState.onCompactTabSelect(LINKS) },
-                content = { Text("Links") }
+                content = { Text(stringResource(Res.string.komf_providers_book_links)) }
             )
             Tab(
                 modifier = Modifier.heightIn(min = 40.dp).cursorForHand(),
                 selected = currentTab == TAGS,
                 onClick = { mangaBakaState.onCompactTabSelect(TAGS) },
-                content = { Text("Tags") }
+                content = { Text(stringResource(Res.string.komf_providers_book_tags)) }
             )
         }
         Spacer(Modifier.height(8.dp))
@@ -323,7 +331,7 @@ private fun DescriptionAndTags(
             Column(
                 verticalArrangement = Arrangement.spacedBy(5.dp)
             ) {
-                Text("Description", style = MaterialTheme.typography.headlineSmall)
+                Text(stringResource(Res.string.ui_description), style = MaterialTheme.typography.headlineSmall)
                 HorizontalDivider(color = MaterialTheme.colorScheme.secondary)
                 MangaBakaDescription(description)
             }
@@ -332,7 +340,7 @@ private fun DescriptionAndTags(
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            Text("Links", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(Res.string.komf_providers_book_links), style = MaterialTheme.typography.headlineSmall)
             HorizontalDivider(color = MaterialTheme.colorScheme.secondary)
             MangaBakaLinks(mangaBakaState.linksState)
         }
@@ -342,7 +350,7 @@ private fun DescriptionAndTags(
             FlowRow(
                 itemVerticalAlignment = Alignment.Bottom
             ) {
-                Text("Tags", style = MaterialTheme.typography.headlineSmall)
+                Text(stringResource(Res.string.komf_providers_book_tags), style = MaterialTheme.typography.headlineSmall)
                 Spacer(Modifier.weight(1f))
                 MangaBakaTagFilters(mangaBakaState.tagsState)
 

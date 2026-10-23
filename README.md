@@ -12,12 +12,20 @@ The update screen, update notification and download dialog use the selected
 language in all seven supported locales. Release descriptions are loaded from
 GitHub; releases starting with 0.20.22 provide German and English descriptions.
 
-Under **Settings → Appearance → App language**, choose **System default** or
-English, Deutsch, Español, Français, 日本語, Русский or 简体中文. The selection
-updates the interface immediately and survives restarts and upgrades. English
-can be selected independently of a German device language. Appearance controls
-are translated in every supported locale; other missing translations continue
-to fall back to English. Release descriptions retain their original GitHub text.
+Under **Settings → Appearance → App language**, choose **Automatic (device
+language)** or English, Deutsch, Español, Français, 日本語, Русский or 简体中文.
+Automatic is the default and follows the device language, including regional
+variants; unsupported languages fall back to English. Chinese variants use the
+available Simplified Chinese translation. Explicit choices survive restarts and
+upgrades and update the interface immediately without clearing navigation.
+
+Every supported locale contains the complete app resource catalog: **1,203 strings
+and 16 plural resources**, including Russian one/few/many/other forms. Menus,
+reader controls, offline settings, server management, errors, metadata-provider
+settings and notifications use localized resources. New translations received
+machine assistance, followed by placeholder/template checks and wording/plural
+review. Book metadata, user-edited labels, server diagnostics, technical product
+names and GitHub release descriptions retain their original content.
 
 Offline downloads work for restricted Komga accounts as well. Access restrictions
 are enforced by Komga while online; the offline database exposes only books that
@@ -124,18 +132,18 @@ documents and bundled component license/notice texts under `assets/legal/`.
 ### Downloads:
 
 - Latest Komelia-Vibe release: https://github.com/CoSciBlog/Komelia-vibe/releases
-- Release assets vary by version. Version 0.20.24 is an Android-only update;
+- Release assets vary by version. Version 0.20.25 is an Android-only update;
   earlier releases also provide Windows x64 and Linux x64 packages. Every platform
   keeps the independent Komelia-Vibe identity.
 - All Android artifacts starting with 0.20.7 are universal APKs containing ARM64,
   ARMv7, x86_64, and x86 native libraries.
-- **Android 0.20.21 and later use the 2026 signing key:** version 0.20.24 can
-  update 0.20.21–0.20.23 in place. Android cannot install these versions over 0.20.20 or
+- **Android 0.20.21 and later use the 2026 signing key:** version 0.20.25 can
+  update 0.20.21–0.20.24 in place. Android cannot install these versions over 0.20.20 or
   earlier releases. Before uninstalling an older version,
   synchronize offline progress with Komga and preserve needed local data. Uninstalling
   removes app settings and downloads. See [RELEASE_SIGNING.md](RELEASE_SIGNING.md).
-- Version 0.20.24 (Android version code 49) adds a saved app language selector
-  and translates Appearance controls in all supported languages.
+- Version 0.20.25 (Android version code 50) clarifies automatic device-language
+  selection and completes the app resource catalog in all supported languages.
   It includes the manual GitHub download link, saved 1–10 simultaneous-download
   setting and all earlier improvements.
 - Original Komelia distribution channels: https://github.com/Snd-R/Komelia#downloads

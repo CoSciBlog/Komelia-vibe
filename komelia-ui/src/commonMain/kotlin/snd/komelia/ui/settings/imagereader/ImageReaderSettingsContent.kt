@@ -1,5 +1,8 @@
 package snd.komelia.ui.settings.imagereader
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_can_be_slow_for_high_resolution_images
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_load_small_previews_when_dragging_navigation_slider
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -39,8 +42,8 @@ fun ImageReaderSettingsContent(
         SwitchWithLabel(
             checked = loadThumbnailPreviews,
             onCheckedChange = onLoadThumbnailPreviewsChange,
-            label = { Text("Load small previews when dragging navigation slider") },
-            supportingText = { Text("can be slow for high resolution images") },
+            label = { Text(stringResource(Res.string.ui_load_small_previews_when_dragging_navigation_slider)) },
+            supportingText = { Text(stringResource(Res.string.ui_can_be_slow_for_high_resolution_images)) },
         )
 
         if (platform == PlatformType.MOBILE) {

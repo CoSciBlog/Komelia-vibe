@@ -1,5 +1,12 @@
 package snd.komelia.ui.common
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_category
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_character
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_female
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_group
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_male
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_parody
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -90,7 +97,7 @@ fun TagList(
         } else {
             if (parodyTags.isNotEmpty() || !secondaryParodyTags.isNullOrEmpty()) {
                 DescriptionChips(
-                    label = "Parody",
+                    label = stringResource(Res.string.ui_parody),
                     chipValues = parodyTags,
                     secondaryValues = secondaryParodyTags,
                     onChipClick = onTagClick,
@@ -99,7 +106,7 @@ fun TagList(
 
             if (characterTags.isNotEmpty() || !secondaryCharacterTags.isNullOrEmpty()) {
                 DescriptionChips(
-                    label = "Character",
+                    label = stringResource(Res.string.ui_character),
                     chipValues = characterTags,
                     secondaryValues = secondaryCharacterTags,
                     onChipClick = onTagClick,
@@ -108,7 +115,7 @@ fun TagList(
 
             if (groupTags.isNotEmpty() || !secondaryGroupTags.isNullOrEmpty()) {
                 DescriptionChips(
-                    label = "Group",
+                    label = stringResource(Res.string.ui_group),
                     chipValues = groupTags,
                     secondaryValues = secondaryGroupTags,
                     onChipClick = onTagClick,
@@ -117,7 +124,7 @@ fun TagList(
 
             if (femaleTags.isNotEmpty() || !secondaryFemaleTags.isNullOrEmpty()) {
                 DescriptionChips(
-                    label = "Female",
+                    label = stringResource(Res.string.ui_female),
                     chipValues = femaleTags,
                     secondaryValues = secondaryFemaleTags,
                     onChipClick = onTagClick,
@@ -125,7 +132,7 @@ fun TagList(
             }
             if (maleTags.isNotEmpty() || !secondaryMaleTags.isNullOrEmpty()) {
                 DescriptionChips(
-                    label = "Male",
+                    label = stringResource(Res.string.ui_male),
                     chipValues = maleTags,
                     secondaryValues = secondaryMaleTags,
                     onChipClick = onTagClick,
@@ -133,7 +140,7 @@ fun TagList(
             }
             if (categoryTags.isNotEmpty() || !secondaryCategoryTags.isNullOrEmpty()) {
                 DescriptionChips(
-                    label = "Category",
+                    label = stringResource(Res.string.ui_category),
                     chipValues = categoryTags,
                     secondaryValues = secondaryCategoryTags,
                     onChipClick = onTagClick,

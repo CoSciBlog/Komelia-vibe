@@ -1,5 +1,7 @@
 package snd.komelia.ui.home.edit.view
 
+import snd.komelia.ui.strings.localizedEnumLabel
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -70,8 +72,8 @@ fun BookConditionContent(
         PageSettingsContent(
             pageSize = state.pageSize.collectAsState().value,
             onPageSizeChange = state::onPagSizeChange,
-            sort = remember(sort) { LabeledEntry(sort, sort.name) },
-            sortOptions = remember { BookSort.entries.map { LabeledEntry(it, it.name) } },
+            sort = LabeledEntry(sort, localizedEnumLabel(sort)),
+            sortOptions = BookSort.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onSortChange = state::onSortChange,
             sortDirection = state.sortDirection.collectAsState().value,
             onSortDirectionChange = state::onSortDirectionChange
@@ -105,8 +107,8 @@ fun BookMatchConditionContent(
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 val type = state.matchType.collectAsState().value
                 DropdownChoiceMenu(
-                    selectedOption = LabeledEntry(type, type.name),
-                    options = MatchType.entries.map { LabeledEntry(it, it.name) },
+                    selectedOption = LabeledEntry(type, localizedEnumLabel(type)),
+                    options = MatchType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
                     onOptionChange = { state.setMatchType(it.value) }
                 )
                 IconButton(onClick = onConditionRemove) {
@@ -119,7 +121,7 @@ fun BookMatchConditionContent(
         }
 
         ConditionAddButton(
-            conditions = remember { BookConditionType.entries.map { LabeledEntry(it, it.name) } },
+            conditions = BookConditionType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onConditionAdd = state::addCondition,
         )
     }
@@ -253,7 +255,7 @@ private fun ConditionContent(
 
         null -> {
             ConditionAddButton(
-                conditions = remember { BookConditionType.entries.map { LabeledEntry(it, it.name) } },
+                conditions = BookConditionType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
                 onConditionAdd = onConditionAdd,
             )
         }
@@ -269,8 +271,8 @@ private fun BookConditionLayout(
     content: @Composable RowScope.() -> Unit
 ) {
     SimpleConditionLayout(
-        conditionType = remember { LabeledEntry(type, type.name) },
-        options = remember { BookConditionType.entries.map { LabeledEntry(it, it.name) } },
+        conditionType = LabeledEntry(type, localizedEnumLabel(type)),
+        options = BookConditionType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onConditionTypeChange = onTypeChange,
         onConditionRemove = onConditionRemove
     ) {
@@ -345,8 +347,8 @@ fun SeriesIdConditionContent(
         val options = state.seriesSuggestions.collectAsState(emptyList()).value
         val operator = state.operator.collectAsState().value
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(operator, operator.name),
-            options = EqualityOpState.Op.entries.map { LabeledEntry(it, it.name) },
+            selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+            options = EqualityOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.setOp(it.value) },
             inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
             label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -389,8 +391,8 @@ fun MediaProfileConditionContent(
         EqualityOpDropDownContent(
             operator = state.operator.collectAsState().value,
             onOpChange = state::setOp,
-            selectedValue = remember(value) { value?.let { LabeledEntry(it, it.name) } },
-            valueOptions = remember { MediaProfile.entries.map { LabeledEntry(it, it.name) } },
+            selectedValue = value?.let { LabeledEntry(it, localizedEnumLabel(it)) },
+            valueOptions = MediaProfile.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onValueChange = state::setValue
         )
     }
@@ -411,8 +413,8 @@ fun MediaStatusConditionContent(
         EqualityOpDropDownContent(
             operator = state.operator.collectAsState().value,
             onOpChange = state::setOp,
-            selectedValue = remember(value) { value?.let { LabeledEntry(it, it.name) } },
-            valueOptions = remember { KomgaMediaStatus.entries.map { LabeledEntry(it, it.name) } },
+            selectedValue = value?.let { LabeledEntry(it, localizedEnumLabel(it)) },
+            valueOptions = KomgaMediaStatus.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onValueChange = state::setValue
         )
     }
@@ -431,8 +433,8 @@ fun NumberSortConditionContent(
     ) {
         val operator = state.operator.collectAsState().value
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(operator, operator.name),
-            options = NumericOpState.Op.entries.map { LabeledEntry(it, it.name) },
+            selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+            options = NumericOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.setOp(it.value) },
             inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
             label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -459,8 +461,8 @@ fun PosterConditionContent(
         val operator = state.operator.collectAsState().value
         val currentValue = state.value.collectAsState().value
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(operator, operator.name),
-            options = EqualityOpState.Op.entries.map { LabeledEntry(it, it.name) },
+            selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+            options = EqualityOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.setOp(it.value) },
             inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
             label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -470,19 +472,19 @@ fun PosterConditionContent(
         val stringTrue = stringResource(Res.string.home_filter_true)
         val stringFalse = stringResource(Res.string.home_filter_false)
         DropdownChoiceMenu(
-            selectedOption = remember(currentValue) {
+            selectedOption = run {
                 LabeledEntry(
                     currentValue?.type,
-                    currentValue?.type?.name ?: stringAny
+                    currentValue?.type?.let { localizedEnumLabel(it) } ?: stringAny
                 )
             },
-            options = remember {
+            options = run {
                 listOf(
                     LabeledEntry<PosterMatch.Type?>(
                         null,
                         stringAny
                     )
-                ).plus(PosterMatch.Type.entries.map { LabeledEntry(it, it.name) }
+                ).plus(PosterMatch.Type.entries.map { LabeledEntry(it, localizedEnumLabel(it)) }
                 )
             },
             onOptionChange = { state.setType(it.value) },
@@ -526,8 +528,8 @@ fun ReadListConditionContent(
         val options = state.readListSuggestions.collectAsState(emptyList()).value
         val operator = state.operator.collectAsState().value
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(operator, operator.name),
-            options = EqualityOpState.Op.entries.map { LabeledEntry(it, it.name) },
+            selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+            options = EqualityOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.setOp(it.value) },
             inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
             label = { Text(stringResource(Res.string.home_filter_operator)) }

@@ -1,5 +1,9 @@
 package snd.komelia.ui.settings.komf.mangabaka
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_mangabaka_settings
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,7 +22,7 @@ class KomfMangaBakaSettingsScreen : Screen {
         val vm = rememberScreenModel { viewModelFactory.getKomfMangaBakaSettingsViewModel() }
         val vmState = vm.state.collectAsState().value
         LaunchedEffect(Unit) { vm.initialize() }
-        SettingsScreenContainer(title = "MangaBaka Settings") {
+        SettingsScreenContainer(title = stringResource(Res.string.ui_mangabaka_settings)) {
             when (vmState) {
                 LoadState.Loading, LoadState.Uninitialized -> LoadingMaxSizeIndicator()
                 else -> KomfMangaBakaSettingsContent(

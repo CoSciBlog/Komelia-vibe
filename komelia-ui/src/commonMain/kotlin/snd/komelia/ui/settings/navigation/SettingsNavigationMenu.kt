@@ -1,5 +1,7 @@
 package snd.komelia.ui.settings.navigation
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_mangabaka_beta
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -222,7 +224,7 @@ fun SettingsNavigationMenu(
                 AnimatedVisibility(komfEnabled) {
                     Column {
                         NavigationButton(
-                            label = "MangaBaka (Beta)",
+                            label = stringResource(Res.string.ui_mangabaka_beta),
                             onClick = { onNavigation(KomfMangaBakaSettingsScreen()) },
                             isSelected = currentScreen is KomfMangaBakaSettingsScreen,
                             color = contentColor,

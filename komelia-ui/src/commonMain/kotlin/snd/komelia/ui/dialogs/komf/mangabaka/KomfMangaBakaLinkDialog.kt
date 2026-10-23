@@ -1,5 +1,8 @@
 package snd.komelia.ui.dialogs.komf.mangabaka
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_link_by_id
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_mangabaka_series_id
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -144,7 +147,7 @@ private fun SearchTabContent(
                 onValueChange = { newText ->
                     newText.toLongOrNull()?.let { seriesIdText = newText }
                 },
-                label = { Text("MangaBaka series ID") },
+                label = { Text(stringResource(Res.string.ui_mangabaka_series_id)) },
                 modifier = Modifier.weight(1f)
             )
 
@@ -158,7 +161,7 @@ private fun SearchTabContent(
                 enabled = !isLoading,
             ) {
                 if (isLoading) CircularProgressIndicator(Modifier.size(25.dp))
-                else Text("Link by ID")
+                else Text(stringResource(Res.string.ui_link_by_id))
             }
         }
     }

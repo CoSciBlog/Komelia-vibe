@@ -1,5 +1,9 @@
 package snd.komelia.ui.settings.komf.notifications
 
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_templates_saved
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -105,7 +109,7 @@ class DiscordState(
     fun onTemplatesSave() {
         appNotifications.runCatchingToNotifications(coroutineScope) {
             komfNotificationClient.updateDiscordTemplates(getKomfDiscordTemplates())
-            appNotifications.add(AppNotification.Success("Templates Saved"))
+            appNotifications.add(AppNotification.Success(getString(Res.string.ui_notification_templates_saved)))
         }
 
     }

@@ -1,5 +1,7 @@
 package snd.komelia.ui.home.edit.view
 
+import snd.komelia.ui.strings.localizedEnumLabel
+
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -127,8 +129,8 @@ fun RowScope.ReadStatusConditionContent(state: ReadStatusConditionState) {
     EqualityOpDropDownContent(
         operator = state.operator.collectAsState().value,
         onOpChange = state::setOp,
-        selectedValue = remember(value) { value?.let { LabeledEntry(it, it.name) } },
-        valueOptions = remember { KomgaReadStatus.entries.map { LabeledEntry(it, it.name) } },
+        selectedValue = value?.let { LabeledEntry(it, localizedEnumLabel(it)) },
+        valueOptions = KomgaReadStatus.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onValueChange = state::setValue
     )
 }
@@ -160,7 +162,7 @@ fun RowScope.LibraryConditionContent(
                 )
             }
         },
-        valueOptions = remember(libraries) { libraries.map { LabeledEntry(it.id, it.name) } },
+        valueOptions = libraries.map { LabeledEntry(it.id, it.name) },
         onValueChange = state::setValue
     )
 }
@@ -174,8 +176,8 @@ fun RowScope.AuthorConditionContent(
     val nameOptions = state.nameOptions.collectAsState(emptyList()).value
     val currentValue = state.value.collectAsState().value
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = EqualityOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = EqualityOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { state.setOp(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -246,8 +248,8 @@ fun RowScope.EqualityNullableOpContent(
     val operator = state.operator.collectAsState().value
     var value by remember { mutableStateOf(state.value.value ?: "") }
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = EqualityNullableOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = EqualityNullableOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { state.setOp(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -270,8 +272,8 @@ fun RowScope.BooleanOpContent(
     onOperatorChange: (BooleanOpState.Op) -> Unit,
 ) {
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = BooleanOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = BooleanOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { onOperatorChange(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -287,8 +289,8 @@ fun <T> RowScope.EqualityOpDropDownContent(
     onValueChange: (T) -> Unit,
 ) {
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = EqualityOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = EqualityOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { onOpChange(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -423,8 +425,8 @@ fun RowScope.StringOpContent(
     onValueChange: (String) -> Unit,
 ) {
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = StringOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = StringOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { onOperatorChange(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -453,8 +455,8 @@ private fun RowScope.DateOpContent(
     onDurationChange: (Duration?) -> Unit,
 ) {
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = DateOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = DateOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { onOperatorChange(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -656,8 +658,8 @@ fun EqualityNullableOpDropdownSearchContent(
     val operator = state.operator.collectAsState().value
     val value = state.value.collectAsState().value
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = EqualityNullableOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = EqualityNullableOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { state.setOp(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -688,8 +690,8 @@ fun EqualityOpDropdownSearchContent(
     val operator = state.operator.collectAsState().value
     val value = state.value.collectAsState().value
     DropdownChoiceMenu(
-        selectedOption = LabeledEntry(operator, operator.name),
-        options = EqualityOpState.Op.entries.map { LabeledEntry(it, it.name) },
+        selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+        options = EqualityOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onOptionChange = { state.setOp(it.value) },
         inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
         label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -730,8 +732,8 @@ fun <T> PageSettingsContent(
             inputFieldModifier = Modifier.widthIn(min = 150.dp)
         )
         DropdownChoiceMenu(
-            selectedOption = remember(sortDirection) { LabeledEntry(sortDirection, sortDirection.name) },
-            options = remember { KomgaSort.Direction.entries.map { LabeledEntry(it, it.name) } },
+            selectedOption = LabeledEntry(sortDirection, localizedEnumLabel(sortDirection)),
+            options = KomgaSort.Direction.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { onSortDirectionChange(it.value) },
             label = { Text(stringResource(Res.string.home_filter_sort_direction)) },
             inputFieldModifier = Modifier.widthIn(min = 60.dp)

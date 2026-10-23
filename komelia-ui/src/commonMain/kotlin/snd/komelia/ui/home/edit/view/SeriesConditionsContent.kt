@@ -1,5 +1,7 @@
 package snd.komelia.ui.home.edit.view
 
+import snd.komelia.ui.strings.localizedEnumLabel
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -69,8 +71,8 @@ fun SeriesConditionContent(
         PageSettingsContent(
             pageSize = state.pageSize.collectAsState().value,
             onPageSizeChange = state::onPagSizeChange,
-            sort = remember(sort) { LabeledEntry(sort, sort.name) },
-            sortOptions = remember { SeriesSort.entries.map { LabeledEntry(it, it.name) } },
+            sort = LabeledEntry(sort, localizedEnumLabel(sort)),
+            sortOptions = SeriesSort.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onSortChange = state::onSortChange,
             sortDirection = state.sortDirection.collectAsState().value,
             onSortDirectionChange = state::onSortDirectionChange
@@ -103,8 +105,8 @@ fun SeriesMatchConditionContent(
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 val type = state.matchType.collectAsState().value
                 DropdownChoiceMenu(
-                    selectedOption = LabeledEntry(type, type.name),
-                    options = MatchType.entries.map { LabeledEntry(it, it.name) },
+                    selectedOption = LabeledEntry(type, localizedEnumLabel(type)),
+                    options = MatchType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
                     onOptionChange = { state.setMatchType(it.value) }
                 )
                 IconButton(onClick = onConditionRemove) {
@@ -117,7 +119,7 @@ fun SeriesMatchConditionContent(
 
         }
         ConditionAddButton(
-            conditions = remember { SeriesConditionType.entries.map { LabeledEntry(it, it.name) } },
+            conditions = SeriesConditionType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onConditionAdd = state::addCondition,
         )
     }
@@ -162,7 +164,7 @@ private fun ConditionContent(
     when (condition) {
         is SeriesMatchConditionState -> SeriesMatchConditionContent(condition, onConditionRemove)
         null -> ConditionAddButton(
-            conditions = remember { SeriesConditionType.entries.map { LabeledEntry(it, it.name) } },
+            conditions = SeriesConditionType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onConditionAdd = onConditionAdd,
         )
 
@@ -279,8 +281,8 @@ private fun SeriesConditionLayout(
     content: @Composable RowScope.() -> Unit
 ) {
     SimpleConditionLayout(
-        conditionType = remember { LabeledEntry(type, type.name) },
-        options = remember { SeriesConditionType.entries.map { LabeledEntry(it, it.name) } },
+        conditionType = LabeledEntry(type, localizedEnumLabel(type)),
+        options = SeriesConditionType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
         onConditionTypeChange = onTypeChange,
         onConditionRemove = onConditionRemove
     ) {
@@ -521,8 +523,8 @@ fun SeriesStatusConditionContent(
         EqualityOpDropDownContent(
             operator = state.operator.collectAsState().value,
             onOpChange = state::setOp,
-            selectedValue = remember(value) { value?.let { LabeledEntry(it, it.name) } },
-            valueOptions = remember { KomgaSeriesStatus.entries.map { LabeledEntry(it, it.name) } },
+            selectedValue = value?.let { LabeledEntry(it, localizedEnumLabel(it)) },
+            valueOptions = KomgaSeriesStatus.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onValueChange = state::setValue
         )
     }
@@ -542,8 +544,8 @@ fun SeriesAgeRatingConditionContent(
     ) {
         val operator = state.operator.collectAsState().value
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(operator, operator.name),
-            options = NumericNullableOpState.Op.entries.map { LabeledEntry(it, it.name) },
+            selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+            options = NumericNullableOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.setOp(it.value) },
             inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
             label = { Text(stringResource(Res.string.home_filter_operator)) }
@@ -571,8 +573,8 @@ fun CollectionIdConditionContent(
         val options = state.collectionsSuggestions.collectAsState(emptyList()).value
         val operator = state.operator.collectAsState().value
         DropdownChoiceMenu(
-            selectedOption = LabeledEntry(operator, operator.name),
-            options = EqualityOpState.Op.entries.map { LabeledEntry(it, it.name) },
+            selectedOption = LabeledEntry(operator, localizedEnumLabel(operator)),
+            options = EqualityOpState.Op.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { state.setOp(it.value) },
             inputFieldModifier = Modifier.widthIn(min = conditionInputMinWidth),
             label = { Text(stringResource(Res.string.home_filter_operator)) }

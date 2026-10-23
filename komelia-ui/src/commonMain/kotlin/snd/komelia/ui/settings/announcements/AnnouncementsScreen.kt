@@ -1,5 +1,7 @@
 package snd.komelia.ui.settings.announcements
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_error
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -29,7 +31,7 @@ class AnnouncementsScreen : Screen {
                 is Success -> AnnouncementsContent(result.value.items)
                 LoadState.Uninitialized, Loading -> LoadingMaxSizeIndicator()
 
-                is Error -> Text("Error")
+                is Error -> Text(stringResource(Res.string.ui_error))
             }
         }
 

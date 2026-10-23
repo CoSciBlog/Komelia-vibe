@@ -13,5 +13,11 @@ enum class AppLanguage(val tag: String, val nativeName: String) {
 
     companion object {
         fun fromTag(tag: String): AppLanguage = entries.firstOrNull { it.tag == tag } ?: SYSTEM
+
+        /** Match regional device locales to an available translation, with English fallback. */
+        fun forDeviceTag(tag: String): AppLanguage {
+            val language = tag.replace('_', '-').substringBefore('-').lowercase()
+            return entries.firstOrNull { it != SYSTEM && it.tag.substringBefore('-') == language } ?: ENGLISH
+        }
     }
 }

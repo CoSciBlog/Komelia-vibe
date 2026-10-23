@@ -1,5 +1,9 @@
 package snd.komelia.ui.reader.image
 
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_you_re_at_the_beginning_of_the_book
+
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import cafe.adriel.voyager.navigator.Navigator
@@ -268,7 +272,7 @@ class ReaderState(
                 previousBookPages = previousBookPages,
             )
         } else
-            appNotifications.add(AppNotification.Normal("You're at the beginning of the book"))
+            appNotifications.add(AppNotification.Normal(getString(Res.string.ui_notification_you_re_at_the_beginning_of_the_book)))
         return
     }
 

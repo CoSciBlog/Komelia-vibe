@@ -1,5 +1,7 @@
 package snd.komelia.ui.settings.updates
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.screen_error
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,7 +27,7 @@ class AppUpdatesScreen : Screen {
         SettingsScreenContainer(stringResource(Res.string.settings_updates_title)) {
             when {
                 state is LoadState.Error && vm.updater == null -> {
-                    Text("Error ${state.exception.message}")
+                    Text(stringResource(Res.string.screen_error, state.exception.message ?: ""))
                     GithubReleasesLink()
                 }
                 else -> AppUpdatesContent(

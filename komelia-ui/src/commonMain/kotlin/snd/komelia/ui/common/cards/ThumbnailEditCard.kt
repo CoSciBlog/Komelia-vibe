@@ -1,5 +1,7 @@
 package snd.komelia.ui.common.cards
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_image_dimensions
+
 import androidx.compose.foundation.BasicTooltipBox
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -173,7 +175,7 @@ private fun ThumbnailCardContent(
     ) {
         val sizeInKb = remember(filesize) { (filesize.toFloat() / 1024).formatDecimal(1) }
         Text("${sizeInKb}kB")
-        size?.let { Text("w: ${it.width}, h: ${it.height}") }
+        size?.let { Text(stringResource(Res.string.ui_image_dimensions, it.width, it.height)) }
         mediaType?.let { Text(it) }
 
 

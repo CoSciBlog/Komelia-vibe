@@ -1,5 +1,10 @@
 package snd.komelia.ui.login.offline
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.login_offline_mode
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_back_to_online
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.widthIn
@@ -30,7 +35,7 @@ fun OfflineLoginContent(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.widthIn(max = 600.dp)
     ) {
-        Text("Offline mode", style = MaterialTheme.typography.titleLarge)
+        Text(stringResource(Res.string.login_offline_mode), style = MaterialTheme.typography.titleLarge)
 
         for ((server, users) in serverUsers) {
             ServerCard(
@@ -48,7 +53,7 @@ fun OfflineLoginContent(
         }
 
         Button(onClick = onReturnToLogin, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text("Back to online")
+            Text(stringResource(Res.string.ui_back_to_online))
         }
     }
 }

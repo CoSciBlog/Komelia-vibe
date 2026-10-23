@@ -10,7 +10,8 @@ import java.util.Locale
 @Composable
 actual fun AppLanguageEnvironment(language: AppLanguage, content: @Composable () -> Unit) {
     val systemLocale = remember { Locale.getDefault() }
-    Locale.setDefault(if (language == AppLanguage.SYSTEM) systemLocale else Locale.forLanguageTag(language.tag))
+    val selected = if (language == AppLanguage.SYSTEM) AppLanguage.forDeviceTag(systemLocale.toLanguageTag()) else language
+    Locale.setDefault(Locale.forLanguageTag(selected.tag))
     DisposableEffect(Unit) { onDispose { Locale.setDefault(systemLocale) } }
     CompositionLocalProvider(LocalAppLanguage provides language, content = content)
 }
