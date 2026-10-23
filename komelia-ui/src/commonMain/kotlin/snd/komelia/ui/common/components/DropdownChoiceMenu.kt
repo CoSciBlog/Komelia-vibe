@@ -1,5 +1,7 @@
 package snd.komelia.ui.common.components
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_other_options
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BasicTooltipBox
 import androidx.compose.foundation.BorderStroke
@@ -579,7 +581,7 @@ private fun TagFilterDropdownContent(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(vertical = 10.dp)
         ) {
-            Text("Other Options")
+            Text(stringResource(Res.string.ui_other_options))
             HorizontalDivider(Modifier.padding(start = 10.dp))
         }
 

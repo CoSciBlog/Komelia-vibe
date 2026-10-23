@@ -1,5 +1,9 @@
 package snd.komelia.ui.readlist
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.error_unknown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -48,7 +52,7 @@ class ReadListScreen(val readListId: KomgaReadListId) : ReloadableScreen {
             when (val state = vm.state.collectAsState().value) {
                 Uninitialized -> LoadingMaxSizeIndicator()
                 is Error -> ErrorContent(
-                    message = state.exception.message ?: "Unknown Error",
+                    message = state.exception.message ?: stringResource(Res.string.error_unknown),
                     onReload = vm::reload
                 )
 

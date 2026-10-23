@@ -1,5 +1,7 @@
 package snd.komelia.ui.settings.users
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_error
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +29,7 @@ class UsersScreen : Screen {
 
         SettingsScreenContainer(stringResource(Res.string.settings_users_title)) {
             when (vm.state.collectAsState().value) {
-                is Error -> Text("Error")
+                is Error -> Text(stringResource(Res.string.ui_error))
                 Uninitialized, Loading -> LoadingMaxSizeIndicator()
 
                 is Success -> UsersContent(

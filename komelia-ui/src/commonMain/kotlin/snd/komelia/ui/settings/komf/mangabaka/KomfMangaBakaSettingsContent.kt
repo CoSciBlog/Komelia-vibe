@@ -1,5 +1,9 @@
 package snd.komelia.ui.settings.komf.mangabaka
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_display_mangabaka_metadata
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_error
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_requires_downloaded_database_and_linked_mangabaka_series
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.FilledTonalButton
@@ -43,8 +47,8 @@ fun KomfMangaBakaSettingsContent(
         SwitchWithLabel(
             checked = enabled,
             onCheckedChange = onEnabledChange,
-            label = { Text("Display MangaBaka metadata") },
-            supportingText = { Text("Requires downloaded database and linked MangaBaka series") }
+            label = { Text(stringResource(Res.string.ui_display_mangabaka_metadata)) },
+            supportingText = { Text(stringResource(Res.string.ui_requires_downloaded_database_and_linked_mangabaka_series)) }
         )
 
         var showMangaBakaDownloadProgress by remember { mutableStateOf(false) }
@@ -56,7 +60,7 @@ fun KomfMangaBakaSettingsContent(
         HorizontalDivider()
 
         if (error != null) {
-            Text("Error", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(Res.string.ui_error), style = MaterialTheme.typography.titleLarge)
             Text(error)
             return
         }

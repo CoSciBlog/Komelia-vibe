@@ -1,5 +1,8 @@
 package snd.komelia.ui.settings.komf.notifications.view
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_alternative_title_label_template
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_alternative_title_value_template
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -454,13 +457,13 @@ private fun AlternativeTitlesEdit(state: AlternativeTitleContext) {
         TextField(
             value = state.label,
             onValueChange = state::label::set,
-            label = { Text("Label \$series.metadata.alternativeTitles[i].label") },
+            label = { Text(stringResource(Res.string.ui_alternative_title_label_template)) },
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = state.title,
             onValueChange = state::title::set,
-            label = { Text("Title \$series.metadata.alternativeTitles[i].title") },
+            label = { Text(stringResource(Res.string.ui_alternative_title_value_template)) },
             modifier = Modifier.fillMaxWidth()
         )
     }

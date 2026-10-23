@@ -1,5 +1,12 @@
 package snd.komelia.ui.reader.image.continuous
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_current
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_previous
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_reached_the_end_of_the_series
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_reached_the_start_of_the_series
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -266,7 +273,7 @@ private fun LazyListScope.continuousPagesLayout(
             modifier = Modifier.sizeIn(minHeight = 300.dp, minWidth = 300.dp).fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Reached the start of the series", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(Res.string.ui_reached_the_start_of_the_series), style = MaterialTheme.typography.titleLarge)
         }
     }
     pageIntervals.forEachIndexed { index, interval ->
@@ -279,7 +286,7 @@ private fun LazyListScope.continuousPagesLayout(
                 ) {
                     pageIntervals.getOrNull(index - 1)?.let { previous ->
                         Column {
-                            Text("Previous:", style = MaterialTheme.typography.bodyMedium)
+                            Text(stringResource(Res.string.ui_previous), style = MaterialTheme.typography.bodyMedium)
                             Text(
                                 previous.book.metadata.title,
                                 style = MaterialTheme.typography.titleLarge
@@ -288,7 +295,7 @@ private fun LazyListScope.continuousPagesLayout(
                     }
                     Spacer(Modifier.size(50.dp))
                     Column {
-                        Text("Current:", style = MaterialTheme.typography.bodyMedium)
+                        Text(stringResource(Res.string.ui_current), style = MaterialTheme.typography.bodyMedium)
                         Text(
                             interval.book.metadata.title,
                             style = MaterialTheme.typography.titleLarge
@@ -304,7 +311,7 @@ private fun LazyListScope.continuousPagesLayout(
         Box(
             modifier = Modifier.sizeIn(minHeight = 300.dp, minWidth = 300.dp).fillMaxSize(),
             contentAlignment = Alignment.Center
-        ) { Text("Reached the end of the series", style = MaterialTheme.typography.titleLarge) }
+        ) { Text(stringResource(Res.string.ui_reached_the_end_of_the_series), style = MaterialTheme.typography.titleLarge) }
     }
 
 }

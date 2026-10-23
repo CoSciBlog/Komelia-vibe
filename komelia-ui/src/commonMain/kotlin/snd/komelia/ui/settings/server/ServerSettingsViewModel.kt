@@ -1,5 +1,13 @@
 package snd.komelia.ui.settings.server
 
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_updated_server_settings
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_scan_for_all_libraries
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_emptied_trash_for_all_libraries
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_no_tasks_to_cancel
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_cancelledtasks_tasks_cancelled
+
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -106,7 +114,7 @@ class ServerSettingsViewModel(
             )
             appNotifications.runCatchingToNotifications {
                 settingsApi.updateSettings(request)
-                appNotifications.add(AppNotification.Success("Updated Server Settings"))
+                appNotifications.add(AppNotification.Success(getString(Res.string.ui_notification_updated_server_settings)))
                 loadSettings()
             }
         }
@@ -181,14 +189,14 @@ class ServerSettingsViewModel(
     fun onScanAllLibraries(deep: Boolean) {
         appNotifications.runCatchingToNotifications(screenModelScope) {
             libraries.value.forEach { libraryApi.scan(it.id, deep) }
-            appNotifications.add(AppNotification.Success("Launched scan for all libraries"))
+            appNotifications.add(AppNotification.Success(getString(Res.string.ui_notification_launched_scan_for_all_libraries)))
         }
     }
 
     fun onEmptyTrashForAllLibraries() {
         appNotifications.runCatchingToNotifications(screenModelScope) {
             libraries.value.forEach { libraryApi.emptyTrash(it.id) }
-            appNotifications.add(AppNotification.Success("Emptied trash for all libraries"))
+            appNotifications.add(AppNotification.Success(getString(Res.string.ui_notification_emptied_trash_for_all_libraries)))
         }
     }
 
@@ -197,9 +205,9 @@ class ServerSettingsViewModel(
             val cancelledTasks = taskApi.emptyTaskQueue()
 
             if (cancelledTasks == 0)
-                appNotifications.add(AppNotification.Normal("No tasks to cancel"))
+                appNotifications.add(AppNotification.Normal(getString(Res.string.ui_notification_no_tasks_to_cancel)))
             else
-                appNotifications.add(AppNotification.Success("$cancelledTasks tasks cancelled"))
+                appNotifications.add(AppNotification.Success(getString(Res.string.ui_notification_cancelledtasks_tasks_cancelled, cancelledTasks)))
         }
     }
 

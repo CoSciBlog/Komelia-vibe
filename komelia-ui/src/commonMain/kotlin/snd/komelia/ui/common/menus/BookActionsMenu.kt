@@ -1,5 +1,9 @@
 package snd.komelia.ui.common.menus
 
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_book_analysis
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_book_metadata_refresh
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -206,13 +210,13 @@ data class BookMenuActions(
         analyze = {
             notifications.runCatchingToNotifications(scope) {
                 bookApi.analyze(it.id)
-                notifications.add(AppNotification.Normal("Launched book analysis"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_book_analysis)))
             }
         },
         refreshMetadata = {
             notifications.runCatchingToNotifications(scope) {
                 bookApi.refreshMetadata(it.id)
-                notifications.add(AppNotification.Normal("Launched book metadata refresh"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_book_metadata_refresh)))
             }
         },
         markAsRead = { book ->

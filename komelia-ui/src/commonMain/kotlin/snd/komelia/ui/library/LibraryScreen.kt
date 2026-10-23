@@ -1,5 +1,8 @@
 package snd.komelia.ui.library
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.error_unknown
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_error
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -90,7 +93,7 @@ class LibraryScreen(
 
         ScreenPullToRefreshBox(screenState = vm.state, onRefresh = vm::reload) {
             when (val state = vm.state.collectAsState().value) {
-                is Error -> ErrorContent(message = state.exception.message ?: "Unknown Error", onReload = vm::reload)
+                is Error -> ErrorContent(message = state.exception.message ?: stringResource(Res.string.error_unknown), onReload = vm::reload)
                 Uninitialized, Loading, is Success -> {
                     Column {
                         if (vm.showToolbar.collectAsState().value) {
@@ -129,7 +132,7 @@ class LibraryScreen(
 
         when (val state = seriesTabState.state.collectAsState().value) {
             is Error -> ErrorContent(
-                message = state.exception.message ?: "Unknown Error",
+                message = state.exception.message ?: stringResource(Res.string.error_unknown),
                 onReload = seriesTabState::reload
             )
 
@@ -173,7 +176,7 @@ class LibraryScreen(
         when (val state = collectionsTabState.state.collectAsState().value) {
             Uninitialized -> LoadingMaxSizeIndicator()
             is Error -> ErrorContent(
-                message = state.exception.message ?: "Unknown Error",
+                message = state.exception.message ?: stringResource(Res.string.error_unknown),
                 onReload = collectionsTabState::reload
             )
 
@@ -211,7 +214,7 @@ class LibraryScreen(
 
         when (val state = readListTabState.state.collectAsState().value) {
             Uninitialized -> LoadingMaxSizeIndicator()
-            is Error -> Text("Error")
+            is Error -> Text(stringResource(Res.string.ui_error))
             else -> {
                 val loading = state is Loading
                 LibraryReadListsContent(

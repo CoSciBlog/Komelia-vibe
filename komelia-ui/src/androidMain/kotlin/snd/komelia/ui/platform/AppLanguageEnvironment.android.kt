@@ -18,9 +18,10 @@ actual fun AppLanguageEnvironment(language: AppLanguage, content: @Composable ()
     val originalLocale = remember { Locale.getDefault() }
     val configuration = remember(systemConfiguration, language) {
         Configuration(systemConfiguration).apply {
-            if (language != AppLanguage.SYSTEM) {
-                setLocales(LocaleList(Locale.forLanguageTag(language.tag)))
-            }
+            val selected = if (language == AppLanguage.SYSTEM) {
+                AppLanguage.forDeviceTag(systemConfiguration.locales[0].toLanguageTag())
+            } else language
+            setLocales(LocaleList(Locale.forLanguageTag(selected.tag)))
         }
     }
     // Compose Resources 1.12 also reads Locale.current / Locale.getDefault(),

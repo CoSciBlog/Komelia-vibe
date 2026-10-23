@@ -1,5 +1,10 @@
 package snd.komelia.ui.reader.image.common
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_loading
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_processing
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,7 +45,7 @@ fun ReaderImageContent(imageResult: ReaderImageResult?) {
             content = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator(color = Color.Black)
-                    Text("Loading...", color = Color.Black)
+                    Text(stringResource(Res.string.ui_loading), color = Color.Black)
                 }
             }
         )
@@ -88,7 +93,7 @@ private fun ImageContent(image: ReaderImage) {
             verticalArrangement = Arrangement.Center
         ) {
             CircularProgressIndicator(color = Color.Black)
-            Text("Processing...", color = Color.Black)
+            Text(stringResource(Res.string.ui_processing), color = Color.Black)
         }
 
     } else {

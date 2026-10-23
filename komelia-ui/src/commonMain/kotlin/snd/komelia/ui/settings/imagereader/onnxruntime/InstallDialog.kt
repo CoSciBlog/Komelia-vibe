@@ -1,5 +1,28 @@
 package snd.komelia.ui.settings.imagereader.onnxruntime
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_installation_error
+
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_identify_confirm
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_api_for_cross_platform_efficient_gpu_access_using_system_s_underlying_vulkan_metal_or_direct3d_12_te
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_app_restart_is_required_for_changes_to_take_effect
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_choose_onnx_runtime_version
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_cuda_nvidia_gpus_requires_cuda12_and_cudnn9_system_install
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_directml_any_gpu
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_download_cuda12
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_download_cudnn9
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_download_tensorrt
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_downloading_onnx_runtime
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_high_performance_hardware_accelerated_directx_12_library_for_machine_learning
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_install
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_onnx_runtime_support_is_experimental_might_cause_crashes_or_other_app_instabilities
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_rocm_amd_gpus_requires_rocm7_system_install
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_tensorrt_nvidia_gpus_requires_cuda12_cudnn9_and_tensorrt_system_install
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_uses_tensorrt_to_create_optimized_graph_engine_takes_a_significant_time_on_model_first_load_after_in
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_webgpu_any_gpu
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.user_add_cancel
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -76,9 +99,9 @@ fun OrtInstallDialog(
             header = {
                 Column(modifier = Modifier.padding(10.dp)) {
                     if (updateProgress == null)
-                        Text("Choose ONNX Runtime version", style = MaterialTheme.typography.titleLarge)
+                        Text(stringResource(Res.string.ui_choose_onnx_runtime_version), style = MaterialTheme.typography.titleLarge)
                     else
-                        Text("Downloading ONNX Runtime", style = MaterialTheme.typography.titleLarge)
+                        Text(stringResource(Res.string.ui_downloading_onnx_runtime), style = MaterialTheme.typography.titleLarge)
                     HorizontalDivider(Modifier.padding(top = 10.dp))
                 }
             },
@@ -102,7 +125,7 @@ fun OrtInstallDialog(
                     TextButton(
                         onClick = onDismiss,
                         modifier = Modifier.cursorForHand(),
-                        content = { Text("Cancel") }
+                        content = { Text(stringResource(Res.string.user_add_cancel)) }
                     )
 
                     FilledTonalButton(
@@ -110,7 +133,7 @@ fun OrtInstallDialog(
                         onClick = { provider?.let { onInstall(it) } },
                         modifier = Modifier.cursorForHand(),
                     ) {
-                        Text("Install")
+                        Text(stringResource(Res.string.ui_install))
                     }
                 }
             },
@@ -136,7 +159,7 @@ private fun OrtDownloadDialogContent(
                 .fillMaxWidth()
         ) {
             Text(
-                "ONNX Runtime support is experimental.\nMight cause crashes or other app instabilities",
+                stringResource(Res.string.ui_onnx_runtime_support_is_experimental_might_cause_crashes_or_other_app_instabilities),
                 color = MaterialTheme.colorScheme.tertiaryContainer
             )
         }
@@ -151,10 +174,10 @@ private fun OrtDownloadDialogContent(
                         labelAlignment = Alignment.Top,
                         label = {
                             Column {
-                                Text("Cuda (Nvidia GPUs, requires CUDA12 and cuDNN9 system install)")
+                                Text(stringResource(Res.string.ui_cuda_nvidia_gpus_requires_cuda12_and_cudnn9_system_install))
                                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                                     Text(
-                                        "download CUDA12",
+                                        stringResource(Res.string.ui_download_cuda12),
                                         color = MaterialTheme.colorScheme.secondary,
                                         textDecoration = Underline,
                                         modifier = Modifier
@@ -163,7 +186,7 @@ private fun OrtDownloadDialogContent(
                                             .padding(horizontal = 5.dp),
                                     )
                                     Text(
-                                        "download cuDNN9",
+                                        stringResource(Res.string.ui_download_cudnn9),
                                         color = MaterialTheme.colorScheme.secondary,
                                         textDecoration = Underline,
                                         modifier = Modifier
@@ -183,14 +206,14 @@ private fun OrtDownloadDialogContent(
                     labelAlignment = Alignment.Top,
                     label = {
                         Column {
-                            Text("TensorRT (Nvidia GPUs, requires CUDA12, cuDNN9 and TensorRT system install)")
+                            Text(stringResource(Res.string.ui_tensorrt_nvidia_gpus_requires_cuda12_cudnn9_and_tensorrt_system_install))
                             Text(
-                                "Uses TensorRT to create optimized graph engine. Takes a significant time on model first load. After initial load engine is cached for future use",
+                                stringResource(Res.string.ui_uses_tensorrt_to_create_optimized_graph_engine_takes_a_significant_time_on_model_first_load_after_in),
                                 style = MaterialTheme.typography.labelLarge
                             )
                             Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                                 Text(
-                                    "download CUDA12",
+                                    stringResource(Res.string.ui_download_cuda12),
                                     color = MaterialTheme.colorScheme.secondary,
                                     textDecoration = Underline,
                                     modifier = Modifier
@@ -199,7 +222,7 @@ private fun OrtDownloadDialogContent(
                                         .padding(horizontal = 5.dp),
                                 )
                                 Text(
-                                    "download cuDNN9",
+                                    stringResource(Res.string.ui_download_cudnn9),
                                     color = MaterialTheme.colorScheme.secondary,
                                     textDecoration = Underline,
                                     modifier = Modifier
@@ -208,7 +231,7 @@ private fun OrtDownloadDialogContent(
                                         .padding(horizontal = 5.dp),
                                 )
                                 Text(
-                                    "download TensorRT",
+                                    stringResource(Res.string.ui_download_tensorrt),
                                     color = MaterialTheme.colorScheme.secondary,
                                     textDecoration = Underline,
                                     modifier = Modifier
@@ -225,7 +248,7 @@ private fun OrtDownloadDialogContent(
                 ROCm -> CheckboxWithLabel(
                     checked = chosenProvider == ROCm,
                     onCheckedChange = { onProviderChoice(ROCm) },
-                    label = { Text("ROCm (AMD GPUs, requires ROCm7 system install)") },
+                    label = { Text(stringResource(Res.string.ui_rocm_amd_gpus_requires_rocm7_system_install)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -235,9 +258,9 @@ private fun OrtDownloadDialogContent(
                     labelAlignment = Alignment.Top,
                     label = {
                         Column {
-                            Text("DirectML (any GPU)")
+                            Text(stringResource(Res.string.ui_directml_any_gpu))
                             Text(
-                                "High-performance, hardware-accelerated DirectX 12 library for machine learning",
+                                stringResource(Res.string.ui_high_performance_hardware_accelerated_directx_12_library_for_machine_learning),
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }
@@ -258,9 +281,9 @@ private fun OrtDownloadDialogContent(
                     labelAlignment = Alignment.Top,
                     label = {
                         Column {
-                            Text("WebGPU (Any GPU)")
+                            Text(stringResource(Res.string.ui_webgpu_any_gpu))
                             Text(
-                                " API for cross-platform efficient GPU access using system's underlying Vulkan, Metal, or Direct3D 12 technologies",
+                                stringResource(Res.string.ui_api_for_cross_platform_efficient_gpu_access_using_system_s_underlying_vulkan_metal_or_direct3d_12_te),
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }
@@ -282,9 +305,9 @@ fun RestartDialog(
         content = {
             Box(Modifier.padding(30.dp)) {
                 if (error != null)
-                    Text("An error occurred during installation:\n$error")
+                    Text(stringResource(Res.string.ui_installation_error, error ?: ""))
                 else
-                    Text("App restart is required for changes to take effect")
+                    Text(stringResource(Res.string.ui_app_restart_is_required_for_changes_to_take_effect))
             }
         },
         controlButtons = {
@@ -293,7 +316,7 @@ fun RestartDialog(
                     onClick = onConfirm,
                     modifier = Modifier.cursorForHand(),
                 ) {
-                    Text("Confirm")
+                    Text(stringResource(Res.string.komf_identify_confirm))
                 }
             }
         },

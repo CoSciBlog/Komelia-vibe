@@ -1,5 +1,7 @@
 package snd.komelia.ui.settings.komf.providers
 
+import snd.komelia.ui.strings.localizedEnumLabel
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -324,13 +326,8 @@ private fun CommonSettingsContent(
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         DropdownChoiceMenu(
-            selectedOption = remember(nameMatchingMode) {
-                LabeledEntry(
-                    nameMatchingMode,
-                    nameMatchingMode.name
-                )
-            },
-            options = remember { KomfNameMatchingMode.entries.map { LabeledEntry(it, it.name) } },
+            selectedOption = LabeledEntry(nameMatchingMode, localizedEnumLabel(nameMatchingMode)),
+            options = KomfNameMatchingMode.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
             onOptionChange = { onNameMatchingModeChange(it.value) },
             label = { Text(stringResource(Res.string.komf_providers_name_matching_mode)) },
             inputFieldModifier = Modifier.fillMaxWidth()
@@ -743,15 +740,15 @@ private class ProviderSettingsTab(private val state: ProviderConfigState) : Dial
         val unsetString = stringResource(Res.string.komf_providers_unset)
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
             DropdownChoiceMenu(
-                selectedOption = remember(state.mediaType) {
+                selectedOption = run {
                     LabeledEntry(
                         state.mediaType,
-                        state.mediaType?.name ?: unsetString
+                        state.mediaType?.let { localizedEnumLabel(it) } ?: unsetString
                     )
                 },
-                options = remember {
+                options = run {
                     listOf(LabeledEntry<KomfMediaType?>(null, unsetString)) +
-                            KomfMediaType.entries.map { LabeledEntry(it, it.name) }
+                            KomfMediaType.entries.map { LabeledEntry(it, localizedEnumLabel(it)) }
                 },
                 onOptionChange = { state.onMediaTypeChange(it.value) },
                 label = { Text(stringResource(Res.string.komf_providers_media_type)) },
@@ -759,15 +756,15 @@ private class ProviderSettingsTab(private val state: ProviderConfigState) : Dial
             )
 
             DropdownChoiceMenu(
-                selectedOption = remember(state.nameMatchingMode) {
+                selectedOption = run {
                     LabeledEntry(
                         state.nameMatchingMode,
-                        state.nameMatchingMode?.name ?: unsetString
+                        state.nameMatchingMode?.let { localizedEnumLabel(it) } ?: unsetString
                     )
                 },
-                options = remember {
+                options = run {
                     listOf(LabeledEntry<KomfNameMatchingMode?>(null, unsetString)) +
-                            KomfNameMatchingMode.entries.map { LabeledEntry(it, it.name) }
+                            KomfNameMatchingMode.entries.map { LabeledEntry(it, localizedEnumLabel(it)) }
                 },
                 onOptionChange = { state.onNameMatchingModeChange(it.value) },
                 label = { Text(stringResource(Res.string.komf_providers_name_matching_mode)) },
@@ -775,16 +772,16 @@ private class ProviderSettingsTab(private val state: ProviderConfigState) : Dial
             )
 
             DropdownMultiChoiceMenu(
-                selectedOptions = remember(state.authorRoles) { state.authorRoles.map { LabeledEntry(it, it.name) } },
-                options = remember { KomfAuthorRole.entries.map { LabeledEntry(it, it.name) } },
+                selectedOptions = state.authorRoles.map { LabeledEntry(it, localizedEnumLabel(it)) },
+                options = KomfAuthorRole.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
                 onOptionSelect = { state.onAuthorSelect(it.value) },
                 label = { Text(stringResource(Res.string.komf_providers_author_roles)) },
                 placeholder = unsetString,
                 inputFieldModifier = Modifier.fillMaxWidth()
             )
             DropdownMultiChoiceMenu(
-                selectedOptions = remember(state.artistRoles) { state.artistRoles.map { LabeledEntry(it, it.name) } },
-                options = remember { KomfAuthorRole.entries.map { LabeledEntry(it, it.name) } },
+                selectedOptions = state.artistRoles.map { LabeledEntry(it, localizedEnumLabel(it)) },
+                options = KomfAuthorRole.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
                 onOptionSelect = { state.onArtistSelect(it.value) },
                 label = { Text(stringResource(Res.string.komf_providers_artist_roles)) },
                 placeholder = unsetString,
@@ -826,11 +823,11 @@ private class ProviderSettingsTab(private val state: ProviderConfigState) : Dial
                 label = { Text(stringResource(Res.string.komf_providers_mangadex_alt_title_languages)) },
                 values = state.coverLanguages,
                 onValuesChange = state::onCoverLanguagesChange,
-                suggestions = komfLanguageTagsSuggestions
+                suggestions = komfLanguageTagsSuggestions()
             )
             DropdownMultiChoiceMenu(
-                selectedOptions = state.links.map { LabeledEntry(it, it.name) },
-                options = MangaDexLink.entries.map { LabeledEntry(it, it.name) },
+                selectedOptions = state.links.map { LabeledEntry(it, localizedEnumLabel(it)) },
+                options = MangaDexLink.entries.map { LabeledEntry(it, localizedEnumLabel(it)) },
                 onOptionSelect = { state.onLinkSelect(it.value) },
                 label = { Text(stringResource(Res.string.komf_providers_mangadex_inlcude_links)) },
                 placeholder = stringResource(Res.string.komf_providers_mangadex_inlcude_links_all),
@@ -844,14 +841,14 @@ private class ProviderSettingsTab(private val state: ProviderConfigState) : Dial
         HorizontalDivider()
 
         DropdownChoiceMenu(
-            selectedOption = remember(state.mode) {
+            selectedOption = run {
                 LabeledEntry(
                     state.mode,
-                    state.mode.name
+                    localizedEnumLabel(state.mode)
                 )
             },
-            options = remember {
-                MangaBakaMode.entries.map { LabeledEntry(it, it.name) }
+            options = run {
+                MangaBakaMode.entries.map { LabeledEntry(it, localizedEnumLabel(it)) }
             },
             onOptionChange = { state.onModeChange(it.value) },
             label = { Text(stringResource(Res.string.komf_providers_mangabaka_datasource_type)) },

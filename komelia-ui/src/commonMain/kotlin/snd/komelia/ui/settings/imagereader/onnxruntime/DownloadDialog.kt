@@ -1,5 +1,9 @@
 package snd.komelia.ui.settings.imagereader.onnxruntime
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.user_add_cancel
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,7 +61,7 @@ fun DownloadDialog(
                 TextButton(
                     onClick = onDismiss,
                     modifier = Modifier.cursorForHand(),
-                    content = { Text("Cancel") }
+                    content = { Text(stringResource(Res.string.user_add_cancel)) }
                 )
             }
         },

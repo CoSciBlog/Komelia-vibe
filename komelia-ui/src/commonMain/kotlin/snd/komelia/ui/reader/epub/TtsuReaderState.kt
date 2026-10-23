@@ -1,5 +1,8 @@
 package snd.komelia.ui.reader.epub
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_preface
+import org.jetbrains.compose.resources.getString
+
 import cafe.adriel.voyager.navigator.Navigator
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Element
@@ -463,7 +466,7 @@ class TtsuReaderState(
                             startCharacter = currentCharCount,
                             characters = chapterCharCount,
                             parentChapter = null,
-                            label = "Preface",
+                            label = getString(Res.string.ui_preface),
                         )
                     )
                     currentMainChapterIndex = sectionData.size - 1

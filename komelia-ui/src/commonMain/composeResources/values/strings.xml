@@ -1,6 +1,5 @@
 <resources>
     <string name="screen_error">Error %1$s</string>
-
     <string name="home_filter_all">All</string>
     <string name="home_filter_downloaded_series">Downloaded series</string>
     <string name="home_filter_default_keep_reading">Keep reading</string>
@@ -45,7 +44,6 @@
     <string name="home_filter_collection">Collection</string>
     <string name="home_filter_datepicker_ok">OK</string>
     <string name="home_filter_datepicker_canel">Cancel</string>
-
     <string name="library_analyze">Analyze</string>
     <string name="library_analyze_confirm_title">Analyze library</string>
     <string name="library_analyze_confirm_body">Analyzes all the media files in the library. The analysis captures information about the media. Depending on your library size, this may take a long time.</string>
@@ -66,7 +64,6 @@
     <string name="library_scan_files_deep">Scan library files (deep)</string>
     <string name="library_auto_identify">Auto-Identify (Komf)</string>
     <string name="library_reset_metadata">Reset metadata (Komf)</string>
-
     <string name="library_all_libraries">All libraries</string>
     <string name="library_tab_series">Series</string>
     <string name="library_tab_collections">Collections</string>
@@ -79,7 +76,6 @@
         <item quantity="one">%1$s read list</item>
         <item quantity="other">%1$s read lists</item>
     </plurals>
-
     <string name="library_edit">Edit</string>
     <string name="library_add">Add</string>
     <string name="library_edit_library">Edit library</string>
@@ -136,7 +132,6 @@
     <string name="library_filebrowser_directory">Directory</string>
     <string name="library_filebrowser_cancel">Cancel</string>
     <string name="library_filebrowser_choose">Choose</string>
-
     <string name="dialog_edit">Edit %1$s</string>
     <string name="dialog_confirm">Confirm</string>
     <string name="dialog_cancel">Cancel</string>
@@ -145,11 +140,9 @@
     <string name="edit_tab_general">General</string>
     <string name="edit_tab_links">Links</string>
     <string name="edit_tab_tags">Tags</string>
-
     <string name="bulk_select_all">Select all</string>
     <string name="bulk_selected_count">%1$s selected</string>
     <string name="actions_show_more">More</string>
-
     <string name="series_delete_confirm_title">Delete downloaded series</string>
     <string name="series_delete_confirm_body">Series %1$s will be removed from this device</string>
     <plurals name="series_bulk_delete_confirm_body">
@@ -176,7 +169,6 @@
     <string name="series_reset_metadata">Reset metadata (Komf)</string>
     <string name="series_analyze">Analyze</string>
     <string name="series_refresh_metadata">Refresh metadata</string>
-
     <string name="series_status_ended">Ended</string>
     <string name="series_status_ongoing">Ongoing</string>
     <string name="series_status_abandoned">Abandoned</string>
@@ -202,7 +194,6 @@
         <item quantity="one">%1$s book</item>
         <item quantity="other">%1$s books</item>
     </plurals>
-
     <string name="series_book_filters">Book Filters</string>
     <string name="series_book_filter_sort">Sort order</string>
     <string name="series_book_filter_sort_numbers_asc">Ascending</string>
@@ -213,7 +204,6 @@
     <string name="series_book_filter_read_status_read">Read</string>
     <string name="series_book_filter_authors">Authors</string>
     <string name="series_book_filter_tags">Filter Tags</string>
-
     <string name="series_edit">Edit</string>
     <string name="series_edit_tab_general">General</string>
     <string name="series_edit_tab_alt_titles">Alternative titles</string>
@@ -242,11 +232,9 @@
         <item quantity="one">%1$s series</item>
         <item quantity="other">%1$s series</item>
     </plurals>
-
     <string name="links_edit_label">Label</string>
     <string name="links_edit_url">URL</string>
     <string name="poster_edit_desc">Choose an image - drag and drop</string>
-
     <string name="book_publisher">Publisher</string>
     <string name="book_genres">Genres</string>
     <string name="book_tags">Tags</string>
@@ -268,10 +256,8 @@
         <item quantity="other">%1$s%, %2$s pages left</item>
     </plurals>
     <string name="book_last_read">Last read:</string>
-
     <string name="book_read_button">Read</string>
     <string name="book_read_button_incognito">Read incognito</string>
-
     <string name="book_edit">Edit</string>
     <plurals name="book_edit_bulk_dialog_title">
         <item quantity="one">Edit %1$s</item>
@@ -286,7 +272,6 @@
     <string name="book_edit_isbn">ISBN</string>
     <string name="book_edit_add_custom_role">Add custom role</string>
     <string name="book_edit_bulk_warning">You are editing authors for multiple books. This will override existing authors of each book.</string>
-
     <string name="book_delete_confirm_title">Delete downloaded book</string>
     <string name="book_delete_confirm_body">Book %1$s will be removed from this device</string>
     <string name="book_bulk_delete_confirm_title">Delete downloaded books</string>
@@ -294,7 +279,6 @@
         <item quantity="one">Book %1$s will be removed from this device</item>
         <item quantity="other">%1$s books and their files will be removed from this device</item>
     </plurals>
-
     <string name="book_download_confirm">Download "%1$s"?</string>
     <plurals name="book_bulk_download_confirm">
         <item quantity="one">Download "%1$s"?</item>
@@ -307,18 +291,14 @@
     <string name="book_add_to_readlist">Add to read list</string>
     <string name="book_analyze">Analyze</string>
     <string name="book_refresh_metadata">Refresh metadata</string>
-
-
     <string name="thumbnail_user_uploaded">User uploaded</string>
     <string name="thumbnail_local_artwork">Local artwork</string>
     <string name="thumbnail_generated">Generated</string>
     <string name="thumbnail_to_be_uploaded">To be uploaded</string>
     <string name="thumbnail_mark_as_selected">Mark as selected</string>
     <string name="thumbnail_delete">Delete</string>
-
     <string name="text_collapse">Collapse</string>
     <string name="text_expand">Expand</string>
-
     <string name="filter_any_value">Any</string>
     <string name="filter_search">Search</string>
     <string name="filter_tags_search">Search tags</string>
@@ -336,7 +316,6 @@
     <string name="filter_include">Include</string>
     <string name="filter_exclude">Exclude</string>
     <string name="filter_and_exclude">and exclude</string>
-
     <string name="series_filter_reset_filters">Reset filters</string>
     <string name="series_filter_hide_filters">Hide filters</string>
     <string name="series_filter_any_value">Any</string>
@@ -350,7 +329,6 @@
     <string name="series_filter_sort_updated_asc">Oldest Update</string>
     <string name="series_filter_sort_updated_desc">Latest Update</string>
     <string name="series_filter_filter_tags_label">Filter tags</string>
-
     <string name="series_filter_read_status">Read status</string>
     <string name="series_filter_read_status_unread">Unread</string>
     <string name="series_filter_read_status_inprogress">In progress</string>
@@ -367,7 +345,6 @@
     <string name="series_filter_language">Language</string>
     <string name="series_filter_release_date">Release date</string>
     <string name="series_filter_age_rating">Age rating</string>
-
     <string name="collection">collection</string>
     <plurals name="collection_series_count">
         <item quantity="one">%1$s series</item>
@@ -380,7 +357,6 @@
     <string name="collection_edit_name">Name</string>
     <string name="collection_edit_order">Click to select, drag to change order</string>
     <string name="collection_edit_order_manual">Manual ordering</string>
-
     <string name="collection_remove_selected_series">Remove selected series from this collection?</string>
     <string name="collection_remove_series">Remove from collection</string>
     <string name="collection_delete_confirm_title">Delete collection</string>
@@ -392,7 +368,6 @@
     <string name="collection_exists">A collection with this name already exists</string>
     <string name="collection_duplicate_series">already contains this series</string>
     <string name="collection_create">Create</string>
-
     <plurals name="readlist_book_count">
         <item quantity="one">%1$s book</item>
         <item quantity="other">%1$s books</item>
@@ -416,7 +391,6 @@
     <string name="readlist_edit_mode_ordered_desc">Edit mode: Click to select, drag to change order</string>
     <string name="readlist_edit_mode_desc">Selection mode: Click on items to select or deselect them</string>
     <string name="readlist_book_readlists">Read lists</string>
-
     <string name="reader_close_book">Close Book</string>
     <string name="reader_zoom">Zoom: %1$s%</string>
     <string name="reader_type">Reader type</string>
@@ -425,20 +399,17 @@
     <string name="reader_type_continuous">Continuous</string>
     <string name="reader_settings_reading_mode">Reading mode</string>
     <string name="reader_settings_image_settings">Image settings</string>
-
     <string name="reader_image_settings">Image Settings</string>
     <string name="reader_image_upsampling_mode">upsampling mode</string>
     <string name="reader_image_upsampling_mode_nearest">Nearest neighbour</string>
     <string name="reader_image_upsampling_mode_bilinear">Bilinear</string>
     <string name="reader_image_upsampling_mode_bicubic_mitchell">Bicubic Mitchell</string>
     <string name="reader_image_upsampling_mode_bicubic_catmull_rom">Bicubic Catmull-Rom</string>
-
     <string name="reader_image_downsampling_kernel">Downsampling kernel</string>
     <string name="reader_image_downsampling_kernel_mitchell">Mitchell</string>
     <string name="reader_image_downsampling_kernel_lanczos2">Lanczos2</string>
     <string name="reader_image_downsampling_kernel_lanczos3">Lanczos3</string>
     <string name="reader_image_downsampling_kernel_default">Default</string>
-
     <string name="reader_image_linear_light_downsampling">Linear light downsampling</string>
     <string name="reader_image_linear_light_downsampling_desc">slower but potentially more accurate</string>
     <string name="reader_image_stretch_small_images">Stretch small images</string>
@@ -458,12 +429,10 @@
     <string name="reader_image_flash_with_black">Black</string>
     <string name="reader_image_flash_with_white">White</string>
     <string name="reader_image_flash_with_white_and_black">White nad black</string>
-
     <string name="reader_pages_info">Pages info</string>
     <string name="reader_page_number">page %1$s</string>
     <string name="reader_page_display_size">display size %1$s x %2$s</string>
     <string name="reader_page_original_size">original size %1$s x %2$s</string>
-
     <string name="reader_paged_scale_type">Scale type</string>
     <string name="reader_paged_scale_screen">Screen</string>
     <string name="reader_paged_scale_fit_width">Fit width</string>
@@ -477,14 +446,12 @@
     <string name="reader_paged_layout_double_pages">Double pages</string>
     <string name="reader_paged_layout_double_pages_no_cover">Double pages (no cover)</string>
     <string name="reader_paged_offset_pages">Offset pages</string>
-
     <string name="reader_continuous_side_padding">Side padding</string>
     <string name="reader_continuous_page_spacing">Page spacing</string>
     <string name="reader_continuous_reading_direction">Reading direction</string>
     <string name="reader_continuous_reading_direction_top_to_bottom">Top to bottom</string>
     <string name="reader_continuous_reading_direction_left_to_rigth">Left to right</string>
     <string name="reader_continuous_reading_direction_right_to_left">Right to left</string>
-
     <string name="color_correction">Color correction</string>
     <string name="color_correction_reset_all">Reset all</string>
     <string name="color_correction_channel">Channel</string>
@@ -507,7 +474,6 @@
     <string name="color_correction_preset_name_placeholder">Saved settings</string>
     <string name="color_correction_preset_name_already_exists">Preset with that name already exists</string>
     <string name="color_correction_preset_override_existing">Override existing preset</string>
-
     <string name="settings_mobile_title">Settings</string>
     <string name="settings_navigation_app_settings">App Settings</string>
     <string name="settings_navigation_appearance">Appearance</string>
@@ -532,7 +498,6 @@
     <string name="settings_navigation_komf_jobs">Job History</string>
     <string name="settings_navigation_log_out">Log Out</string>
     <string name="settings_navigation_log_out_confirm">Are you sure you want to logout?</string>
-
     <string name="settings_account_title">Account Settings</string>
     <string name="settings_account_email">Email: %1$s</string>
     <string name="settings_account_roles">Roles: </string>
@@ -550,7 +515,7 @@
     <string name="settings_auth_activity_source">Source: %1$s</string>
     <string name="settings_auth_activity_ip">IP: </string>
     <string name="settings_auth_activity_successful">Successful</string>
-    <string name="settings_auth_activity_useragent">user Agent: </string>
+    <string name="settings_auth_activity_useragent">User agent: </string>
     <string name="settings_server">Server Settings</string>
     <string name="settings_server_thumbnail_size">Thumbnail size</string>
     <string name="settings_server_thumbnail_size_default">Default (300px)</string>
@@ -673,7 +638,6 @@
     <string name="settings_users_delete_confirm">User %1$s will be deleted from this server. This cannot be undone. Continue?</string>
     <string name="settings_users_delete_confirm_confirm">Yes, delete %1$s</string>
     <string name="settings_users_delete_button">Delete</string>
-
     <string name="komga_error_code_unknown">Unknown error %1$s</string>
     <string name="komga_error_code_1000">File could not be accessed during analysis</string>
     <string name="komga_error_code_1001">Media type is not supported</string>
@@ -710,7 +674,6 @@
     <string name="komga_error_code_1037">Error while getting EPUB page list</string>
     <string name="komga_error_code_1038">Error while getting EPUB divina pages</string>
     <string name="komga_error_code_1039">Error while getting EPUB positions</string>
-
     <string name="komf_komga_webui">Komga webui</string>
     <string name="komf_settings_title">Komf Settings</string>
     <string name="komf_settings_jobs_title">Metadata Update Jobs</string>
@@ -824,7 +787,7 @@
     <string name="komf_notification_discord_template_footer">Footer. 2048 characters max</string>
     <string name="komf_notification_discord_template_field_number">Field %1$s</string>
     <string name="komf_notification_discord_template_field_add">Add fields</string>
-    <string name="komf_notification_discord_template_field_name">Field name. 256 characters max$s</string>
+    <string name="komf_notification_discord_template_field_name">Field name. 256 characters max</string>
     <string name="komf_notification_discord_template_field_inline">Inline</string>
     <string name="komf_notification_discord_template_field_value">Field value. 1024 characters max</string>
     <string name="komf_notification_context">Notification context</string>
@@ -954,17 +917,15 @@
     <string name="komf_identify_confirm">Confirm</string>
     <string name="komf_identify_run_in_background">Run in background</string>
     <string name="komf_reset_series_warning">All series metadata will be reset including field locks and thumbnails uploaded by Komf. \nNo files will be modified. Continue?</string>
-    <string name="komf_reset_library">Rest library metadata</string>
+    <string name="komf_reset_library">Reset library metadata</string>
     <string name="komf_reset_library_warning">All metadata of all series inside this library will be reset including field locks and thumbnails uploaded by Komf. No files will be modified. Continue?</string>
     <string name="komf_reset_remove_comicinfo">Remove ComicInfo.xml?</string>
     <string name="komf_reset_remove_comicinfo_desc">Requires write access to files</string>
-
     <string name="app_updates_new_version_available">New version is available</string>
     <string name="app_updates_dismiss">Dismiss</string>
     <string name="app_updates_update">Update</string>
     <string name="app_updates_updating">Updating</string>
     <string name="app_updates_cancel">Cancel</string>
-
     <string name="change_password_dialog_title">Change password</string>
     <string name="change_password_dialog_new_password">New password</string>
     <string name="change_password_dialog_new_password_required">New password is required</string>
@@ -972,7 +933,6 @@
     <string name="change_password_dialog_new_password_repeat_error">Passwords must be identical</string>
     <string name="change_password_dialog_change_password">Change password</string>
     <string name="change_password_dialog_cancel">Cancel</string>
-
     <string name="user_roles_admin">Administrator</string>
     <string name="user_roles_user">User</string>
     <string name="user_roles_file_download">File download</string>
@@ -1001,7 +961,6 @@
     <string name="user_edit_age_restriction_none">No restriction</string>
     <string name="user_edit_age_restriction_allow_only">Allow only under</string>
     <string name="user_edit_age_restriction_exclude">Exclude over</string>
-
     <string name="login_title">Komga Login</string>
     <string name="login_with_another_account">Login with another account</string>
     <string name="login_retry">Retry</string>
@@ -1020,7 +979,6 @@
     <string name="login_invalid_credentials">Invalid credentials</string>
     <string name="login_cancel_error">Cancelled login attempt</string>
     <string name="login_error">Login error: %1$s</string>
-
     <string name="search_search_all">Search all...</string>
     <string name="search_search_input_placeholder">Search</string>
     <string name="search_series_tab">Series</string>
@@ -1028,7 +986,6 @@
     <string name="search_result_in_library">in %1$s</string>
     <string name="search_no_results_title">The search returned no results</string>
     <string name="search_no_results_body">Try searching for something else</string>
-
     <string name="topbar_offline">Offline</string>
     <string name="topbar_go_online">Go Online?</string>
     <string name="topbar_downloads_recent">Recent downloads</string>
@@ -1042,14 +999,12 @@
         <item quantity="one">%1$s pending task</item>
         <item quantity="other">%1$s pending tasks</item>
     </plurals>
-
     <string name="error_unknown">Unknown error</string>
     <string name="error_unrecoverable">Encountered unrecoverable error: %1$s</string>
     <string name="error_copy">Copy stacktrace to clipboard</string>
     <string name="error_copied">Copied to clipboard</string>
     <string name="error_restart">Restart</string>
     <string name="error_exit">Exit</string>
-
     <string name="reader_overlay_title">Reader overlay</string>
     <string name="reader_overlay_clock">Clock</string>
     <string name="reader_overlay_battery">Battery level</string>
@@ -1070,7 +1025,6 @@
     <string name="reader_overlay_color_green">Green</string>
     <string name="reader_overlay_color_blue">Blue</string>
     <string name="reader_overlay_font_size">Font size: %1$d</string>
-
     <string name="home_filter_only_unread_series">Only series not fully read</string>
     <string name="series_delete_downloaded_all">Delete downloaded</string>
     <string name="series_delete_downloaded_read">Delete read downloads</string>
@@ -1082,5 +1036,237 @@
     <string name="settings_offline_mode_concurrent_downloads">Simultaneous book downloads: %1$d</string>
     <string name="settings_offline_mode_concurrent_downloads_desc">Choose 1–10 books. Default: 2. Active downloads finish before a lower limit takes effect.</string>
     <string name="settings_app_language">App language</string>
-    <string name="settings_app_language_system">System default</string>
+    <string name="settings_app_language_system">Automatic (device language)</string>
+    <string name="ui_error">Error</string>
+    <string name="ui_parody">Parody</string>
+    <string name="ui_character">Character</string>
+    <string name="ui_group">Group</string>
+    <string name="ui_female">Female</string>
+    <string name="ui_male">Male</string>
+    <string name="ui_category">Category</string>
+    <string name="ui_copied_to_clipboard">copied to clipboard</string>
+    <string name="ui_copy_stacktrace_to_clipboard">copy stacktrace to clipboard</string>
+    <string name="ui_restart">restart</string>
+    <string name="ui_exit">exit</string>
+    <string name="ui_load_small_previews_when_dragging_navigation_slider">Load small previews when dragging navigation slider</string>
+    <string name="ui_can_be_slow_for_high_resolution_images">can be slow for high resolution images</string>
+    <string name="ui_server_management">Server Management</string>
+    <string name="ui_scan_all_libraries">Scan all libraries</string>
+    <string name="ui_check_folders_for_new_or_removed_books_uses_the_last_modified_time_of_parent_folders">Check folders for new or removed books.
+Uses the last modified time of parent folders</string>
+    <string name="ui_scan">Scan</string>
+    <string name="ui_deep_scan_all_libraries">Deep scan all libraries</string>
+    <string name="ui_force_the_scanner_to_compare_all_scanned_books_with_the_ones_stored_in_the_database">Force the scanner to compare all scanned books with the ones stored in the database</string>
+    <string name="ui_deep_scan">Deep Scan</string>
+    <string name="ui_empty_trash_for_all_libraries">Empty trash for all libraries</string>
+    <string name="ui_delete_items_marked_as_unavailable">Delete items marked as unavailable</string>
+    <string name="ui_empty">Empty</string>
+    <string name="ui_cancel_all_tasks">Cancel all tasks</string>
+    <string name="ui_cancel_all_currently_running_tasks">Cancel all currently running tasks</string>
+    <string name="ui_shutdown">Shutdown</string>
+    <string name="ui_stop_komga_application_process">Stop Komga application process</string>
+    <string name="ui_by_default_the_media_server_doesn_t_remove_information_for_media_right_away_this_helps_if_a_drive_is">By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.</string>
+    <string name="ui_shut_down_server">Shut down server</string>
+    <string name="ui_are_you_sure_you_want_to_stop_komga">Are you sure you want to stop Komga?</string>
+    <string name="ui_stop">Stop</string>
+    <string name="ui_display_mangabaka_metadata">Display MangaBaka metadata</string>
+    <string name="ui_requires_downloaded_database_and_linked_mangabaka_series">Requires downloaded database and linked MangaBaka series</string>
+    <string name="ui_mangabaka_settings">MangaBaka Settings</string>
+    <string name="ui_choose_onnx_runtime_version">Choose ONNX Runtime version</string>
+    <string name="ui_downloading_onnx_runtime">Downloading ONNX Runtime</string>
+    <string name="ui_install">Install</string>
+    <string name="ui_onnx_runtime_support_is_experimental_might_cause_crashes_or_other_app_instabilities">ONNX Runtime support is experimental.
+Might cause crashes or other app instabilities</string>
+    <string name="ui_cuda_nvidia_gpus_requires_cuda12_and_cudnn9_system_install">Cuda (Nvidia GPUs, requires CUDA12 and cuDNN9 system install)</string>
+    <string name="ui_download_cuda12">download CUDA12</string>
+    <string name="ui_download_cudnn9">download cuDNN9</string>
+    <string name="ui_tensorrt_nvidia_gpus_requires_cuda12_cudnn9_and_tensorrt_system_install">TensorRT (Nvidia GPUs, requires CUDA12, cuDNN9 and TensorRT system install)</string>
+    <string name="ui_uses_tensorrt_to_create_optimized_graph_engine_takes_a_significant_time_on_model_first_load_after_in">Uses TensorRT to create optimized graph engine. Takes a significant time on model first load. After initial load engine is cached for future use</string>
+    <string name="ui_download_tensorrt">download TensorRT</string>
+    <string name="ui_rocm_amd_gpus_requires_rocm7_system_install">ROCm (AMD GPUs, requires ROCm7 system install)</string>
+    <string name="ui_directml_any_gpu">DirectML (any GPU)</string>
+    <string name="ui_high_performance_hardware_accelerated_directx_12_library_for_machine_learning">High-performance, hardware-accelerated DirectX 12 library for machine learning</string>
+    <string name="ui_webgpu_any_gpu">WebGPU (Any GPU)</string>
+    <string name="ui_api_for_cross_platform_efficient_gpu_access_using_system_s_underlying_vulkan_metal_or_direct3d_12_te"> API for cross-platform efficient GPU access using system's underlying Vulkan, Metal, or Direct3D 12 technologies</string>
+    <string name="ui_app_restart_is_required_for_changes_to_take_effect">App restart is required for changes to take effect</string>
+    <string name="ui_other_links">OTHER LINKS</string>
+    <string name="ui_licensed">Licensed</string>
+    <string name="ui_anime_start">Anime start</string>
+    <string name="ui_anime_end">Anime end</string>
+    <string name="ui_description">Description</string>
+    <string name="ui_incidental">Incidental</string>
+    <string name="ui_recurrent">Recurrent</string>
+    <string name="ui_defining">Defining</string>
+    <string name="ui_core">Core</string>
+    <string name="ui_komf_actions">Komf Actions</string>
+    <string name="ui_link_mangabaka_series">Link MangaBaka series</string>
+    <string name="ui_reset_metadata">Reset Metadata</string>
+    <string name="ui_unlink_mangabaka_series">Unlink MangaBaka Series</string>
+    <string name="ui_loading">Loading...</string>
+    <string name="ui_processing">Processing...</string>
+    <string name="ui_reached_the_start_of_the_series">Reached the start of the series</string>
+    <string name="ui_previous">Previous:</string>
+    <string name="ui_current">Current:</string>
+    <string name="ui_reached_the_end_of_the_series">Reached the end of the series</string>
+    <string name="ui_finished">Finished:</string>
+    <string name="ui_next">Next:</string>
+    <string name="ui_there_s_no_next_book">There's no next book</string>
+    <string name="ui_there_s_no_previous_book">There's no previous book</string>
+    <string name="ui_back_to_online">Back to online</string>
+    <string name="ui_mangabaka_series_id">MangaBaka series ID</string>
+    <string name="ui_link_by_id">Link by ID</string>
+    <string name="ui_unlink_this_series">Unlink this series?</string>
+    <string name="ui_other_options">Other Options</string>
+    <string name="ui_reload">Reload</string>
+    <string name="ui_enum_any">Any</string>
+    <string name="ui_enum_all">All</string>
+    <string name="ui_enum_any_of">Any of</string>
+    <string name="ui_enum_all_of">All of</string>
+    <string name="ui_enum_age_rating">Age rating</string>
+    <string name="ui_enum_author">Author</string>
+    <string name="ui_enum_collection">Collection</string>
+    <string name="ui_enum_complete">Complete</string>
+    <string name="ui_enum_deleted">Deleted</string>
+    <string name="ui_enum_genre">Genre</string>
+    <string name="ui_enum_language">Language</string>
+    <string name="ui_enum_library">Library</string>
+    <string name="ui_enum_oneshot">Oneshot</string>
+    <string name="ui_enum_publisher">Publisher</string>
+    <string name="ui_enum_read_status">Read status</string>
+    <string name="ui_enum_release_date">Release date</string>
+    <string name="ui_enum_sharing_label">Sharing label</string>
+    <string name="ui_enum_status">Status</string>
+    <string name="ui_enum_tag">Tag</string>
+    <string name="ui_enum_title">Title</string>
+    <string name="ui_enum_title_sort">Title sort</string>
+    <string name="ui_enum_media_profile">Media profile</string>
+    <string name="ui_enum_media_status">Media status</string>
+    <string name="ui_enum_number_sort">Number sort</string>
+    <string name="ui_enum_poster">Poster</string>
+    <string name="ui_enum_read_list">Read list</string>
+    <string name="ui_enum_series">Series</string>
+    <string name="ui_enum_custom">Custom</string>
+    <string name="ui_enum_on_deck">On deck</string>
+    <string name="ui_enum_recently_added">Recently added</string>
+    <string name="ui_enum_recently_updated">Recently updated</string>
+    <string name="ui_enum_downloaded">Downloaded</string>
+    <string name="ui_enum_created_date">Created date</string>
+    <string name="ui_enum_last_modified_date">Last modified date</string>
+    <string name="ui_enum_book_count">Book count</string>
+    <string name="ui_enum_unsorted">Unsorted</string>
+    <string name="ui_enum_series_title">Series title</string>
+    <string name="ui_enum_pages_count">Pages count</string>
+    <string name="ui_enum_last_modified">Last modified</string>
+    <string name="ui_enum_number">Number</string>
+    <string name="ui_enum_read_date">Read date</string>
+    <string name="ui_enum_equals">Equals</string>
+    <string name="ui_enum_not_equals">Not equals</string>
+    <string name="ui_enum_is_null">Is empty</string>
+    <string name="ui_enum_is_not_null">Is not empty</string>
+    <string name="ui_enum_true">True</string>
+    <string name="ui_enum_false">False</string>
+    <string name="ui_enum_contains">Contains</string>
+    <string name="ui_enum_does_not_contain">Does not contain</string>
+    <string name="ui_enum_begins_with">Begins with</string>
+    <string name="ui_enum_does_not_begin_with">Does not begin with</string>
+    <string name="ui_enum_ends_with">Ends with</string>
+    <string name="ui_enum_does_not_end_with">Does not end with</string>
+    <string name="ui_enum_is_before">Is before</string>
+    <string name="ui_enum_is_after">Is after</string>
+    <string name="ui_enum_is_in_last">In the last</string>
+    <string name="ui_enum_is_not_in_last">Not in the last</string>
+    <string name="ui_enum_equal_to">Equal to</string>
+    <string name="ui_enum_not_equal_to">Not equal to</string>
+    <string name="ui_enum_greater_than">Greater than</string>
+    <string name="ui_enum_less_than">Less than</string>
+    <string name="ui_enum_unread">Unread</string>
+    <string name="ui_enum_in_progress">In progress</string>
+    <string name="ui_enum_read">Read</string>
+    <string name="ui_enum_ready">Ready</string>
+    <string name="ui_enum_unknown">Unknown</string>
+    <string name="ui_enum_error">Error</string>
+    <string name="ui_enum_unsupported">Unsupported</string>
+    <string name="ui_enum_outdated">Outdated</string>
+    <string name="ui_enum_divina">DIVINA</string>
+    <string name="ui_enum_pdf">PDF</string>
+    <string name="ui_enum_epub">EPUB</string>
+    <string name="ui_enum_ended">Ended</string>
+    <string name="ui_enum_ongoing">Ongoing</string>
+    <string name="ui_enum_abandoned">Abandoned</string>
+    <string name="ui_enum_hiatus">Hiatus</string>
+    <string name="ui_enum_generated">Generated</string>
+    <string name="ui_enum_sidecar">Sidecar</string>
+    <string name="ui_enum_user_uploaded">User uploaded</string>
+    <string name="ui_enum_asc">Ascending</string>
+    <string name="ui_enum_desc">Descending</string>
+    <string name="ui_enum_writer">Writer</string>
+    <string name="ui_enum_penciller">Penciller</string>
+    <string name="ui_enum_inker">Inker</string>
+    <string name="ui_enum_colorist">Colorist</string>
+    <string name="ui_enum_letterer">Letterer</string>
+    <string name="ui_enum_cover">Cover</string>
+    <string name="ui_enum_editor">Editor</string>
+    <string name="ui_enum_translator">Translator</string>
+    <string name="ui_enum_manga">Manga</string>
+    <string name="ui_enum_novel">Novel</string>
+    <string name="ui_enum_comic">Comic</string>
+    <string name="ui_enum_webtoon">Webtoon</string>
+    <string name="ui_enum_exact">Exact</string>
+    <string name="ui_enum_closest_match">Closest match</string>
+    <string name="ui_enum_api">API</string>
+    <string name="ui_enum_comic_info">ComicInfo.xml</string>
+    <string name="ui_enum_left_to_right">Left to right</string>
+    <string name="ui_enum_right_to_left">Right to left</string>
+    <string name="ui_enum_vertical">Vertical</string>
+    <string name="ui_enum_database">Database</string>
+    <string name="ui_enum_rgb">RGB</string>
+    <string name="ui_enum_red">Red</string>
+    <string name="ui_enum_green">Green</string>
+    <string name="ui_enum_blue">Blue</string>
+    <string name="ui_image_dimensions">Width: %1$d, height: %2$d</string>
+    <string name="ui_preface">Preface</string>
+    <string name="ui_metadata">Metadata</string>
+    <string name="ui_volume_count">%1$s volumes</string>
+    <string name="ui_chapter_count">%1$s chapters</string>
+    <string name="ui_anime">Anime</string>
+    <string name="ui_hidden_links_count">%1$d hidden</string>
+    <string name="ui_installation_error">An error occurred during installation:
+%1$s</string>
+    <string name="ui_mangabaka_beta">MangaBaka (Beta)</string>
+    <string name="ui_alternative_title_label_template">Label $series.metadata.alternativeTitles[i].label</string>
+    <string name="ui_alternative_title_value_template">Title $series.metadata.alternativeTitles[i].title</string>
+    <string name="ui_language_english">English</string>
+    <string name="ui_language_japanese">Japanese</string>
+    <string name="ui_language_japanese_romanized">Japanese (romanized)</string>
+    <string name="ui_language_korean">Korean</string>
+    <string name="ui_language_korean_romanized">Korean (romanized)</string>
+    <string name="ui_language_simplified_chinese">Simplified Chinese</string>
+    <string name="ui_language_traditional_chinese">Traditional Chinese</string>
+    <string name="ui_language_chinese_romanized">Chinese (romanized)</string>
+    <string name="ui_language_brazilian_portuguese">Brazilian Portuguese</string>
+    <string name="ui_language_castilian_spanish">Castilian Spanish</string>
+    <string name="ui_language_latin_american_spanish">Latin American Spanish</string>
+    <string name="ui_notification_cleared_image_cache">Cleared image cache</string>
+    <string name="ui_notification_updated_server_settings">Updated Server Settings</string>
+    <string name="ui_notification_launched_scan_for_all_libraries">Launched scan for all libraries</string>
+    <string name="ui_notification_emptied_trash_for_all_libraries">Emptied trash for all libraries</string>
+    <string name="ui_notification_no_tasks_to_cancel">No tasks to cancel</string>
+    <string name="ui_notification_cancelledtasks_tasks_cancelled">%1$d tasks cancelled</string>
+    <string name="ui_notification_templates_saved">Templates Saved</string>
+    <string name="ui_notification_you_re_at_the_beginning_of_the_book">You're at the beginning of the book</string>
+    <string name="ui_notification_launched_library_auto_identification">Launched library auto-identification</string>
+    <string name="ui_notification_launched_book_analysis">Launched book analysis</string>
+    <string name="ui_notification_launched_book_metadata_refresh">Launched book metadata refresh</string>
+    <string name="ui_notification_launched_library_scan">Launched library scan</string>
+    <string name="ui_notification_launched_library_deep_scan">Launched library deep scan</string>
+    <string name="ui_notification_launched_library_analysis">Launched library analysis</string>
+    <string name="ui_notification_launched_library_refresh">Launched library refresh</string>
+    <string name="ui_notification_launched_library_trash_task">Launched library trash task</string>
+    <string name="ui_notification_launched_series_analysis">Launched series analysis</string>
+    <string name="ui_notification_launched_series_metadata_refresh">Launched series metadata refresh</string>
+    <string name="settings_app_language_system_description">Follow the device language. Use English if a translation is unavailable.</string>
+    <string name="ui_internal_storage">Internal storage</string>
+    <string name="ui_enum_value">Value</string>
+    <string name="ui_enum_book">Book</string>
+    <string name="ui_enum_downloaded_series">Downloaded series</string>
 </resources>

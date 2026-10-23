@@ -1,5 +1,11 @@
 package snd.komelia.ui.series.view
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.komf_identify
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_komf_actions
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_link_mangabaka_series
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_reset_metadata
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_unlink_mangabaka_series
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FiniteAnimationSpec
@@ -428,7 +434,7 @@ fun KomfSeriesActionsButton(series: KomeliaSeries) {
     TooltipBox(
         positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
         state = rememberTooltipState(),
-        tooltip = { PlainTooltip { Text("Komf Actions") } }
+        tooltip = { PlainTooltip { Text(stringResource(Res.string.ui_komf_actions)) } }
     ) {
         IconButton(onClick = { showDropdown = true }) {
             Icon(AppIcons.Outlined.LinkedServices, contentDescription = null)
@@ -442,29 +448,29 @@ fun KomfSeriesActionsButton(series: KomeliaSeries) {
 
             if (series.mangaBakaMetadata == null) {
                 DropdownMenuItem(
-                    text = { Text("Identify") },
+                    text = { Text(stringResource(Res.string.komf_identify)) },
                     onClick = { showKomfDialog = true },
                 )
 
                 if (komfMangaBakaIntegration) {
                     DropdownMenuItem(
-                        text = { Text("Link MangaBaka series") },
+                        text = { Text(stringResource(Res.string.ui_link_mangabaka_series)) },
                         onClick = { showMangaBakaLinkDialog = true },
                     )
                 }
 
                 DropdownMenuItem(
-                    text = { Text("Reset Metadata") },
+                    text = { Text(stringResource(Res.string.ui_reset_metadata)) },
                     onClick = { showKomfResetDialog = true },
                 )
             } else if (komfMangaBakaIntegration) {
                 DropdownMenuItem(
-                    text = { Text("Link MangaBaka series") },
+                    text = { Text(stringResource(Res.string.ui_link_mangabaka_series)) },
                     onClick = { showMangaBakaLinkDialog = true },
                 )
 
                 DropdownMenuItem(
-                    text = { Text("Unlink MangaBaka Series") },
+                    text = { Text(stringResource(Res.string.ui_unlink_mangabaka_series)) },
                     onClick = { showMangaBakaUnlinkDialog = true },
                 )
             }

@@ -1,5 +1,7 @@
 package snd.komelia.ui.settings.appearance
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.screen_error
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,7 +27,7 @@ class AppSettingsScreen : Screen {
 
         SettingsScreenContainer(stringResource(Res.string.settings_appearance_title)) {
             when (val result = state.value) {
-                is LoadState.Error -> Text("${result::class.simpleName}: ${result.exception.message}")
+                is LoadState.Error -> Text(stringResource(Res.string.screen_error, result.exception.message ?: ""))
                 LoadState.Uninitialized, LoadState.Loading -> LoadingMaxSizeIndicator()
                 is LoadState.Success -> AppearanceSettingsContent(
                     cardWidth = vm.cardWidth,

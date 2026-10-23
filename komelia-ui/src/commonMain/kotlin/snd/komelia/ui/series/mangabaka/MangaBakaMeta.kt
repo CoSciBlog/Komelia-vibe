@@ -1,5 +1,14 @@
 package snd.komelia.ui.series.mangabaka
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_anime
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_chapter_count
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_volume_count
+
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_anime_end
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_anime_start
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_licensed
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -133,7 +142,7 @@ private fun GeneralMeta(mangaBakaState: MangaBakaMetadataState) {
                 colors = chipColors,
                 contentPadding = chipPadding,
                 leadingIcon = { Icon(AppIcons.Outlined.EuroSymbol, null) },
-                label = { Text("Licensed", style = MaterialTheme.typography.labelMedium) }
+                label = { Text(stringResource(Res.string.ui_licensed), style = MaterialTheme.typography.labelMedium) }
             )
 
         }
@@ -146,7 +155,7 @@ private fun GeneralMeta(mangaBakaState: MangaBakaMetadataState) {
                 colors = chipColors,
                 contentPadding = chipPadding,
                 leadingIcon = { Icon(AppIcons.Outlined.NewsStand, null) },
-                label = { Text("$finalVolume Vol.", style = MaterialTheme.typography.labelMedium) }
+                label = { Text(stringResource(Res.string.ui_volume_count, finalVolume), style = MaterialTheme.typography.labelMedium) }
             )
         }
 
@@ -158,7 +167,7 @@ private fun GeneralMeta(mangaBakaState: MangaBakaMetadataState) {
                 colors = chipColors,
                 contentPadding = chipPadding,
                 leadingIcon = { Icon(AppIcons.Outlined.Toc, null) },
-                label = { Text("$totalChapters Ch.", style = MaterialTheme.typography.labelMedium) }
+                label = { Text(stringResource(Res.string.ui_chapter_count, totalChapters), style = MaterialTheme.typography.labelMedium) }
             )
         }
         metadata.published?.let { published ->
@@ -186,7 +195,7 @@ private fun GeneralMeta(mangaBakaState: MangaBakaMetadataState) {
                 colors = chipColors,
                 leadingIcon = { Icon(AppIcons.Outlined.LiveTv, null) },
                 contentPadding = chipPadding,
-                label = { Text("Anime", style = MaterialTheme.typography.labelMedium) }
+                label = { Text(stringResource(Res.string.ui_anime), style = MaterialTheme.typography.labelMedium) }
             )
         }
 
@@ -281,7 +290,7 @@ private fun AnimeInfo(mangaBakaMeta: KomfMangaBakaSeries) {
         SelectionContainer {
             Column {
                 Text(
-                    "Anime start",
+                    stringResource(Res.string.ui_anime_start),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -294,7 +303,7 @@ private fun AnimeInfo(mangaBakaMeta: KomfMangaBakaSeries) {
         SelectionContainer {
             Column {
                 Text(
-                    "Anime end",
+                    stringResource(Res.string.ui_anime_end),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )

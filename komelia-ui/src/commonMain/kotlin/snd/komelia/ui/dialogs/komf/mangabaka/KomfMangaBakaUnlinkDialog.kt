@@ -1,5 +1,9 @@
 package snd.komelia.ui.dialogs.komf.mangabaka
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_unlink_this_series
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -17,7 +21,7 @@ fun KomfMangaBakaUnlinkDialog(
     val vm = remember { viewModelFactory.getKomfMangaBakaUnlinkDialogViewModel(series, onDismissRequest) }
     DisposableEffect(Unit) { onDispose { vm.onDispose() } }
     ConfirmationDialog(
-        body = "Unlink this series?",
+        body = stringResource(Res.string.ui_unlink_this_series),
         onDialogConfirm = vm::onUnlink,
         dismissOnConfirm = false,
         onDialogDismiss = onDismissRequest

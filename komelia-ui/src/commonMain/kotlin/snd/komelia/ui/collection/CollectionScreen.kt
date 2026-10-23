@@ -1,5 +1,9 @@
 package snd.komelia.ui.collection
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_error
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -72,7 +76,7 @@ class CollectionScreen(val collectionId: KomgaCollectionId) : ReloadableScreen {
                     )
             }
 
-            is Error -> Text("Error")
+            is Error -> Text(stringResource(Res.string.ui_error))
         }
 
         BackPressHandler { navigator.pop() }

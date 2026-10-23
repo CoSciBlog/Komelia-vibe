@@ -1,5 +1,17 @@
 package snd.komelia.ui.settings.komf
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_english
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_japanese
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_japanese_romanized
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_korean
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_korean_romanized
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_simplified_chinese
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_traditional_chinese
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_chinese_romanized
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_brazilian_portuguese
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_castilian_spanish
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_language_latin_american_spanish
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
@@ -176,18 +188,19 @@ fun SavableHttpTextField(
 
 }
 
-val komfLanguageTagsSuggestions = listOf(
-    LabeledEntry("en", "English (en)"),
-    LabeledEntry("ja", "Japanese (ja)"),
-    LabeledEntry("ja-ro", "Japanese romanized (ja-ro)"),
-    LabeledEntry("ko", "Korean (ko)"),
-    LabeledEntry("ko-ro", "Korean romanized (ko-ro)"),
-    LabeledEntry("zh", "Simplified Chinese (zh)"),
-    LabeledEntry("zh-hk", "Traditional Chinese (zh-hk)"),
-    LabeledEntry("zh-ro", "Chinese romanized (zh-ro)"),
-    LabeledEntry("pt-br", "Brazilian Portugese (pt-br)"),
-    LabeledEntry("es", "Castilian Spanish (es)"),
-    LabeledEntry("es-la", "Latin American Spanish (es-la)"),
+@Composable
+fun komfLanguageTagsSuggestions() = listOf(
+    LabeledEntry("en", stringResource(Res.string.ui_language_english) + " (en)"),
+    LabeledEntry("ja", stringResource(Res.string.ui_language_japanese) + " (ja)"),
+    LabeledEntry("ja-ro", stringResource(Res.string.ui_language_japanese_romanized) + " (ja-ro)"),
+    LabeledEntry("ko", stringResource(Res.string.ui_language_korean) + " (ko)"),
+    LabeledEntry("ko-ro", stringResource(Res.string.ui_language_korean_romanized) + " (ko-ro)"),
+    LabeledEntry("zh", stringResource(Res.string.ui_language_simplified_chinese) + " (zh)"),
+    LabeledEntry("zh-hk", stringResource(Res.string.ui_language_traditional_chinese) + " (zh-hk)"),
+    LabeledEntry("zh-ro", stringResource(Res.string.ui_language_chinese_romanized) + " (zh-ro)"),
+    LabeledEntry("pt-br", stringResource(Res.string.ui_language_brazilian_portuguese) + " (pt-br)"),
+    LabeledEntry("es", stringResource(Res.string.ui_language_castilian_spanish) + " (es)"),
+    LabeledEntry("es-la", stringResource(Res.string.ui_language_latin_american_spanish) + " (es-la)"),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -199,9 +212,8 @@ fun LanguageSelectionField(
     onLanguageValueSave: () -> Unit,
 ) {
     var isChanged by remember { mutableStateOf(false) }
-    val suggestedOptions = derivedStateOf {
-        komfLanguageTagsSuggestions.filter { (_, label) -> label.lowercase().contains(languageValue.lowercase()) }
-    }
+    val suggestions = komfLanguageTagsSuggestions()
+    val suggestedOptions = suggestions.filter { (tag, label) -> label.contains(languageValue, ignoreCase = true) || tag.contains(languageValue, ignoreCase = true) }
     val focusManager = LocalFocusManager.current
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         var isExpanded by remember { mutableStateOf(false) }
@@ -226,7 +238,7 @@ fun LanguageSelectionField(
                 expanded = isExpanded,
                 onDismissRequest = { isExpanded = false }
             ) {
-                suggestedOptions.value.forEach {
+                suggestedOptions.forEach {
                     DropdownMenuItem(
                         text = { Text(it.label) },
                         onClick = {

@@ -1,5 +1,8 @@
 package snd.komelia.ui.common.components
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.error_exit
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_reload
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -55,13 +58,13 @@ fun ErrorContent(
             Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
                 if (onReload != null) {
                     FilledTonalButton(onClick = onReload) {
-                        Text("Reload")
+                        Text(stringResource(Res.string.ui_reload))
                     }
                 }
 
                 if (onExit != null) {
                     FilledTonalButton(onClick = onExit) {
-                        Text("Exit")
+                        Text(stringResource(Res.string.error_exit))
                     }
                 }
             }

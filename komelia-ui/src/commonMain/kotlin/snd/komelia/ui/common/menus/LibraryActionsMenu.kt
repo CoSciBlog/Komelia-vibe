@@ -1,5 +1,12 @@
 package snd.komelia.ui.common.menus
 
+import org.jetbrains.compose.resources.getString
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_library_scan
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_library_deep_scan
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_library_analysis
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_library_refresh
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_notification_launched_library_trash_task
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -256,31 +263,31 @@ data class LibraryMenuActions(
         scan = {
             notifications.runCatchingToNotifications(scope) {
                 libraryApi.scan(it.id)
-                notifications.add(AppNotification.Normal("Launched library scan"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_library_scan)))
             }
         },
         deepScan = {
             notifications.runCatchingToNotifications(scope) {
                 libraryApi.scan(it.id, true)
-                notifications.add(AppNotification.Normal("Launched library deep scan"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_library_deep_scan)))
             }
         },
         analyze = {
             notifications.runCatchingToNotifications(scope) {
                 libraryApi.analyze(it.id)
-                notifications.add(AppNotification.Normal("Launched library analysis"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_library_analysis)))
             }
         },
         refresh = {
             notifications.runCatchingToNotifications(scope) {
                 libraryApi.refreshMetadata(it.id)
-                notifications.add(AppNotification.Normal("Launched library refresh"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_library_refresh)))
             }
         },
         emptyTrash = {
             notifications.runCatchingToNotifications(scope) {
                 libraryApi.emptyTrash(it.id)
-                notifications.add(AppNotification.Normal("Launched library trash task"))
+                notifications.add(AppNotification.Normal(getString(Res.string.ui_notification_launched_library_trash_task)))
             }
         },
         delete = {

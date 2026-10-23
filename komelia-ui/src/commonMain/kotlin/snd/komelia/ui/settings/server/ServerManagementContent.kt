@@ -1,5 +1,28 @@
 package snd.komelia.ui.settings.server
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.library_empty_trash_confirm_title
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_are_you_sure_you_want_to_stop_komga
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_by_default_the_media_server_doesn_t_remove_information_for_media_right_away_this_helps_if_a_drive_is
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_cancel_all_currently_running_tasks
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_cancel_all_tasks
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_check_folders_for_new_or_removed_books_uses_the_last_modified_time_of_parent_folders
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_deep_scan
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_deep_scan_all_libraries
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_delete_items_marked_as_unavailable
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_empty
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_empty_trash_for_all_libraries
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_force_the_scanner_to_compare_all_scanned_books_with_the_ones_stored_in_the_database
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_scan
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_scan_all_libraries
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_server_management
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_shut_down_server
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_shutdown
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_stop
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_stop_komga_application_process
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.user_add_cancel
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,44 +57,44 @@ fun ServerManagementContent(
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Text("Server Management", style = MaterialTheme.typography.titleLarge)
+        Text(stringResource(Res.string.ui_server_management), style = MaterialTheme.typography.titleLarge)
         HorizontalDivider()
         Button(
-            title = "Scan all libraries",
-            description = "Check folders for new or removed books.\nUses the last modified time of parent folders",
-            buttonText = "Scan",
+            title = stringResource(Res.string.ui_scan_all_libraries),
+            description = stringResource(Res.string.ui_check_folders_for_new_or_removed_books_uses_the_last_modified_time_of_parent_folders),
+            buttonText = stringResource(Res.string.ui_scan),
             level = WarningLevel.NORMAL,
             onClick = { onScanAllLibraries(false) }
         )
         HorizontalDivider()
         Button(
-            title = "Deep scan all libraries",
-            description = "Force the scanner to compare all scanned books with the ones stored in the database",
-            buttonText = "Deep Scan",
+            title = stringResource(Res.string.ui_deep_scan_all_libraries),
+            description = stringResource(Res.string.ui_force_the_scanner_to_compare_all_scanned_books_with_the_ones_stored_in_the_database),
+            buttonText = stringResource(Res.string.ui_deep_scan),
             level = WarningLevel.NORMAL,
             onClick = { onScanAllLibraries(true) }
         )
         HorizontalDivider()
         Button(
-            title = "Empty trash for all libraries",
-            description = "Delete items marked as unavailable",
-            buttonText = "Empty",
+            title = stringResource(Res.string.ui_empty_trash_for_all_libraries),
+            description = stringResource(Res.string.ui_delete_items_marked_as_unavailable),
+            buttonText = stringResource(Res.string.ui_empty),
             level = WarningLevel.NORMAL,
             onClick = { showEmptyTrashDialog = true }
         )
         HorizontalDivider()
         Button(
-            title = "Cancel all tasks",
-            description = "Cancel all currently running tasks",
-            buttonText = "Cancel",
+            title = stringResource(Res.string.ui_cancel_all_tasks),
+            description = stringResource(Res.string.ui_cancel_all_currently_running_tasks),
+            buttonText = stringResource(Res.string.user_add_cancel),
             level = WarningLevel.WARNING,
             onClick = { onCancelAllTasks() }
         )
         HorizontalDivider()
         Button(
-            title = "Shutdown",
-            description = "Stop Komga application process",
-            buttonText = "Shutdown",
+            title = stringResource(Res.string.ui_shutdown),
+            description = stringResource(Res.string.ui_stop_komga_application_process),
+            buttonText = stringResource(Res.string.ui_shutdown),
             level = WarningLevel.DANGER,
             onClick = { showShutdownDialog = true }
         )
@@ -79,10 +102,10 @@ fun ServerManagementContent(
 
         if (showEmptyTrashDialog) {
             ConfirmationDialog(
-                title = "Empty trash for library",
-                body = "By default the media server doesn't remove information for media right away. This helps if a drive is temporarily disconnected. When you empty the trash for a library, all information about missing media is deleted.",
-                buttonConfirm = "Empty",
-                buttonCancel = "Cancel",
+                title = stringResource(Res.string.library_empty_trash_confirm_title),
+                body = stringResource(Res.string.ui_by_default_the_media_server_doesn_t_remove_information_for_media_right_away_this_helps_if_a_drive_is),
+                buttonConfirm = stringResource(Res.string.ui_empty),
+                buttonCancel = stringResource(Res.string.user_add_cancel),
                 onDialogConfirm = onEmptyTrash,
                 onDialogDismiss = { showEmptyTrashDialog = false }
             )
@@ -90,10 +113,10 @@ fun ServerManagementContent(
 
         if (showShutdownDialog) {
             ConfirmationDialog(
-                title = "Shut down server",
-                body = "Are you sure you want to stop Komga?",
-                buttonConfirm = "Stop",
-                buttonCancel = "Cancel",
+                title = stringResource(Res.string.ui_shut_down_server),
+                body = stringResource(Res.string.ui_are_you_sure_you_want_to_stop_komga),
+                buttonConfirm = stringResource(Res.string.ui_stop),
+                buttonCancel = stringResource(Res.string.user_add_cancel),
                 buttonConfirmColor = MaterialTheme.colorScheme.errorContainer,
                 onDialogConfirm = onShutdown,
                 onDialogDismiss = { showShutdownDialog = false }

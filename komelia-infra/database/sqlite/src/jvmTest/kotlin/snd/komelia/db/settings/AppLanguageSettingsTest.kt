@@ -18,6 +18,21 @@ import kotlin.test.assertNotNull
 
 class AppLanguageSettingsTest {
     @Test
+    fun automaticLanguageMatchesRegionalDeviceTagsWithoutChangingStoredChoice() {
+        val cases = mapOf(
+            "de-DE" to AppLanguage.GERMAN, "de_AT" to AppLanguage.GERMAN,
+            "en-GB" to AppLanguage.ENGLISH, "es-MX" to AppLanguage.SPANISH,
+            "fr-CA" to AppLanguage.FRENCH, "ja-JP" to AppLanguage.JAPANESE,
+            "ru-RU" to AppLanguage.RUSSIAN, "zh-Hans-SG" to AppLanguage.CHINESE_SIMPLIFIED,
+            "zh_CN" to AppLanguage.CHINESE_SIMPLIFIED, "it-IT" to AppLanguage.ENGLISH,
+            "" to AppLanguage.ENGLISH,
+        )
+        for ((tag, expected) in cases) assertEquals(expected, AppLanguage.forDeviceTag(tag), tag)
+        assertEquals(AppLanguage.SYSTEM, AppSettings().appLanguage)
+        assertEquals(AppLanguage.SYSTEM, AppLanguage.fromTag(""))
+    }
+
+    @Test
     fun upgradePreservesSettingsAndLanguageSurvivesReopening(): Unit = runBlocking {
         val url = "jdbc:sqlite:file:app-language-${UUID.randomUUID()}?mode=memory&cache=shared"
         DriverManager.getConnection(url).use { connection ->

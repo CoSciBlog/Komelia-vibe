@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +23,7 @@ import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_im
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_theme
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_language
 import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_language_system
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.settings_app_language_system_description
 import org.jetbrains.compose.resources.stringResource
 import snd.komelia.settings.model.AppLanguage
 import snd.komelia.settings.model.AppTheme
@@ -55,6 +57,11 @@ fun AppearanceSettingsContent(
             options = languages,
             onOptionChange = { onLanguageChange(it.value) },
             inputFieldModifier = Modifier.widthIn(min = 250.dp)
+        )
+        Text(
+            stringResource(Res.string.settings_app_language_system_description),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
 
         DropdownChoiceMenu(

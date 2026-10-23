@@ -1,5 +1,12 @@
 package snd.komelia.ui.error
 
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_copied_to_clipboard
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_copy_stacktrace_to_clipboard
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_exit
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_restart
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -84,7 +91,7 @@ fun ErrorView(
                 ) {
                     TooltipBox(
                         positionProvider = rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
-                        tooltip = { Text("copied to clipboard") },
+                        tooltip = { Text(stringResource(Res.string.ui_copied_to_clipboard)) },
                         state = tooltipState,
                         enableUserInput = false
                     ) {
@@ -94,21 +101,21 @@ fun ErrorView(
                                 scope.launch { tooltipState.show() }
                             },
                         ) {
-                            Text("copy stacktrace to clipboard")
+                            Text(stringResource(Res.string.ui_copy_stacktrace_to_clipboard))
                         }
                     }
                     if (isRestartable) {
                         Button(
                             onClick = onRestart,
                         ) {
-                            Text("restart")
+                            Text(stringResource(Res.string.ui_restart))
                         }
 
                     }
                     Button(
                         onClick = onExit,
                     ) {
-                        Text("exit")
+                        Text(stringResource(Res.string.ui_exit))
                     }
                 }
             }

@@ -1,5 +1,11 @@
 package snd.komelia.ui.series.mangabaka
 
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_hidden_links_count
+
+import org.jetbrains.compose.resources.stringResource
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.Res
+import io.github.snd_r.komelia.ui.komelia_ui.generated.resources.ui_other_links
+
 import androidx.compose.foundation.MutatorMutex
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -145,7 +151,7 @@ private fun LinksHidden(links: List<MangaBakaLink>) {
         positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Below, 5.dp),
         tooltip = {
             RichTooltip(
-                title = { Text("OTHER LINKS") },
+                title = { Text(stringResource(Res.string.ui_other_links)) },
                 maxWidth = 400.dp
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
@@ -170,7 +176,7 @@ private fun LinksHidden(links: List<MangaBakaLink>) {
                     else state.show()
                 }
             },
-            label = "${links.size} hidden",
+            label = stringResource(Res.string.ui_hidden_links_count, links.size),
         )
     }
 }
